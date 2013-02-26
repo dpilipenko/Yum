@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">cse5236groupthirteen</string>
+    <string name="splash_screen_name">Splash Screen</string>
+    <string name="splash_screen_image_description">Splash Screen Image</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+
+</resources>
