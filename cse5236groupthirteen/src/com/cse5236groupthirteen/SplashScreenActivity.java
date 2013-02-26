@@ -25,6 +25,7 @@ public class SplashScreenActivity extends Activity {
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable(){
 
+			//boobs
 			@Override
 			public void run() {
 				
