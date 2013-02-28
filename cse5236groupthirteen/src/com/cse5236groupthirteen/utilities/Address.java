@@ -15,6 +15,12 @@ public class Address {
 	public Address(String addrNumber, String addrStreetName,
 			String addrCity, String addrPostCode, String addrProvince) {
 		
+		setNumber(addrNumber);
+		setStreetName(addrStreetName);
+		setCity(addrCity);
+		setPostCode(addrPostCode);
+		setProvince(addrProvince);
+		
 	}
 
 	/**
