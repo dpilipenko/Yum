@@ -35,20 +35,28 @@ public final class R {
         public static final int splashimage=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f090005;
+        public static final int CustomerReview=0x7f090004;
+        public static final int GotFood=0x7f090005;
+        public static final int GotInLine=0x7f090006;
+        public static final int Sub_back_button=0x7f090009;
+        public static final int SubmitReview=0x7f090007;
+        public static final int action_settings=0x7f09000b;
         public static final int button1=0x7f090003;
         public static final int button_pump=0x7f090002;
         public static final int button_reset=0x7f090001;
-        public static final int splash_screen_image=0x7f090004;
+        public static final int imageButton1=0x7f090008;
+        public static final int splash_screen_image=0x7f09000a;
         public static final int text_counter=0x7f090000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_restaurant_view=0x7f030001;
-        public static final int splash_screen=0x7f030002;
+        public static final int activity_submission=0x7f030002;
+        public static final int splash_screen=0x7f030003;
     }
     public static final class menu {
         public static final int restaurant_view=0x7f080000;
+        public static final int submission=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f060006;

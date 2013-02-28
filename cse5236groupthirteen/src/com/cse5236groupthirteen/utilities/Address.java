@@ -9,7 +9,7 @@ public class Address {
 	private String province;
 	
 	public Address() {
-		
+		// TODO set default values
 	}
 	
 	public Address(String addrNumber, String addrStreetName,
