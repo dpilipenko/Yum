@@ -1,4 +1,8 @@
-package com.cse5236groupthirteen;
+package com.cse5236groupthirteen.dev;
+
+import com.cse5236groupthirteen.R;
+import com.cse5236groupthirteen.R.id;
+import com.cse5236groupthirteen.R.layout;
 
 import android.os.Bundle;
 import android.app.Activity;

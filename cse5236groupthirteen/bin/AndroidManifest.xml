@@ -29,11 +29,11 @@
             android:label="@string/title_activity_restaurant_view" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.AddRestaurantActivity"
+            android:name="com.cse5236groupthirteen.dev.AddRestaurantActivity"
             android:label="@string/title_activity_add_restaurant" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.DevActivity"
+            android:name="com.cse5236groupthirteen.dev.DevActivity"
             android:label="@string/title_activity_dev" >
         </activity>
     </application>
