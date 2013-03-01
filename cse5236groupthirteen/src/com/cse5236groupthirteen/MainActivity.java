@@ -2,8 +2,11 @@ package com.cse5236groupthirteen;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,6 +31,17 @@ public class MainActivity extends Activity implements OnClickListener {
 		pumpButton.setOnClickListener(this);
 		
 		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		
+		MenuItem menuDevPage = menu.add("Dev Page");
+		Intent intentDevPage = new Intent(this, DevActivity.class);
+		menuDevPage.setIntent(intentDevPage);
+		
+		return true;
 	}
 
 	@Override

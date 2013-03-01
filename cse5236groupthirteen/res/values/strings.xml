@@ -8,5 +8,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_restaurant_view">RestaurantView</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_add_restaurant">AddRestaurantActivity</string>
+    <string name="title_activity_dev">DevActivity</string>
 
 </resources>
