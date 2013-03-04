@@ -29,10 +29,10 @@ public class Address {
 	 * @param addrPostCode		Postal Code (e.g. 43210)
 	 * @param addrProvince		Province (e.g. Shanghai or Ohio)
 	 */
-	public Address(String addrNumber, String addrStreetName,
+	public Address(String addrStreetNumber, String addrStreetName,
 			String addrCity, String addrPostCode, String addrProvince) {
 		
-		setStreetNumber(addrNumber);
+		setStreetNumber(addrStreetNumber);
 		setStreetName(addrStreetName);
 		setCity(addrCity);
 		setPostCode(addrPostCode);
@@ -193,7 +193,7 @@ public class Address {
 	}
 	
 	/**
-	 * To be a valid street name, it can only contain letters, numbers, '.', ',',  and '-'
+	 * To be a valid street name, it can only contain letters, numbers, ' ', '.', ',',  and '-'
 	 * @param streetname Street name string to be checked
 	 */
 	public static boolean isFormattedStreetName(String streetname) {
@@ -207,7 +207,8 @@ public class Address {
 			boolean isPeriod = (charArray[i] == '.');
 			boolean isComma = (charArray[i] == ',');
 			boolean isHyphen = (charArray[i] == '-');
-			if (!(isLetter || isNumber || isPeriod || isComma || isHyphen)) {
+			boolean isSpace = (charArray[i] == ' ');
+			if (!(isLetter || isNumber || isPeriod || isComma || isHyphen || isSpace)) {
 				// a street name can only contain letters, numbers, periods, commas, and hyphens
 				return false;
 			}

@@ -10,7 +10,7 @@ public class Restaurant {
 	
 	private final String r_name = "name";
 	private final String r_addr_city = "address_city";
-	private final String r_addr_number = "address_number";
+	private final String r_addr_streetnumber = "address_number";
 	private final String r_addr_postcode = "address_postcode";
 	private final String r_addr_province = "address_province";
 	private final String r_addr_streetname = "address_streetname";
@@ -100,7 +100,7 @@ public class Restaurant {
 		
 		Address a = new Address();
 		a.setCity(po.getString(r_addr_city));
-		a.setStreetNumber(po.getString(r_addr_number));
+		a.setStreetNumber(po.getString(r_addr_streetnumber));
 		a.setPostCode(po.getString(r_addr_postcode));
 		a.setProvince(po.getString(r_addr_province));
 		a.setStreetName(po.getString(r_addr_streetname));
@@ -122,7 +122,7 @@ public class Restaurant {
 		
 		toReturn.put(r_name, name);
 		toReturn.put(r_addr_city, address.getCity());
-		toReturn.put(r_addr_number, address.getStreetNumber());
+		toReturn.put(r_addr_streetnumber, address.getStreetNumber());
 		toReturn.put(r_addr_postcode, address.getPostCode());
 		toReturn.put(r_addr_province, address.getProvince());
 		toReturn.put(r_addr_streetname, address.getStreetName());
