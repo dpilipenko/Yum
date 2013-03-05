@@ -47,6 +47,14 @@
             android:name="com.cse5236groupthirteen.HomeViewActivity"
             android:label="@string/title_activity_home_view" >
         </activity>
+        <activity
+            android:name="com.cse5236groupthirteen.HistoryViewActivity"
+            android:label="@string/title_activity_history_view" >
+        </activity>
+        <activity
+            android:name="com.cse5236groupthirteen.MenuViewActivity"
+            android:label="@string/title_activity_menu_view" >
+        </activity>
     </application>
 
 </manifest>
