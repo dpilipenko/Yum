@@ -1,5 +1,6 @@
 package com.cse5236groupthirteen.dev;
 
+import com.cse5236groupthirteen.HomeViewActivity;
 import com.cse5236groupthirteen.R;
 
 import android.os.Bundle;
@@ -17,9 +18,11 @@ public class DevActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_dev);
 		
 		Button btnAddRestaurant = (Button)findViewById(R.id.btn_callAddRestaurantActivity);
-		btnAddRestaurant.setOnClickListener(this);
 		Button btnPrintRestaurants = (Button)findViewById(R.id.btn_callPrintRestaurantsActivity);
+		Button btnGotoHome = (Button)findViewById(R.id.btn_gotoHomeView);
+		btnAddRestaurant.setOnClickListener(this);
 		btnPrintRestaurants.setOnClickListener(this);
+		btnGotoHome.setOnClickListener(this);
 		
 		
 	}
@@ -34,6 +37,9 @@ public class DevActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_callPrintRestaurantsActivity:
 			this.startActivity(new Intent(this, PrintRestaurantsActivity.class));
+			break;
+		case R.id.btn_gotoHomeView:
+			this.startActivity(new Intent(this, HomeViewActivity.class));
 			break;
 			
 		default:

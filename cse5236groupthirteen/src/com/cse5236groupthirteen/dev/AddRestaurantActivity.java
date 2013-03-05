@@ -1,20 +1,14 @@
 package com.cse5236groupthirteen.dev;
 
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.R.layout;
-import com.cse5236groupthirteen.R.menu;
 import com.cse5236groupthirteen.utilities.Address;
-import com.cse5236groupthirteen.utilities.PhoneNumber;
+import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.parse.Parse;
-import com.parse.PushService;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -34,10 +28,9 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 		btnAddRestaraunt.setOnClickListener(this);
 		btnFillRestarauntInfo.setOnClickListener(this);
 		
-		// this is necessary to call in onCreate, in order to use Parse
-		String applicationId = getString(R.string.parse_applicationId);
-		String clientKey = getString(R.string.parse_clientKey);
-		Parse.initialize(this, applicationId, clientKey); 
+		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
+		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
+				 
 	}
 
 	@Override
@@ -49,6 +42,7 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 			ParseObject po = r.toParseObject();
 			po.saveInBackground();
 			clearUI();
+			
 		break;
 		case R.id.btn_addRestaurant_FillUI:
 			populateUI();
@@ -88,9 +82,8 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 		String phoneNumber = ((EditText)findViewById(R.id.et_addRestaurant_phonenumber)).getText().toString();
 		
 		Address a = new Address(streetNumber, streetName, city, postcode, province);
-		PhoneNumber p = new PhoneNumber(phoneNumber);
 		
-		return new Restaurant(resName, a, p);
+		return new Restaurant(resName, a, phoneNumber, "");
 		
 	}
 

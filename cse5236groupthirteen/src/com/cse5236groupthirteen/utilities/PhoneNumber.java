@@ -1,5 +1,13 @@
 package com.cse5236groupthirteen.utilities;
 
+/*
+ * As of Monday March 4th, the App doesn't really use this class. I suggest we just keep it around for now,
+ * and then later if we still don't use the class, we can get rid of this. - Dima
+ * 
+ * 
+ */
+
+
 public class PhoneNumber {
 
 	private String fullnumber;

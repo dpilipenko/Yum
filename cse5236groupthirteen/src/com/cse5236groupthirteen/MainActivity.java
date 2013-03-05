@@ -14,6 +14,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+/*
+ * 
+ * 		This Activity is not used in the Yumm! App
+ * 		It is kept around for any reference needs.
+ * 		If we want to just delete it, we can.
+ * 
+ */
+
+
 public class MainActivity extends Activity implements OnClickListener {
 
 	private EditText counterField;

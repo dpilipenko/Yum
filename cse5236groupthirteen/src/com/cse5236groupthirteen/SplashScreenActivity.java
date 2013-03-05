@@ -30,7 +30,7 @@ public class SplashScreenActivity extends Activity {
 				
 				finish();
 				if(!isBackButtonPressed) {
-					Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+					Intent intent = new Intent(SplashScreenActivity.this, HomeViewActivity.class);
 					startActivity(intent);
 				}
 				
