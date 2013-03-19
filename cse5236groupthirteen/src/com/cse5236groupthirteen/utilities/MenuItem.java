@@ -1,5 +1,6 @@
 package com.cse5236groupthirteen.utilities;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import com.parse.ParseObject;
@@ -21,7 +22,7 @@ public class MenuItem {
 	private String restaurantId; // cannot be NULL or Empty
 	private String name; // cannot be NULL or Empty
 	private String description; // cannot be NULL, if Empty assume no menu item description
-	private long price; // cannot be NULL
+	private double price; // cannot be NULL
 	
 	/**
 	 * Constructs a new MenuItem object populated with fake data.
@@ -37,7 +38,7 @@ public class MenuItem {
 	 * @param price			Price of the Menu Item. Price must be greater than or equal to 0.
 	 * @param restaurantId	UUID of the related Restaurant
 	 */
-	public MenuItem(String name, String description, long price, String restaurantId) {
+	public MenuItem(String name, String description, double price, String restaurantId) {
 		setDefaults();
 		
 		setName(name);
@@ -55,7 +56,7 @@ public class MenuItem {
 		this.restaurantId = po.getString(mi_restId);
 		this.name = po.getString(mi_name);
 		this.description = po.getString(mi_descr);
-		this.price = po.getLong(mi_price);
+		this.price = po.getDouble(mi_price);
 		
 	}
 	
@@ -67,7 +68,7 @@ public class MenuItem {
 		this.restaurantId = java.util.UUID.randomUUID().toString();
 		this.name = "Fake Bread";
 		this.description = "Fake We have: White, Whole Grain, Half Grain, Double Grain";
-		this.price = (long) 1.15;
+		this.price = (double) 1.15;
 	}
 	
 	/**
@@ -132,7 +133,7 @@ public class MenuItem {
 	/**
 	 * @return the price of the menu item
 	 */
-	public long getPrice() {
+	public double getPrice() {
 		return this.price;
 	}
 	
@@ -140,7 +141,7 @@ public class MenuItem {
 	 * Sets the price of the menu item, if it is valid
 	 * @param price
 	 */
-	public void setPrice(long price) {
+	public void setPrice(double price) {
 		if (isValidPrice(price)) {
 			this.price = price;
 		}
@@ -184,7 +185,15 @@ public class MenuItem {
 		}
 		// Regular expression pattern that matches with UUID specifications
 		String regex = "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i";
-		return Pattern.matches(regex, id);		
+		//return Pattern.matches(regex, id);		
+		
+		try {
+			UUID a = UUID.fromString(id);
+			return true;
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+		
 	}
 	
 	/**
@@ -192,7 +201,7 @@ public class MenuItem {
 	 * @param price
 	 * @return True if satisfactory. False if not satisfactory
 	 */
-	public static boolean isValidPrice(long price) {
+	public static boolean isValidPrice(double price) {
 		if (price < 0) {
 			return false;
 		}
@@ -205,11 +214,11 @@ public class MenuItem {
 	 */
 	public ParseObject toParseObject() {
 		ParseObject toReturn = new ParseObject(ParseHelper.CLASS_MENUITEM);
-		toReturn.add(mi_descr, getDescription());
-		toReturn.add(mi_name, getName());
-		toReturn.add(mi_price, getPrice());
-		toReturn.add(mi_restId, getRestaurantId());
-		toReturn.add(mi_uuid, getMenuItemId());
+		toReturn.put(mi_descr, getDescription());
+		toReturn.put(mi_name, getName());
+		toReturn.put(mi_price, getPrice());
+		toReturn.put(mi_restId, getRestaurantId());
+		toReturn.put(mi_uuid, getMenuItemId());
 		return toReturn;
 		
 	}

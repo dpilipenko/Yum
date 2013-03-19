@@ -18,9 +18,11 @@ public class DevActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_dev);
 		
 		Button btnAddRestaurant = (Button)findViewById(R.id.btn_callAddRestaurantActivity);
+		Button btnAddMenu = (Button)findViewById(R.id.btn_callAddMenuActivity);
 		Button btnPrintRestaurants = (Button)findViewById(R.id.btn_callPrintRestaurantsActivity);
 		Button btnGotoHome = (Button)findViewById(R.id.btn_gotoHomeView);
 		btnAddRestaurant.setOnClickListener(this);
+		btnAddMenu.setOnClickListener(this);
 		btnPrintRestaurants.setOnClickListener(this);
 		btnGotoHome.setOnClickListener(this);
 		
@@ -34,6 +36,9 @@ public class DevActivity extends Activity implements OnClickListener {
 		
 		case R.id.btn_callAddRestaurantActivity:
 			this.startActivity(new Intent(this, AddRestaurantActivity.class));
+			break;
+		case R.id.btn_callAddMenuActivity:
+			this.startActivity(new Intent(this, AddMenuActivity.class));
 			break;
 		case R.id.btn_callPrintRestaurantsActivity:
 			this.startActivity(new Intent(this, PrintRestaurantsActivity.class));

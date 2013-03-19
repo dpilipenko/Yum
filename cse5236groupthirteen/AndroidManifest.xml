@@ -55,6 +55,17 @@
             android:name="com.cse5236groupthirteen.MenuViewActivity"
             android:label="@string/title_activity_menu_view" >
         </activity>
+        <activity
+            android:name="com.cse5236groupthirteen.dev.AddMenuActivity"
+            android:label="@string/title_activity_add_menu" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cse5236groupthirteen.dev.DevActivity" />
+        </activity>
+        <activity
+            android:name="com.cse5236groupthirteen.dev.AddMenuActivity"
+            android:label="@string/title_activity_add_menu" >
+        </activity>
     </application>
 
 </manifest>

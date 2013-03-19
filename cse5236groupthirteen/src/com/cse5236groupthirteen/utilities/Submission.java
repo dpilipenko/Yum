@@ -162,12 +162,12 @@ public class Submission {
 	
 	public ParseObject toParseObject() {
 		ParseObject toReturn = new ParseObject(ParseHelper.CLASS_SUBMISSION);
-		toReturn.add(s_comment, getComment());
-		toReturn.add(s_endTime, getEndtime());
-		toReturn.add(s_rating, getRating());
-		toReturn.add(s_restId, getRestaurantId());
-		toReturn.add(s_startTime, getStartTime());
-		toReturn.add(s_uuid, getSubmissionId());
+		toReturn.put(s_comment, getComment());
+		toReturn.put(s_endTime, getEndtime());
+		toReturn.put(s_rating, getRating());
+		toReturn.put(s_restId, getRestaurantId());
+		toReturn.put(s_startTime, getStartTime());
+		toReturn.put(s_uuid, getSubmissionId());
 		return toReturn;
 	}
 	

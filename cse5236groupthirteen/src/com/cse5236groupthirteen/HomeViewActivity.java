@@ -50,8 +50,6 @@ public class HomeViewActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				// TODO add on click actions
-				
 				Restaurant r = listAdapter.getItem(position);
 				
 				Intent intent = new Intent(HomeViewActivity.this, RestaurantViewActivity.class);
@@ -81,8 +79,6 @@ public class HomeViewActivity extends Activity {
 		super.onResume();
 		loadDataFromParse();
 	}
-
-
 
 	private void loadDataFromParse() {
 		

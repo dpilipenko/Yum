@@ -14,5 +14,6 @@
     <string name="title_activity_home_view">Home View</string>
     <string name="title_activity_history_view">HistoryViewActivity</string>
     <string name="title_activity_menu_view">MenuViewActivity</string>
+    <string name="title_activity_add_menu">AddMenuActivity</string>
 
 </resources>
