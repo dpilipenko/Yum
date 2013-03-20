@@ -35,8 +35,8 @@ public class RestaurantView extends Activity implements OnClickListener {
 		restaurantStreetNumber = (TextView) findViewById(R.id.et_addRestaurant_streetnumber);
 		restaurantStreetName = (TextView) findViewById(R.id.et_addRestaurant_streetname);
 		restaurantPhone = (TextView) findViewById(R.id.et_addRestaurant_phonenumber);
-		submittedWaitTimes = (TextView) findViewById(R.id.waitTimeList);
-		setWaitTime = (EditText) findViewById(R.id.newWaitTime);
+		//submittedWaitTimes = (TextView) findViewById(R.id.waitTimeList);
+		//setWaitTime = (EditText) findViewById(R.id.newWaitTime);
 		inLineSubmit = (Button) findViewById(R.id.GotInLine);
 		
 	}

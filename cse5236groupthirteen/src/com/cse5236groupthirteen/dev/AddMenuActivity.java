@@ -1,6 +1,5 @@
 package com.cse5236groupthirteen.dev;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -47,7 +46,7 @@ public class AddMenuActivity extends Activity implements OnClickListener, OnItem
 		addButton = (Button) findViewById(R.id.btn_addMenu_submit);
 		
 		// setup spinner specifics
-		listAdapter = new ArrayAdapter<Restaurant>(this, android.R.layout.simple_dropdown_item_1line);
+		listAdapter = new ArrayAdapter<Restaurant>(this, android.R.layout.simple_list_item_1);
 		spinner.setAdapter(listAdapter);
 		
 		// set up listeners
@@ -101,13 +100,18 @@ public class AddMenuActivity extends Activity implements OnClickListener, OnItem
 		
 		MenuItem mi = generateMenuItemFromUI();
 		ParseObject po = mi.toParseObject();
-		po.saveInBackground();
+		//po.saveInBackground();
+		
+		
+		try {
+			po.save();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		clearUI();
 		
-		
-		
-		if (mi == null) 
-			return;
 	}
 
 	@Override

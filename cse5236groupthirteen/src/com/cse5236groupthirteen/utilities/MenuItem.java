@@ -1,7 +1,6 @@
 package com.cse5236groupthirteen.utilities;
 
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import com.parse.ParseObject;
 
@@ -10,11 +9,11 @@ public class MenuItem {
 	/*
 	 * These strings are used for converting to/from ParseObjects
 	 */
-	private final String mi_uuid = "menuitem_id";
-	private final String mi_restId = "restaurant_id";
-	private final String mi_name = "name";
-	private final String mi_descr = "description";
-	private final String mi_price = "price";
+	public final static String MI_UUID = "menuitem_id";
+	public final static String MI_RESTID = "restaurant_id";
+	public final static String MI_NAME = "name";
+	public final static String MI_DESCR = "description";
+	public final static String MI_PRICE = "price";
 	
 	/////////////////////////////////////////////////////////////
 	
@@ -52,11 +51,11 @@ public class MenuItem {
 	 * Constructs a new MenuItem object from the input ParseObject
 	 */
 	public MenuItem(ParseObject po) {
-		this.menuItemId = po.getString(mi_uuid);
-		this.restaurantId = po.getString(mi_restId);
-		this.name = po.getString(mi_name);
-		this.description = po.getString(mi_descr);
-		this.price = po.getDouble(mi_price);
+		this.menuItemId = po.getString(MI_UUID);
+		this.restaurantId = po.getString(MI_RESTID);
+		this.name = po.getString(MI_NAME);
+		this.description = po.getString(MI_DESCR);
+		this.price = po.getDouble(MI_PRICE);
 		
 	}
 	
@@ -183,11 +182,9 @@ public class MenuItem {
 		if (id == null) {
 			return false;
 		}
-		// Regular expression pattern that matches with UUID specifications
-		String regex = "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i";
-		//return Pattern.matches(regex, id);		
 		
 		try {
+			@SuppressWarnings("unused")
 			UUID a = UUID.fromString(id);
 			return true;
 		} catch (IllegalArgumentException e) {
@@ -213,14 +210,22 @@ public class MenuItem {
 	 * @return ParseObject with this Restaurant's information
 	 */
 	public ParseObject toParseObject() {
-		ParseObject toReturn = new ParseObject(ParseHelper.CLASS_MENUITEM);
-		toReturn.put(mi_descr, getDescription());
-		toReturn.put(mi_name, getName());
-		toReturn.put(mi_price, getPrice());
-		toReturn.put(mi_restId, getRestaurantId());
-		toReturn.put(mi_uuid, getMenuItemId());
+		ParseObject toReturn = new ParseObject(ParseHelper.CLASS_MENUITEMS);
+		toReturn.put(MI_DESCR, getDescription());
+		toReturn.put(MI_NAME, getName());
+		toReturn.put(MI_PRICE, getPrice());
+		toReturn.put(MI_RESTID, getRestaurantId());
+		toReturn.put(MI_UUID, getMenuItemId());
 		return toReturn;
 		
+	}
+	
+	/**
+	 * This is what gets displayed by the ListView with ArrayAdapter<Restaurant>
+	 */
+	@Override
+	public String toString() {
+		return "" + this.getName();
 	}
 	
 }

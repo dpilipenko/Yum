@@ -161,7 +161,7 @@ public class Submission {
 	}
 	
 	public ParseObject toParseObject() {
-		ParseObject toReturn = new ParseObject(ParseHelper.CLASS_SUBMISSION);
+		ParseObject toReturn = new ParseObject(ParseHelper.CLASS_SUBMISSIONS);
 		toReturn.put(s_comment, getComment());
 		toReturn.put(s_endTime, getEndtime());
 		toReturn.put(s_rating, getRating());

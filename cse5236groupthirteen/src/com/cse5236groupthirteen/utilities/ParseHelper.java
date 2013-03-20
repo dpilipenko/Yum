@@ -11,8 +11,8 @@ public class ParseHelper {
 	
 	// The strings represent the names of the classes stored by Parse
 	public final static String CLASS_RESTAURANTS = "Restaurants";
-	public final static String CLASS_MENUITEM = "MenuItems";
-	public final static String CLASS_SUBMISSION = "Submissions";
+	public final static String CLASS_MENUITEMS = "MenuItems";
+	public final static String CLASS_SUBMISSIONS = "Submissions";
 	
 	
 }

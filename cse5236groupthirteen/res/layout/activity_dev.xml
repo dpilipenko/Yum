@@ -28,11 +28,19 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Print Restaurants" />
+    <Button 
+        android:id="@+id/btn_callPrintMenuItemsActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Print MenuItems"
+        />
     <Button
         android:id="@+id/btn_gotoHomeView"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Go To HomeView" />
+    
 
 </LinearLayout>

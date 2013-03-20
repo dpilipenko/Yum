@@ -12,14 +12,15 @@ import com.parse.ParseQuery;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RestaurantViewActivity extends Activity {
+public class RestaurantViewActivity extends Activity implements OnClickListener {
 
 	private Restaurant selectedRestaurant;
 	
@@ -30,6 +31,10 @@ public class RestaurantViewActivity extends Activity {
 		setContentView(R.layout.activity_restaurant_view);
 		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
+		
+		
+		((Button)findViewById(R.id.btn_showRestaurantsMenu)).setOnClickListener(this);
+		((Button)findViewById(R.id.button1)).setOnClickListener(this);
 		
 		// load selected restaurant information
 		Bundle b = getIntent().getExtras();
@@ -42,12 +47,8 @@ public class RestaurantViewActivity extends Activity {
 			Log.e("Yum", errmsg);
 		}
 		
-		final Button InLine = (Button) findViewById(R.id.button1);
-		InLine.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				
-			}
-		});
+		
+		
 	}
 	
 	private void populateUI() {
@@ -91,13 +92,21 @@ public class RestaurantViewActivity extends Activity {
 		});
 		
 	}
-	
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.restaurant_view, menu);
-		return true;
+	public void onClick(View v) {
+		
+		switch (v.getId()) {
+		case R.id.btn_showRestaurantsMenu:
+			Intent intent = new Intent(RestaurantViewActivity.this, MenuViewActivity.class);
+			intent.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
+			intent.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
+			startActivity(intent);
+			break;
+		case R.id.button1:
+			break;
+		}
+		
 	}
 
 }
