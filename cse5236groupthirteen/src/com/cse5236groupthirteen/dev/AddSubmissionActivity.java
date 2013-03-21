@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Locale;
 
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.R.layout;
-import com.cse5236groupthirteen.R.menu;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
@@ -19,7 +17,6 @@ import com.parse.ParseQuery;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;

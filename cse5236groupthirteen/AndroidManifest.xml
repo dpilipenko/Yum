@@ -74,6 +74,10 @@
             android:name="com.cse5236groupthirteen.dev.AddSubmissionActivity"
             android:label="@string/title_activity_add_submission" >
         </activity>
+        <activity
+            android:name="com.cse5236groupthirteen.dev.PrintSubmissionsActivity"
+            android:label="@string/title_activity_print_submissions" >
+        </activity>
     </application>
 
 </manifest>

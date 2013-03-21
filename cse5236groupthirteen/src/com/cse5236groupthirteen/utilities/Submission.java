@@ -2,7 +2,6 @@ package com.cse5236groupthirteen.utilities;
 
 import java.util.Date;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import com.parse.ParseObject;
 
@@ -15,11 +14,11 @@ public class Submission {
 	/*
 	 * These strings are used for converting to/from ParseObjects
 	 */
-	public final String s_uuid = "submission_id";
-	public final String s_restId = "restuarant_id";
-	public final String s_rating = "rating";
-	public final String s_waittime = "waittime";
-	public final String s_comment = "comment";
+	public final static String S_UUID = "submission_id";
+	public final static String S_RESTID = "restuarant_id";
+	public final static String S_RATING = "rating";
+	public final static String S_WAITTIME = "waittime";
+	public final static String S_COMMENT = "comment";
 	
 	///////////////////////////////////////////////////////////////
 	
@@ -36,11 +35,11 @@ public class Submission {
 	
 	public Submission (ParseObject po) {
 		
-		this.submissionId = po.getString(s_uuid);
-		this.restuarantId = po.getString(s_restId);
-		this.rating = po.getInt(s_rating);
-		this.waittime = po.getLong(s_waittime);
-		this.comment = po.getString(s_comment);
+		this.submissionId = po.getString(S_UUID);
+		this.restuarantId = po.getString(S_RESTID);
+		this.rating = po.getInt(S_RATING);
+		this.waittime = po.getLong(S_WAITTIME);
+		this.comment = po.getString(S_COMMENT);
 		
 		//
 		/*
@@ -77,7 +76,7 @@ public class Submission {
 	
 	public void setRestaruantId(String id) {
 		if (isValidRestaurantId(id)) {
-			this.submissionId = id;
+			this.restuarantId = id;
 		}
 	}
 	
@@ -167,13 +166,38 @@ public class Submission {
 	
 	public ParseObject toParseObject() {
 		ParseObject toReturn = new ParseObject(ParseHelper.CLASS_SUBMISSIONS);
-		toReturn.put(s_comment, getComment());
-		toReturn.put(s_rating, getRating());
-		toReturn.put(s_restId, getRestaurantId());
-		toReturn.put(s_waittime, getWaitTime());
-		toReturn.put(s_uuid, getSubmissionId());
+		toReturn.put(S_COMMENT, getComment());
+		toReturn.put(S_RATING, getRating());
+		toReturn.put(S_RESTID, getRestaurantId());
+		toReturn.put(S_WAITTIME, getWaitTime());
+		toReturn.put(S_UUID, getSubmissionId());
 		return toReturn;
 	}
 	
+	/**
+	 * This is what gets displayed by the ListView with ArrayAdapter<Submission>
+	 */
+	@Override
+	public String toString() {
+		
+		String ratingStr;
+		switch(getRating()) {
+		case RATING_HAPPY:
+			ratingStr = ":)";
+			break;
+		case RATING_NORMAL:
+			ratingStr = ":|";
+		case RATING_SAD:
+			ratingStr = ":(";
+			break;
+			
+		default :
+			ratingStr = ":)";
+			setRating(RATING_HAPPY);
+			break;
+		}
+		
+		return "" + ratingStr + " " + this.getComment() + " " + this.getWaitTime() + " seconds wait time";
+	}
 	
 }

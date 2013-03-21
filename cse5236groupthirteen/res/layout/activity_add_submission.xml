@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:ems="3"
             android:hint="HH"
+            android:text="0"
             android:inputType="number"
              />
 
@@ -57,6 +58,7 @@
             android:layout_height="wrap_content"
             android:ems="3"
             android:hint="MM"
+            android:text="0"
             android:inputType="number"
             />
         
@@ -72,6 +74,7 @@
             android:layout_height="wrap_content"
             android:ems="3"
             android:hint="SS"
+            android:text="0"
             android:inputType="number"
             />
         

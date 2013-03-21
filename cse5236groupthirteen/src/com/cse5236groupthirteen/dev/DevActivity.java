@@ -21,14 +21,16 @@ public class DevActivity extends Activity implements OnClickListener {
 		Button btnAddMenu = (Button)findViewById(R.id.btn_callAddMenuActivity);
 		Button btnAddSubmission = (Button)findViewById(R.id.btn_callAddSubmissionActivity);
 		Button btnPrintRestaurants = (Button)findViewById(R.id.btn_callPrintRestaurantsActivity);
-		Button btnGotoHome = (Button)findViewById(R.id.btn_gotoHomeView);
 		Button btnPrintMenuItems = (Button)findViewById(R.id.btn_callPrintMenuItemsActivity);
+		Button btnPrintSubmissions = (Button)findViewById(R.id.btn_callPrintSubmissionsActivity);
+		Button btnGotoHome = (Button)findViewById(R.id.btn_gotoHomeView);
 		btnAddRestaurant.setOnClickListener(this);
 		btnAddMenu.setOnClickListener(this);
 		btnAddSubmission.setOnClickListener(this);
 		btnPrintRestaurants.setOnClickListener(this);
-		btnGotoHome.setOnClickListener(this);
 		btnPrintMenuItems.setOnClickListener(this);
+		btnPrintSubmissions.setOnClickListener(this);
+		btnGotoHome.setOnClickListener(this);
 		
 		
 	}
@@ -50,11 +52,14 @@ public class DevActivity extends Activity implements OnClickListener {
 		case R.id.btn_callPrintRestaurantsActivity:
 			this.startActivity(new Intent(this, PrintRestaurantsActivity.class));
 			break;
-		case R.id.btn_gotoHomeView:
-			this.startActivity(new Intent(this, HomeViewActivity.class));
-			break;
 		case R.id.btn_callPrintMenuItemsActivity:
 			this.startActivity(new Intent(this, PrintMenuActivity.class));
+			break;
+		case R.id.btn_callPrintSubmissionsActivity:
+			this.startActivity(new Intent(this, PrintSubmissionsActivity.class));
+			break;
+		case R.id.btn_gotoHomeView:
+			this.startActivity(new Intent(this, HomeViewActivity.class));
 			break;
 			
 		default:

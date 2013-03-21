@@ -43,6 +43,13 @@
         android:text="Print MenuItems"
         />
     <Button
+        android:id="@+id/btn_callPrintSubmissionsActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Print Submissions"
+        />
+    <Button
         android:id="@+id/btn_gotoHomeView"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="200dp"

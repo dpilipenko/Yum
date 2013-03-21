@@ -38,12 +38,12 @@ public final class R {
         public static final int splashimage=0x7f020004;
     }
     public static final class id {
-        public static final int CustomerReview=0x7f090027;
-        public static final int GotFood=0x7f090028;
-        public static final int GotInLine=0x7f090029;
-        public static final int Sub_back_button=0x7f09002c;
-        public static final int SubmitReview=0x7f09002a;
-        public static final int action_settings=0x7f09002f;
+        public static final int CustomerReview=0x7f09002a;
+        public static final int GotFood=0x7f09002b;
+        public static final int GotInLine=0x7f09002c;
+        public static final int Sub_back_button=0x7f09002f;
+        public static final int SubmitReview=0x7f09002d;
+        public static final int action_settings=0x7f090032;
         public static final int btn_addMenu_submit=0x7f090004;
         public static final int btn_addRestaurant_Add=0x7f09000c;
         public static final int btn_addRestaurant_FillUI=0x7f09000d;
@@ -53,11 +53,12 @@ public final class R {
         public static final int btn_callAddSubmissionActivity=0x7f090017;
         public static final int btn_callPrintMenuItemsActivity=0x7f090019;
         public static final int btn_callPrintRestaurantsActivity=0x7f090018;
-        public static final int btn_gotoHomeView=0x7f09001a;
-        public static final int btn_showRestaurantsMenu=0x7f090025;
-        public static final int button1=0x7f090026;
-        public static final int button_pump=0x7f09001e;
-        public static final int button_reset=0x7f09001d;
+        public static final int btn_callPrintSubmissionsActivity=0x7f09001a;
+        public static final int btn_gotoHomeView=0x7f09001b;
+        public static final int btn_showRestaurantsMenu=0x7f090028;
+        public static final int button1=0x7f090029;
+        public static final int button_pump=0x7f09001f;
+        public static final int button_reset=0x7f09001e;
         public static final int et_addRestaurant_city=0x7f090008;
         public static final int et_addRestaurant_phonenumber=0x7f09000b;
         public static final int et_addRestaurant_postalcode=0x7f09000a;
@@ -73,19 +74,21 @@ public final class R {
         public static final int et_addmenu_itemname=0x7f090001;
         public static final int et_addmenu_itemprice=0x7f090003;
         public static final int et_addsubmission_rating=0x7f09000f;
-        public static final int imageButton1=0x7f09002b;
-        public static final int lstvw_allRestaurantsNames=0x7f090023;
-        public static final int lstvw_homeView=0x7f09001b;
-        public static final int lstvw_menuView_menuitemlist=0x7f090020;
-        public static final int rowTextView=0x7f09002d;
-        public static final int splash_screen_image=0x7f09002e;
+        public static final int imageButton1=0x7f09002e;
+        public static final int lstvw_allRestaurantsNames=0x7f090024;
+        public static final int lstvw_homeView=0x7f09001c;
+        public static final int lstvw_menuView_menuitemlist=0x7f090021;
+        public static final int lstvw_submissionsview_submissionslist=0x7f090026;
+        public static final int rowTextView=0x7f090030;
+        public static final int splash_screen_image=0x7f090031;
         public static final int spnr_addmenu_restaurants=0x7f090000;
         public static final int spnr_addsubmission_restaurants=0x7f09000e;
-        public static final int spnr_menuview_restaurant=0x7f090021;
-        public static final int text_counter=0x7f09001c;
-        public static final int text_printRestaurants_lastSelection=0x7f090022;
-        public static final int txtvw_RestaurantName=0x7f090024;
-        public static final int txtvw_menuView_restaurantName=0x7f09001f;
+        public static final int spnr_menuview_restaurant=0x7f090022;
+        public static final int spnr_submissionsview_restaurant=0x7f090025;
+        public static final int text_counter=0x7f09001d;
+        public static final int text_printRestaurants_lastSelection=0x7f090023;
+        public static final int txtvw_RestaurantName=0x7f090027;
+        public static final int txtvw_menuView_restaurantName=0x7f090020;
     }
     public static final class layout {
         public static final int activity_add_menu=0x7f030000;
@@ -98,10 +101,11 @@ public final class R {
         public static final int activity_menu_view=0x7f030007;
         public static final int activity_print_menu=0x7f030008;
         public static final int activity_print_restaurants=0x7f030009;
-        public static final int activity_restaurant_view=0x7f03000a;
-        public static final int activity_submission=0x7f03000b;
-        public static final int row_restaurants_names=0x7f03000c;
-        public static final int splash_screen=0x7f03000d;
+        public static final int activity_print_submissions=0x7f03000a;
+        public static final int activity_restaurant_view=0x7f03000b;
+        public static final int activity_submission=0x7f03000c;
+        public static final int row_restaurants_names=0x7f03000d;
+        public static final int splash_screen=0x7f03000e;
     }
     public static final class menu {
         public static final int add_menu=0x7f080000;
@@ -113,8 +117,9 @@ public final class R {
         public static final int menu_view=0x7f080006;
         public static final int print_menu=0x7f080007;
         public static final int print_restaurants=0x7f080008;
-        public static final int restaurant_view=0x7f080009;
-        public static final int submission=0x7f08000a;
+        public static final int print_submissions=0x7f080009;
+        public static final int restaurant_view=0x7f08000a;
+        public static final int submission=0x7f08000b;
     }
     public static final class string {
         public static final int action_settings=0x7f060006;
@@ -132,6 +137,7 @@ public final class R {
         public static final int title_activity_menu_view=0x7f06000c;
         public static final int title_activity_print_menu=0x7f06000e;
         public static final int title_activity_print_restaurants=0x7f060009;
+        public static final int title_activity_print_submissions=0x7f060010;
         public static final int title_activity_restaurant_view=0x7f060005;
     }
     public static final class style {

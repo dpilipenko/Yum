@@ -1,5 +1,6 @@
 package com.cse5236groupthirteen.utilities;
 
+import java.text.NumberFormat;
 import java.util.UUID;
 
 import com.parse.ParseObject;
@@ -221,11 +222,14 @@ public class MenuItem {
 	}
 	
 	/**
-	 * This is what gets displayed by the ListView with ArrayAdapter<Restaurant>
+	 * This is what gets displayed by the ListView with ArrayAdapter<MenuItem>
 	 */
 	@Override
 	public String toString() {
-		return "" + this.getName();
+		
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		String price = formatter.format(getPrice());
+		return "" + this.getName() + ": " + this.getDescription() + " " + price;
 	}
 	
 }
