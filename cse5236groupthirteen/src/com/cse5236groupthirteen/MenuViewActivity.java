@@ -51,7 +51,6 @@ public class MenuViewActivity extends Activity {
 		if (b != null) {
 			selectedRestaurantId = b.getString(Restaurant.R_UUID);
 			selectedRestaurantName = b.getString(Restaurant.R_NAME);
-			loadRestaurant(selectedRestaurantId);
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
 			Toast.makeText(getApplicationContext(), errmsg , Toast.LENGTH_SHORT).show();
@@ -59,11 +58,6 @@ public class MenuViewActivity extends Activity {
 		}
 		
 		textView.setText("You selected: "+selectedRestaurantName);
-		
-	}
-	
-
-	private void loadRestaurant(String selectedRestaurantId) {
 		
 	}
 

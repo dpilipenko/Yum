@@ -176,9 +176,9 @@ public class AddSubmissionActivity extends Activity implements OnClickListener, 
 	
 	private void clearUI() {
 		((EditText)findViewById(R.id.et_addsubmission_rating)).setText("");
-		((EditText)findViewById(R.id.et_addSubmission_waittime_hours)).setText("");
-		((EditText)findViewById(R.id.et_addSubmission_waittime_minutes)).setText("");
-		((EditText)findViewById(R.id.et_addSubmission_waittime_seconds)).setText("");
+		((EditText)findViewById(R.id.et_addSubmission_waittime_hours)).setText("0");
+		((EditText)findViewById(R.id.et_addSubmission_waittime_minutes)).setText("0");
+		((EditText)findViewById(R.id.et_addSubmission_waittime_seconds)).setText("0");
 		((EditText)findViewById(R.id.et_addSubmission_waittime_comments)).setText("");
 	}
 

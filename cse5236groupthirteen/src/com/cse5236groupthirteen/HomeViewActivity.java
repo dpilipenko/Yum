@@ -11,6 +11,8 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +31,7 @@ public class HomeViewActivity extends Activity {
 	private ListView listView;
 	private ArrayAdapter<Restaurant> listAdapter;
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -37,6 +40,7 @@ public class HomeViewActivity extends Activity {
 		setContentView(R.layout.activity_home_view);
 		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
+		
 		
 		// grab UI elements
 		listView = (ListView) findViewById(R.id.lstvw_homeView);
@@ -54,6 +58,7 @@ public class HomeViewActivity extends Activity {
 				
 				Intent intent = new Intent(HomeViewActivity.this, RestaurantViewActivity.class);
 				intent.putExtra(Restaurant.R_UUID, r.getRestaurantId());
+				intent.putExtra(Restaurant.R_NAME, r.getName());
 				startActivity(intent);
 				
 			}

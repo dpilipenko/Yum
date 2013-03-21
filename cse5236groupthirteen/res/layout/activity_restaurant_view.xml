@@ -1,47 +1,37 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".RestaurantViewActivity" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
-        
-        <TextView
+    <TextView
+        android:id="@+id/txtvw_RestaurantName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-        
-    	<TextView
-       		android:id="@+id/txtvw_RestaurantName"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="Selected Restaurant: " />
-    	
-    	<EditText
-            android:id="@+id/text_counter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="0" />
+        android:text="Selected Restaurant: " />
+
+    <Button
+        android:id="@+id/btn_showRestaurantsMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show me the menu" />
+
+    <ListView
+        android:id="@+id/lstvw_submissionSummary"
+        android:layout_width="match_parent"
+        android:layout_height="200dip" />
     
-    	<Button
-    	    android:id="@+id/btn_showRestaurantsMenu"
-    	    android:layout_width="match_parent"
-    	    android:layout_height="wrap_content"
-    	    android:text="Show me the menu"
-    	    />
-    	
- 	   <Button
-        	android:id="@+id/button1"
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:text="I'm in Line!" />
+    <Button
+        android:id="@+id/btn_showRestaurantsSubmissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show me all the submissions" />
+    
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I&apos;m in Line!" />
 
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

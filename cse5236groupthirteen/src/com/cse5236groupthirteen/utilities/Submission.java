@@ -15,7 +15,7 @@ public class Submission {
 	 * These strings are used for converting to/from ParseObjects
 	 */
 	public final static String S_UUID = "submission_id";
-	public final static String S_RESTID = "restuarant_id";
+	public final static String S_RESTID = "restaurant_id";
 	public final static String S_RATING = "rating";
 	public final static String S_WAITTIME = "waittime";
 	public final static String S_COMMENT = "comment";
@@ -23,7 +23,7 @@ public class Submission {
 	///////////////////////////////////////////////////////////////
 	
 	private String submissionId; // cannot be NULL or empty
-	private String restuarantId; // cannot be NULL or empty
+	private String restaurantId; // cannot be NULL or empty
 	private int rating; // must be Submission.RATING_*
 	private long waittime;
 	private String comment; // cannot be NULL, if Empty assume no comments
@@ -36,7 +36,7 @@ public class Submission {
 	public Submission (ParseObject po) {
 		
 		this.submissionId = po.getString(S_UUID);
-		this.restuarantId = po.getString(S_RESTID);
+		this.restaurantId = po.getString(S_RESTID);
 		this.rating = po.getInt(S_RATING);
 		this.waittime = po.getLong(S_WAITTIME);
 		this.comment = po.getString(S_COMMENT);
@@ -60,7 +60,7 @@ public class Submission {
 	
 	private void setDefaults() {
 		this.submissionId = java.util.UUID.randomUUID().toString();
-		this.restuarantId = java.util.UUID.randomUUID().toString();
+		this.restaurantId = java.util.UUID.randomUUID().toString();
 		this.rating = RATING_HAPPY;
 		this.waittime = 0l;
 		this.comment = "FAKE - Best food ever!";
@@ -71,12 +71,12 @@ public class Submission {
 	}
 	
 	public String getRestaurantId() {
-		return this.restuarantId;
+		return this.restaurantId;
 	}
 	
 	public void setRestaruantId(String id) {
 		if (isValidRestaurantId(id)) {
-			this.restuarantId = id;
+			this.restaurantId = id;
 		}
 	}
 	
@@ -187,6 +187,7 @@ public class Submission {
 			break;
 		case RATING_NORMAL:
 			ratingStr = ":|";
+			break;
 		case RATING_SAD:
 			ratingStr = ":(";
 			break;
