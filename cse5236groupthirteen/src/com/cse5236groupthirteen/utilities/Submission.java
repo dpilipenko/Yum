@@ -1,6 +1,7 @@
 package com.cse5236groupthirteen.utilities;
 
 import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import com.parse.ParseObject;
@@ -17,8 +18,7 @@ public class Submission {
 	public final String s_uuid = "submission_id";
 	public final String s_restId = "restuarant_id";
 	public final String s_rating = "rating";
-	public final String s_startTime = "start_time";
-	public final String s_endTime = "end_time";
+	public final String s_waittime = "waittime";
 	public final String s_comment = "comment";
 	
 	///////////////////////////////////////////////////////////////
@@ -26,9 +26,9 @@ public class Submission {
 	private String submissionId; // cannot be NULL or empty
 	private String restuarantId; // cannot be NULL or empty
 	private int rating; // must be Submission.RATING_*
-	private Date startTime; // cannot be NULL on Save
-	private Date endTime; // cannot be NULL on Save
+	private long waittime;
 	private String comment; // cannot be NULL, if Empty assume no comments
+		
 	
 	public Submission () {
 		setDefaults();
@@ -39,17 +39,21 @@ public class Submission {
 		this.submissionId = po.getString(s_uuid);
 		this.restuarantId = po.getString(s_restId);
 		this.rating = po.getInt(s_rating);
+		this.waittime = po.getLong(s_waittime);
+		this.comment = po.getString(s_comment);
+		
+		//
+		/*
 		this.startTime = po.getDate(s_startTime);
 		this.endTime = po.getDate(s_endTime);
-		this.comment = po.getString(s_comment);
+		*/
 		
 	}
 	
-	public Submission (int rating, Date startTime, Date endTime, String comment, String restuarantId) {
+	public Submission (int rating, long waittime, String comment, String restuarantId) {
 		setDefaults();
 		setRating(rating);
-		setStartTime(startTime);
-		setEndTime(endTime);
+		setWaitTime(waittime);
 		setComment(comment);
 		setRestaruantId(restuarantId);
 		
@@ -59,8 +63,7 @@ public class Submission {
 		this.submissionId = java.util.UUID.randomUUID().toString();
 		this.restuarantId = java.util.UUID.randomUUID().toString();
 		this.rating = RATING_HAPPY;
-		this.startTime = new Date();
-		this.endTime = new Date();
+		this.waittime = 0l;
 		this.comment = "FAKE - Best food ever!";
 	}
 	
@@ -88,26 +91,23 @@ public class Submission {
 		}
 	}
 	
-	public Date getStartTime() {
-		return this.startTime;		
+	public long getWaitTime() {
+		return this.waittime;
 	}
 	
-	public void setStartTime(Date start_time) {
-		if (isValidDate(start_time)) {
-			this.startTime = start_time;
+	public void setWaitTime(long waitTime) {
+		if (isValidWaitTime(waitTime)) {
+			this.waittime = waitTime;
 		}
 	}
 	
-	public Date getEndtime() {
-		return this.endTime;
+	private boolean isValidWaitTime(long waitTime) {
+		if (waitTime < 0) 
+			return false;
+		
+		return true;
 	}
-	
-	public void setEndTime(Date end_time) {
-		if (isValidDate(end_time)) {
-			this.endTime = end_time;
-		}
-	}
-	
+
 	public String getComment() {
 		return this.comment;
 	}
@@ -122,9 +122,14 @@ public class Submission {
 		if (id == null) {
 			return false;
 		}
-		// Regular expression pattern that matches with UUID specifications
-		String regex = "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i";
-		return Pattern.matches(regex, id);	
+		
+		try {
+			@SuppressWarnings("unused")
+			UUID a = UUID.fromString(id);
+			return true;
+		} catch (IllegalArgumentException e) {
+			return false;
+		}	
 	}
 	
 	public static boolean isValidRating(int rating) {
@@ -163,10 +168,9 @@ public class Submission {
 	public ParseObject toParseObject() {
 		ParseObject toReturn = new ParseObject(ParseHelper.CLASS_SUBMISSIONS);
 		toReturn.put(s_comment, getComment());
-		toReturn.put(s_endTime, getEndtime());
 		toReturn.put(s_rating, getRating());
 		toReturn.put(s_restId, getRestaurantId());
-		toReturn.put(s_startTime, getStartTime());
+		toReturn.put(s_waittime, getWaitTime());
 		toReturn.put(s_uuid, getSubmissionId());
 		return toReturn;
 	}

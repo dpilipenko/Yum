@@ -23,6 +23,13 @@
         android:text="Add a Menu" 
         />
     <Button
+        android:id="@+id/btn_callAddSubmissionActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Add a Submission"
+        />
+    <Button
         android:id="@+id/btn_callPrintRestaurantsActivity"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="200dp"
