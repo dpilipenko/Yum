@@ -8,55 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SubmissionActivity" >
 
-    <EditText
-        android:id="@+id/CustomerReview"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:inputType="textMultiLine" />
-
-    <Button
-        android:id="@+id/GotFood"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_alignBaseline="@+id/GotInLine"
-        android:layout_alignBottom="@+id/GotInLine"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:text="Got my food!" />
-
-    <Button
-        android:id="@+id/GotInLine"
-        style="@style/AppTheme"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="31dp"
-        android:text="Got in line!" />
-
-    <Button
-        android:id="@+id/SubmitReview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/CustomerReview"
-        android:layout_alignRight="@+id/CustomerReview"
-        android:layout_below="@+id/CustomerReview"
-        android:layout_marginTop="20dp"
-        android:text="Submit" />
-
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/CustomerReview"
-        android:layout_marginTop="44dp"
-        android:layout_toRightOf="@+id/GotFood"
-        android:src="@drawable/splashimage" />
-
     <Button
         android:id="@+id/Sub_back_button"
         android:layout_width="wrap_content"
@@ -64,5 +15,66 @@
         android:layout_below="@+id/SubmitReview"
         android:layout_centerHorizontal="true"
         android:text="Back" />
+
+    <Button
+        android:id="@+id/SubmitReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CustomerReview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:text="Submit" />
+
+    <Button
+        android:id="@+id/GotFood"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/CustomerReview"
+        android:layout_centerHorizontal="true"
+        android:text="Got my food!" />
+
+    <EditText
+        android:id="@+id/CustomerReview"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:inputType="textMultiLine" />
+
+    <RadioGroup
+        android:id="@+id/Rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/GotFood"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Good" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fair" />
+
+        <RadioButton
+            android:id="@+id/radio2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bad" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/restaurant_name_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

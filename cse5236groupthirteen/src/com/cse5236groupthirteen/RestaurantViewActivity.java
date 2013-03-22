@@ -39,7 +39,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 		// set up buttons
 		((Button)findViewById(R.id.btn_showRestaurantsMenu)).setOnClickListener(this);
 		((Button)findViewById(R.id.btn_showRestaurantsSubmissions)).setOnClickListener(this);
-		((Button)findViewById(R.id.button1)).setOnClickListener(this);
+		((Button)findViewById(R.id.InLine)).setOnClickListener(this);
 		
 		// set up reviews box
 		ListView listView = (ListView)findViewById(R.id.lstvw_submissionSummary);
@@ -145,10 +145,14 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 			intentHistory.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
 			startActivity(intentHistory);
 			break;
-		case R.id.button1:
+		case R.id.InLine:
+			Intent intentSubmission = new Intent(RestaurantViewActivity.this, SubmissionActivity.class);
+			intentSubmission.putExtra(Submission.S_UUID, selectedRestaurant.getRestaurantId());
+			intentSubmission.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
 			break;
 		}
 		
 	}
+
 
 }
