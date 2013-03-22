@@ -147,8 +147,9 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 			break;
 		case R.id.InLine:
 			Intent intentSubmission = new Intent(RestaurantViewActivity.this, SubmissionActivity.class);
-			intentSubmission.putExtra(Submission.S_UUID, selectedRestaurant.getRestaurantId());
+			intentSubmission.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
 			intentSubmission.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
+			startActivity(intentSubmission);
 			break;
 		}
 		

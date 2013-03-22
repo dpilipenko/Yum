@@ -52,13 +52,11 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 		restaurant_name=(TextView)findViewById(R.id.restaurant_name_sub);
 		Button btnAdd= (Button)findViewById(R.id.SubmitReview);
 		btnAdd.setOnClickListener(this);
-		Button btnBack= (Button)findViewById(R.id.Sub_back_button);
-		btnBack.setOnClickListener(this);
 		///
 		startTime = new Date();
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
-			selectedRestaurantId = b.getString(Submission.S_UUID);
+			selectedRestaurantId = b.getString(Restaurant.R_UUID);
 			selectedRestaurantName = b.getString(Restaurant.R_NAME);
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
@@ -136,10 +134,6 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 				ParseObject po = s.toParseObject();
 				po.saveInBackground();
 			}
-			break;
-			
-		case R.id.Sub_back_button:
-			//code for back button
 			break;
 		
 		}

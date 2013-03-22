@@ -18,5 +18,6 @@
     <string name="title_activity_print_menu">PrintMenuActivity</string>
     <string name="title_activity_add_submission">AddSubmissionActivity</string>
     <string name="title_activity_print_submissions">PrintSubmissions</string>
+    <string name="title_activity_submission_view">Submission View</string>
 
 </resources>

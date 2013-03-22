@@ -41,6 +41,11 @@
             android:label="@string/title_activity_dev" >
         </activity>
         <activity
+            android:name="com.cse5236groupthirteen.SubmissionActivity"
+            android:label="@string/title_activity_submission_view">
+            
+        </activity>
+        <activity
             android:name="com.cse5236groupthirteen.dev.PrintRestaurantsActivity"
             android:label="@string/title_activity_print_restaurants" >
         </activity>
