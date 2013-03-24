@@ -228,4 +228,24 @@ public class Address {
 		return true;
 	}
 	
+	/**
+	 * @return the full address
+	 */
+	public String getFullAddress(){
+		String fullAddress;
+		String num, road, cit, st, zip;
+		
+		num = this.getStreetNumber();
+		road = this.getStreetName();
+		cit = this.getCity();
+		st = this.getProvince();
+		zip = this.getPostCode();
+		
+		fullAddress = new String(num + road + cit + st + zip);
+		return fullAddress;
+	}
+
+
+
+
 }

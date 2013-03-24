@@ -46,11 +46,10 @@ public class Restaurant {
 	public Restaurant(ParseObject po) {
 		
 		Address a = new Address();
-		a.setCity(po.getString(R_ADDR_CITY));
 		a.setStreetNumber(po.getString(R_ADDR_STREETNUMBER));
-		a.setPostCode(po.getString(R_ADDR_POSTCODE));
-		a.setProvince(po.getString(R_ADDR_PROVINCE));
 		a.setStreetName(po.getString(R_ADDR_STREETNAME));
+		a.setCity(po.getString(R_ADDR_CITY));
+		a.setPostCode(po.getString(R_ADDR_POSTCODE));
 		
 		
 		this.restaurantID = po.getString(R_UUID);
@@ -107,6 +106,14 @@ public class Restaurant {
 		this.address = address;
 	}
 
+	public String getFullAddress(){
+		String addr;
+		
+		addr = address.getFullAddress();
+		
+		return addr;
+	}
+	
 	/**
 	 * @return the Restaurant's phone number
 	 */

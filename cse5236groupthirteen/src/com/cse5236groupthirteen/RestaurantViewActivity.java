@@ -15,6 +15,7 @@ import com.parse.ParseQuery;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,27 +79,31 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		}
 	}
 
-
-
 	private void populateUI() {
 		
 		this.setTitle(selectedRestaurant.getName() + " Information");
 		
 		TextView txtView1 = (TextView) findViewById(R.id.txtvw_RestaurantName);
 		txtView1.setText(selectedRestaurant.getName());
-		TextView txtView2 = (TextView) findViewById(R.id.txtvw_RestaurantRating);
+		TextView txtView2 = (TextView) findViewById(R.id.txtvw_RestaurantAddress);
+		txtView2.setText(selectedRestaurant.getFullAddress());
+		TextView txtView3 = (TextView) findViewById(R.id.txtvw_RestaurantPhoneNumber);
+		txtView3.setText(selectedRestaurant.getPhoneNumber());
+		TextView txtView4 = (TextView) findViewById(R.id.txtvw_RestaurantWebsite);
+		txtView4.setText(selectedRestaurant.getWebsite());
+		TextView txtView5 = (TextView) findViewById(R.id.txtvw_RestaurantRating);
 		switch (calculateRestaurantRating()) {
 		case 1:
-			txtView2.setText("Recently it has been :)");
+			txtView5.setText("Recently it has been :)");
 			break;
 		case 0:
-			txtView2.setText("Recently it has been :|");
+			txtView5.setText("Recently it has been :|");
 			break;
 		case -1:
-			txtView2.setText("Recently it has been :(");
+			txtView5.setText("Recently it has been :(");
 			break;
 		case -2:
-			txtView2.setText("Recently it has been (?)");
+			txtView5.setText("Recently it has been (?)");
 			break;
 		}
 		
@@ -113,20 +118,17 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				if (e == null) {
-					
 					if (objects.size() == 1) {
 						// id is unique and there should only be one result
 						ParseObject po = objects.get(0);
 						selectedRestaurant = new Restaurant(po);
 						loadReviews(selectedRestaurant.getRestaurantId());
 						populateUI();
-						
 					} else {
 						String errmsg = "Parse returned multiple objects";
 						Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT).show();
 						Log.e("Yum", errmsg, e);
 					}
-					
 				} else {
 					// error occurred
 					String errmsg = "There was an error loading data from Parse";
@@ -139,9 +141,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		});
 		
 	}
-	
-	
-	
+
 	private void loadReviews(String restaurantId) {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
