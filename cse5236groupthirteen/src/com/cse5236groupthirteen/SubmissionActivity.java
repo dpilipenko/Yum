@@ -11,12 +11,14 @@ import com.parse.ParseObject;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -26,11 +28,12 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 	private Button Got_Food;
 	private Date EndTime;
 	private Date startTime;
-	private RadioGroup RatingGroup;
-	private RadioButton RatingButton;
+	private ImageView ratingImage;
 
 	private String selectedRestaurantId;
 	private String selectedRestaurantName;
+	private int currentRating;
+	private boolean gotfood;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +42,14 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_submission);
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
-		RatingGroup = (RadioGroup)findViewById(R.id.Rating);
+		
 		Customer_Review = (EditText)findViewById(R.id.CustomerReview);
 		Got_Food = (Button)findViewById(R.id.GotFood);
 		Got_Food.setOnClickListener(this);
 		Button btnAdd= (Button)findViewById(R.id.SubmitReview);
 		btnAdd.setOnClickListener(this);
+		ratingImage = (ImageView)findViewById(R.id.imgvw_submission_rating);
+		ratingImage.setOnClickListener(this);
 		///
 		
 		Bundle b = getIntent().getExtras();
@@ -58,6 +63,8 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 			Log.e("Yum", errmsg);
 		}
 		this.setTitle("Submit a review for " + selectedRestaurantName);
+		this.currentRating = 1;
+		this.gotfood = false;
 	}
 
 	
@@ -65,32 +72,16 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 	
 	private Submission generateFromSubView(){
 		String review = this.Customer_Review.getText().toString();
-		int Rating = GetRating();
-		long WaitTime = (this.EndTime.getTime()-this.startTime.getTime())/1000;
+		int rating = getRating();
+		long waitTime = (this.EndTime.getTime()-this.startTime.getTime())/1000;
 	
-		return new Submission(Rating,WaitTime,review,selectedRestaurantId);
+		return new Submission(rating,waitTime,review,selectedRestaurantId);
 		
 		
 			
 	}
-	private int GetRating(){
-		int r = 0;
-		int selectedId = RatingGroup.getCheckedRadioButtonId();
-		RatingButton = (RadioButton)findViewById(selectedId);
-		
-		switch (RatingButton.getId()) {
-		case R.id.radio0:
-			r = 1;
-			break;
-		case R.id.radio1:
-			r = 0;
-			break;
-		case R.id.radio2:
-			r = -1;
-			break;
-		}
-
-		return r;
+	private int getRating(){
+		return currentRating;
 	}
 	
 	
@@ -112,18 +103,36 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		
 		case R.id.GotFood:
+			gotfood = !gotfood;
 			this.EndTime = new Date();
 			break;	
+		case R.id.imgvw_submission_rating:
+			Drawable d = null;
+			switch (currentRating) {
+			case 1:
+				currentRating = 0;
+				d = getResources().getDrawable(R.drawable.rating_neutral);
+				break;
+			case 0:
+				currentRating = -1;
+				d = getResources().getDrawable(R.drawable.rating_sad);
+				break;
+			case -1:
+				currentRating = 1;
+				d = getResources().getDrawable(R.drawable.rating_happy);
+				break;
+			}
+			if (d != null) {
+				ratingImage.setImageDrawable(d);
+			}
+			break;
 		case R.id.SubmitReview:
 			//code for submit review button
 			if (Customer_Review == null){
 				Toast.makeText(SubmissionActivity.this, "Missing comments",Toast.LENGTH_SHORT).show();
 			}
-			else if (EndTime == null){
+			else if (!gotfood){
 				Toast.makeText(SubmissionActivity.this, "Please Click 'Got Food'",Toast.LENGTH_SHORT).show();
-			}
-			else if (RatingGroup.getCheckedRadioButtonId()==-1){
-				Toast.makeText(SubmissionActivity.this, "Please Choose Rate",Toast.LENGTH_SHORT).show();
 			}
 			else {
 				Submission s=generateFromSubView();

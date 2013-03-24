@@ -14,8 +14,30 @@ import com.parse.ParseQuery;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+<<<<<<< Updated upstream
+
 import android.text.Html;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+
+import android.hardware.SensorManager;
+
+
+=======
+>>>>>>> Stashed changes
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,12 +49,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RestaurantViewActivity extends Activity implements OnClickListener, OnItemClickListener {
+public class RestaurantViewActivity extends Activity implements OnClickListener, SensorEventListener, OnItemClickListener {
 
 	private Restaurant selectedRestaurant;
 	private ArrayAdapter<Submission> listAdapter;
-	
 	private ListView reviewsListView;
+	
+	// for shake detection
+	private SensorManager sensorManager;
+	private Sensor accelerometer;
+	private boolean sensorInitialized;
+	private boolean isHandlingShake;
+	private float lastXAxis;
+	private float lastYAxis;
+	private float lastZAxis;
+
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,19 +98,36 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		
 		
 		
+		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+		sensorInitialized = false;
+		isHandlingShake = false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onResume()
-	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
+	    sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 		if (selectedRestaurant != null) {
 			loadReviews(selectedRestaurant.getRestaurantId());
 		}
+		
 	}
+<<<<<<< Updated upstream
+=======
 
+>>>>>>> Stashed changes
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+	    sensorManager.unregisterListener(this);
+	}
+<<<<<<< Updated upstream
+	
+=======
+
+>>>>>>> Stashed changes
 	private void populateUI() {
 		
 		this.setTitle(selectedRestaurant.getName() + " Information");
@@ -225,7 +274,56 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		onClick(findViewById(R.id.lstvw_submissionSummary));
+		onClick(findViewById(R.id.lstvw_submissionSummary));	
+	}
+	
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		
+        float xAxis = event.values[0];
+        float yAxis = event.values[1];
+        float zAxis = event.values[2];
+		
+        if (!sensorInitialized) {
+        	lastXAxis = xAxis;
+        	lastYAxis = yAxis;
+        	lastZAxis = zAxis;
+        	sensorInitialized = true;
+        } else {
+        	final float Noise = 2.0f; 
+        	float deltaX = Math.abs(lastXAxis - xAxis);
+        	float deltaY = Math.abs(lastYAxis - yAxis);
+        	float deltaZ = Math.abs(lastZAxis - zAxis);
+        	if (deltaX < Noise)
+        		deltaX = 0.0f;
+        	if (deltaY < Noise)
+        		deltaY = 0.0f;
+        	if (deltaZ < Noise)
+        		deltaZ = 0.0f;
+        	lastXAxis = xAxis;
+        	lastYAxis = yAxis;
+        	lastZAxis = zAxis;
+        	
+        	boolean xShake = (deltaX > 15);
+        	boolean yShake = (deltaY > 15);
+        	boolean zShake = (deltaZ > 15);
+        	if (deltaX > 15) {
+        		Log.v("Yum", "x shake " + deltaX);
+        	}
+        	if (deltaY > 15) {
+        		Log.v("Yum", "y shake " + deltaY);
+        	}
+        	if (deltaZ > 15) {
+        		Log.v("Yum", "z shake " + deltaZ);
+        	}
+        }
+		
 		
 	}
 

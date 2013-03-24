@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -42,8 +42,8 @@
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.SubmissionActivity"
-            android:label="@string/title_activity_submission_view">
-            
+            android:label="@string/title_activity_submission_view"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.PrintRestaurantsActivity"
@@ -77,7 +77,10 @@
             android:name="com.cse5236groupthirteen.dev.PrintSubmissionsActivity"
             android:label="@string/title_activity_print_submissions" >
         </activity>
+        <activity
+            android:name="com.cse5236groupthirteen.dev.AccelormeterActivity"
+            android:label="@string/title_activity_accelormeter" >
+        </activity>
     </application>
 
-    
 </manifest>
