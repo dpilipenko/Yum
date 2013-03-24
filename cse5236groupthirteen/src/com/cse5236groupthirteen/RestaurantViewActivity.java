@@ -68,12 +68,27 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 	
 	private void populateUI() {
 		
-		TextView txtView = (TextView) findViewById(R.id.txtvw_RestaurantName);
-		txtView.append(selectedRestaurant.getName());
+		TextView txtView1 = (TextView) findViewById(R.id.txtvw_RestaurantName);
+		txtView1.setText(selectedRestaurant.getName());
+		TextView txtView2 = (TextView) findViewById(R.id.txtvw_RestaurantRating);
+		switch (calculateRestaurantRating()) {
+		case 1:
+			txtView2.setText("Recently it has been :)");
+			break;
+		case 0:
+			txtView2.setText("Recently it has been :|");
+			break;
+		case -1:
+			txtView2.setText("Recently it has been :(");
+			break;
+		case -2:
+			txtView2.setText("Recently it has been (?)");
+			break;
+		}
 		
 		
 		
-		loadReviews(selectedRestaurant.getRestaurantId());
+		
 	}
 	
 	private void loadRestaurant(String restaurantId) {
@@ -90,6 +105,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 						// id is unique and there should only be one result
 						ParseObject po = objects.get(0);
 						selectedRestaurant = new Restaurant(po);
+						loadReviews(selectedRestaurant.getRestaurantId());
 						populateUI();
 						
 					} else {
@@ -135,6 +151,35 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		}
 		
 	}
+	
+	private int calculateRestaurantRating() {
+		
+		// for now we will find the mean average of the ratings that are shown in the summary box
+		
+		double average = 0.0;
+		int count = listAdapter.getCount();
+		if (count == 0) {
+			return -2;
+		}
+		
+		for (int i = 0; i < count; i++) {
+			average += listAdapter.getItem(i).getRating();
+		}
+		average /= count;
+		
+		// return based on arbitrary bounds
+		// -1 to -1/3 is sad
+		// -1/3 to 1/3 is okay
+		// 1/3 to 1 is happy
+		if (average >= 0.333) {
+			return 1;
+		} else if (average <= -0.333) {
+			return -1;
+		} else {
+			return 0;
+		}
+		
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -157,6 +202,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 			intentSubmission.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
 			intentSubmission.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
 			startActivity(intentSubmission);
+			finish();
 			break;
 		}
 		

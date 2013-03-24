@@ -1,5 +1,6 @@
 package com.cse5236groupthirteen.utilities;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,6 +28,8 @@ public class Submission {
 	private int rating; // must be Submission.RATING_*
 	private long waittime;
 	private String comment; // cannot be NULL, if Empty assume no comments
+	
+	private Date dateCreated;
 		
 	
 	public Submission () {
@@ -40,7 +43,7 @@ public class Submission {
 		this.rating = po.getInt(S_RATING);
 		this.waittime = po.getLong(S_WAITTIME);
 		this.comment = po.getString(S_COMMENT);
-		
+		this.dateCreated = po.getCreatedAt();
 		//
 		/*
 		this.startTime = po.getDate(s_startTime);
@@ -64,6 +67,7 @@ public class Submission {
 		this.rating = RATING_HAPPY;
 		this.waittime = 0l;
 		this.comment = "FAKE - Best food ever!";
+		this.dateCreated = null;
 	}
 	
 	public String getSubmissionId() {
@@ -174,6 +178,35 @@ public class Submission {
 		return toReturn;
 	}
 	
+	private String getHowLongAgoCreatedAsAString() {
+		// TODO come up with better method name
+		if (dateCreated == null) {
+			return "";
+		} else {
+			
+			Date datenow = new Date();
+			long difference = (datenow.getTime() - this.dateCreated.getTime()) / 1000; //diff in seconds
+			
+			if (difference < 60) {
+				// return in seconds
+				return difference + " secs ago";
+			} else if (difference < 3600) {
+				// return in minutes
+				difference /= 60;
+				return difference + " mins ago";
+			} else if (difference < 86400) {
+				// return in hours
+				difference /= 3600;
+				return difference + " hrs ago";
+			} else {
+				// return in days
+				difference /= 86400;
+				return difference + " days ago";
+			}
+			
+		}
+	}
+	
 	/**
 	 * This is what gets displayed by the ListView with ArrayAdapter<Submission>
 	 */
@@ -198,7 +231,8 @@ public class Submission {
 			break;
 		}
 		
-		return "" + ratingStr + " " + this.getComment() + " " + this.getWaitTime() + " seconds wait time";
+		return "" + ratingStr + " " + this.getComment() + " " + this.getWaitTime() + " seconds wait time ("
+		+ getHowLongAgoCreatedAsAString() + ")";
 	}
 	
 }

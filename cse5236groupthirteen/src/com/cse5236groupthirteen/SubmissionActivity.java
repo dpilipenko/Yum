@@ -84,16 +84,19 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 		int r = 0;
 		int selectedId = RatingGroup.getCheckedRadioButtonId();
 		RatingButton = (RadioButton)findViewById(selectedId);
-		String rate = (String) this.RatingButton.getText();
-		if (rate=="Good"){
+		
+		switch (RatingButton.getId()) {
+		case R.id.radio0:
 			r = 1;
-		} 
-		if (rate=="Fair"){
+			break;
+		case R.id.radio1:
 			r = 0;
-		} 
-		if (rate=="Bad"){
+			break;
+		case R.id.radio2:
 			r = -1;
+			break;
 		}
+
 		return r;
 	}
 	
