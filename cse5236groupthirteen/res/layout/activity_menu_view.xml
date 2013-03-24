@@ -9,13 +9,6 @@
     android:orientation="vertical"
     tools:context=".MenuViewActivity" >
 
-    <!-- Restaraunt Name -->
-    <TextView
-        android:id="@+id/txtvw_menuView_restaurantName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    
     <!-- MenuItems List -->
 
     <ListView

@@ -16,12 +16,10 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MenuViewActivity extends Activity {
 
-	private TextView textView;
 	private ListView listview;
 	private ArrayAdapter<MenuItem> listviewAdapter;
 	
@@ -39,7 +37,6 @@ public class MenuViewActivity extends Activity {
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
 		// grab ui elements
-		textView = (TextView)findViewById(R.id.txtvw_menuView_restaurantName);
 		listview = (ListView)findViewById(R.id.lstvw_menuView_menuitemlist);
 		
 		// setup list view specifics 
@@ -57,7 +54,6 @@ public class MenuViewActivity extends Activity {
 			Log.e("Yum", errmsg);
 		}
 		
-		textView.setText("You selected: "+selectedRestaurantName);
 		this.setTitle(selectedRestaurantName + " Menu"); 
 	}
 

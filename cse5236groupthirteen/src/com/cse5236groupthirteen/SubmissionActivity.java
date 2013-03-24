@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SubmissionActivity extends Activity implements OnClickListener {
@@ -32,11 +31,6 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 
 	private String selectedRestaurantId;
 	private String selectedRestaurantName;
-	private TextView restaurant_name;
-
-	
-	
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +43,6 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 		Customer_Review = (EditText)findViewById(R.id.CustomerReview);
 		Got_Food = (Button)findViewById(R.id.GotFood);
 		Got_Food.setOnClickListener(this);
-		restaurant_name=(TextView)findViewById(R.id.restaurant_name_sub);
 		Button btnAdd= (Button)findViewById(R.id.SubmitReview);
 		btnAdd.setOnClickListener(this);
 		///
@@ -64,8 +57,7 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 			Toast.makeText(getApplicationContext(), errmsg , Toast.LENGTH_SHORT).show();
 			Log.e("Yum", errmsg);
 		}
-		restaurant_name.setText("You selected: "+selectedRestaurantName);
-		
+		this.setTitle("Submit a review for " + selectedRestaurantName);
 	}
 
 	

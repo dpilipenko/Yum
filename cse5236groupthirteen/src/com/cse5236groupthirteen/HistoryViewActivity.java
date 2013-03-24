@@ -16,12 +16,10 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class HistoryViewActivity extends Activity {
 
-	private TextView textView;
 	private ListView listview;
 	private ArrayAdapter<Submission> listviewAdapter;
 
@@ -55,7 +53,6 @@ public class HistoryViewActivity extends Activity {
 			Log.e("Yum", errmsg);
 		}
 
-		textView.setText("You selected: " + selectedRestaurantName);
 		this.setTitle(selectedRestaurantName);
 	}
 
