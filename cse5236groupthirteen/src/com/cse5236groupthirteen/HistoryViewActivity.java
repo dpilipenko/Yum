@@ -3,7 +3,6 @@ package com.cse5236groupthirteen;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cse5236groupthirteen.utilities.MenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
@@ -15,7 +14,6 @@ import com.parse.ParseQuery;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -72,6 +70,7 @@ public class HistoryViewActivity extends Activity {
 		// create query
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
 		query.whereEqualTo(Submission.S_RESTID, selectedRestaurantId);
+		query.orderByDescending("createdAt");
 		
 		// query parse
 		List<ParseObject> submissions = new ArrayList<ParseObject>();

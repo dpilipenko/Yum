@@ -17,16 +17,20 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RestaurantViewActivity extends Activity implements OnClickListener {
+public class RestaurantViewActivity extends Activity implements OnClickListener, OnItemClickListener {
 
 	private Restaurant selectedRestaurant;
 	private ArrayAdapter<Submission> listAdapter;
+	
+	private ListView reviewsListView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +40,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
-		// set up buttons
-		((Button)findViewById(R.id.btn_showRestaurantsMenu)).setOnClickListener(this);
-		((Button)findViewById(R.id.btn_showRestaurantsSubmissions)).setOnClickListener(this);
-		((Button)findViewById(R.id.InLine)).setOnClickListener(this);
-		
-		// set up reviews box
-		ListView listView = (ListView)findViewById(R.id.lstvw_submissionSummary);
-		listAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
-		listView.setAdapter(listAdapter);
-		
 		// load selected restaurant information
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
@@ -53,9 +47,20 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 			loadRestaurant(selectedRestaurantId);
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
-			Toast.makeText(getApplicationContext(), errmsg , Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT)
+					.show();
 			Log.e("Yum", errmsg);
 		}
+		
+		// set up buttons
+		((Button)findViewById(R.id.btn_showRestaurantsMenu)).setOnClickListener(this);
+		((Button)findViewById(R.id.InLine)).setOnClickListener(this);
+		
+		// set up reviews box
+		listAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
+		reviewsListView = (ListView)findViewById(R.id.lstvw_submissionSummary);
+		reviewsListView.setAdapter(listAdapter);
+		reviewsListView.setOnItemClickListener(this);
 		
 		
 		
@@ -66,6 +71,9 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 		TextView txtView = (TextView) findViewById(R.id.txtvw_RestaurantName);
 		txtView.append(selectedRestaurant.getName());
 		
+		
+		
+		loadReviews(selectedRestaurant.getRestaurantId());
 	}
 	
 	private void loadRestaurant(String restaurantId) {
@@ -101,15 +109,14 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 			
 		});
 		
-		loadReviews(restaurantId);
-		
 	}
 	
 	private void loadReviews(String restaurantId) {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
 		query.whereEqualTo(Restaurant.R_UUID, restaurantId);
-		
+		query.orderByDescending("createdAt");
+		query.setLimit(5);
 		
 		try {
 			List<ParseObject> objects = query.find();
@@ -139,7 +146,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 			intentMenu.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
 			startActivity(intentMenu);
 			break;
-		case R.id.btn_showRestaurantsSubmissions:
+		case R.id.lstvw_submissionSummary:
 			Intent intentHistory = new Intent(RestaurantViewActivity.this, HistoryViewActivity.class);
 			intentHistory.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
 			intentHistory.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
@@ -152,6 +159,12 @@ public class RestaurantViewActivity extends Activity implements OnClickListener 
 			startActivity(intentSubmission);
 			break;
 		}
+		
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		onClick(findViewById(R.id.lstvw_submissionSummary));
 		
 	}
 

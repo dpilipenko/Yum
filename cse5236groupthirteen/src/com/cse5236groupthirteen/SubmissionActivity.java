@@ -6,6 +6,7 @@ import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
 import java.util.Date;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 
 import android.os.Bundle;
@@ -24,7 +25,6 @@ import android.widget.Toast;
 public class SubmissionActivity extends Activity implements OnClickListener {
 	private EditText Customer_Review;
 	private Button Got_Food;
-	private Button Submit_Review;
 	private Date EndTime;
 	private Date startTime;
 	private RadioGroup RatingGroup;
@@ -124,7 +124,7 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 				Toast.makeText(SubmissionActivity.this, "Missing comments",Toast.LENGTH_SHORT).show();
 			}
 			else if (EndTime == null){
-				Toast.makeText(SubmissionActivity.this, "Please Click 'Got FOod'",Toast.LENGTH_SHORT).show();
+				Toast.makeText(SubmissionActivity.this, "Please Click 'Got Food'",Toast.LENGTH_SHORT).show();
 			}
 			else if (RatingGroup.getCheckedRadioButtonId()==-1){
 				Toast.makeText(SubmissionActivity.this, "Please Choose Rate",Toast.LENGTH_SHORT).show();
@@ -132,8 +132,17 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 			else {
 				Submission s=generateFromSubView();
 				ParseObject po = s.toParseObject();
-				po.saveInBackground();
+				try {
+					po.save();
+					String succ = "Submission Saved! Thank You!";
+					Toast.makeText(SubmissionActivity.this, succ, Toast.LENGTH_SHORT).show();
+				} catch (ParseException e) {
+					String errmsg = "Sorry, there was an error processing your submission. Please try again later.";
+					Toast.makeText(SubmissionActivity.this, errmsg, Toast.LENGTH_SHORT).show();
+				}
+				finish();
 			}
+			
 			break;
 		
 		}

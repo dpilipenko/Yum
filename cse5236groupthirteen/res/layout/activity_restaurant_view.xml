@@ -9,7 +9,31 @@
         android:id="@+id/txtvw_RestaurantName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selected Restaurant: " />
+        android:text="name" />
+    
+    <TextView
+        android:id="@+id/txtvw_RestaurantAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="address" />
+    
+    <TextView
+        android:id="@+id/txtvw_RestaurantPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="phonenumber" />
+    
+    <TextView
+        android:id="@+id/txtvw_RestaurantWebsite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="website" />
+    
+    <TextView
+        android:id="@+id/txtvw_RestaurantRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rating" />
 
     <Button
         android:id="@+id/btn_showRestaurantsMenu"
@@ -17,16 +41,10 @@
         android:layout_height="wrap_content"
         android:text="Show me the menu" />
 
-    <ListView
-        android:id="@+id/lstvw_submissionSummary"
-        android:layout_width="match_parent"
-        android:layout_height="200dip" />
-    
-    <Button
-        android:id="@+id/btn_showRestaurantsSubmissions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Show me all the submissions" />
+        <ListView
+            android:id="@+id/lstvw_submissionSummary"
+            android:layout_width="match_parent"
+            android:layout_height="200dip" />
     
     <Button
         android:id="@+id/InLine"
