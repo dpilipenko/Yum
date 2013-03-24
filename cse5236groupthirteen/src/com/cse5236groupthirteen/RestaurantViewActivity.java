@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-<<<<<<< Updated upstream
 
 import android.text.Html;
 
@@ -26,18 +25,12 @@ import android.hardware.SensorEventListener;
 
 import android.hardware.SensorManager;
 
-
-=======
->>>>>>> Stashed changes
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -113,21 +106,13 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		}
 		
 	}
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 	    sensorManager.unregisterListener(this);
 	}
-<<<<<<< Updated upstream
 	
-=======
-
->>>>>>> Stashed changes
 	private void populateUI() {
 		
 		this.setTitle(selectedRestaurant.getName() + " Information");
