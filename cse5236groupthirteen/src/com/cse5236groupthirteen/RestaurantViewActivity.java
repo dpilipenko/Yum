@@ -1,5 +1,6 @@
 package com.cse5236groupthirteen;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cse5236groupthirteen.utilities.ParseHelper;
@@ -66,7 +67,22 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (selectedRestaurant != null) {
+			loadReviews(selectedRestaurant.getRestaurantId());
+		}
+	}
+
+
+
 	private void populateUI() {
+		
+		this.setTitle(selectedRestaurant.getName() + " Information");
 		
 		TextView txtView1 = (TextView) findViewById(R.id.txtvw_RestaurantName);
 		txtView1.setText(selectedRestaurant.getName());
@@ -85,9 +101,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 			txtView2.setText("Recently it has been (?)");
 			break;
 		}
-		
-		
-		
 		
 	}
 	
@@ -126,6 +139,8 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		});
 		
 	}
+	
+	
 	
 	private void loadReviews(String restaurantId) {
 		
@@ -201,8 +216,8 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 			Intent intentSubmission = new Intent(RestaurantViewActivity.this, SubmissionActivity.class);
 			intentSubmission.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
 			intentSubmission.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
+			intentSubmission.putExtra("StartTime", new Date());
 			startActivity(intentSubmission);
-			finish();
 			break;
 		}
 		

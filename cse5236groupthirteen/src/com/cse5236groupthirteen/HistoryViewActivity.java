@@ -37,7 +37,6 @@ public class HistoryViewActivity extends Activity {
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 
 		// grab ui elements
-		textView = (TextView) findViewById(R.id.txtvw_histView_restaurantName);
 		listview = (ListView) findViewById(R.id.lstvw_histView_submissionsList);
 
 		// setup list view specifics
@@ -57,6 +56,7 @@ public class HistoryViewActivity extends Activity {
 		}
 
 		textView.setText("You selected: " + selectedRestaurantName);
+		this.setTitle(selectedRestaurantName);
 	}
 
 	@Override

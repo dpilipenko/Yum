@@ -9,13 +9,6 @@
     android:orientation="vertical"
     tools:context=".HistoryViewActivity" >
 
-    <!-- Restaraunt Name -->
-    <TextView
-        android:id="@+id/txtvw_histView_restaurantName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    
     <!-- MenuItems List -->
 
     <ListView

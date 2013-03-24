@@ -58,7 +58,7 @@ public class MenuViewActivity extends Activity {
 		}
 		
 		textView.setText("You selected: "+selectedRestaurantName);
-		
+		this.setTitle(selectedRestaurantName + " Menu"); 
 	}
 
 

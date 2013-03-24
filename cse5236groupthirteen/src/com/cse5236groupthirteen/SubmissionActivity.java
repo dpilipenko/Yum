@@ -53,11 +53,12 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 		Button btnAdd= (Button)findViewById(R.id.SubmitReview);
 		btnAdd.setOnClickListener(this);
 		///
-		startTime = new Date();
+		
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
 			selectedRestaurantId = b.getString(Restaurant.R_UUID);
 			selectedRestaurantName = b.getString(Restaurant.R_NAME);
+			startTime = (Date)b.get("StartTime");
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
 			Toast.makeText(getApplicationContext(), errmsg , Toast.LENGTH_SHORT).show();
