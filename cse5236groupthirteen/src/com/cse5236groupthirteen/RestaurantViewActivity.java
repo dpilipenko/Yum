@@ -124,7 +124,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		TextView txtView3 = (TextView) findViewById(R.id.txtvw_RestaurantPhoneNumber);
 		txtView3.setText(selectedRestaurant.getPhoneNumber());
 		TextView txtView4 = (TextView) findViewById(R.id.txtvw_RestaurantWebsite);
-		txtView4.setText(selectedRestaurant.getWebsite());
+		txtView4.setText(Html.fromHtml(selectedRestaurant.getWebsite()));
 		TextView txtView5 = (TextView) findViewById(R.id.txtvw_RestaurantRating);
 		switch (calculateRestaurantRating()) {
 		case 1:

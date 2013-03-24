@@ -241,7 +241,7 @@ public class Address {
 		st = this.getProvince();
 		zip = this.getPostCode();
 		
-		fullAddress = new String(num + road + cit + st + zip);
+		fullAddress = new String(num + " " + road + " " +  cit + " " +  st + " " +  zip);
 		return fullAddress;
 	}
 
