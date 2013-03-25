@@ -30,6 +30,7 @@
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.RestaurantViewActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_restaurant_view" >
         </activity>
         <activity

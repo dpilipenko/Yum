@@ -52,7 +52,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 	private SensorManager sensorManager;
 	private Sensor accelerometer;
 	private boolean sensorInitialized;
-	private boolean isHandlingShake;
 	private float lastXAxis;
 	private float lastYAxis;
 	private float lastZAxis;
@@ -94,7 +93,8 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 		sensorInitialized = false;
-		isHandlingShake = false;
+		
+		
 	}
 	
 	@Override
@@ -298,18 +298,65 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
         	boolean xShake = (deltaX > 15);
         	boolean yShake = (deltaY > 15);
         	boolean zShake = (deltaZ > 15);
-        	if (deltaX > 15) {
-        		Log.v("Yum", "x shake " + deltaX);
-        	}
-        	if (deltaY > 15) {
-        		Log.v("Yum", "y shake " + deltaY);
-        	}
-        	if (deltaZ > 15) {
-        		Log.v("Yum", "z shake " + deltaZ);
+        	String s = deltaX+"\t"+deltaY+"\t"+deltaZ;
+        	//Log.v("Yum", s);
+        	
+        	if (xShake || yShake || zShake) {
+        		
+        		handleShake();
+        		
         	}
         }
 		
-		
+	}
+	
+	private void handleShake() {
+		Log.v("yum", "Shake");
+		loadReviews(selectedRestaurant.getRestaurantId());
+		/*
+		if (semaphoreCount == -1) {
+			// load summaries from parse
+			// update visible list
+			String msg1 = "loading reviews";
+			String msg2 = "loaded the reviews";
+			Toast.makeText(this, msg1, Toast.LENGTH_SHORT).show();
+			//loadReviews(selectedRestaurant.getRestaurantId());
+			Toast.makeText(this, msg2, Toast.LENGTH_SHORT).show();
+			
+			
+			
+			
+			ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
+			query.whereEqualTo(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
+			query.orderByDescending("createdAt");
+			query.setLimit(5);
+			query.findInBackground(new FindCallback() {
+
+				@Override
+				public void done(List<ParseObject> objects, ParseException e) {
+					if (e == null) {
+						String msg = "loaded the reviews";
+						Toast.makeText(RestaurantViewActivity.this, msg, Toast.LENGTH_SHORT).show();
+						listAdapter.notifyDataSetInvalidated();
+						listAdapter.clear();
+						for (ParseObject po: objects) {
+							Submission s = new Submission(po);
+							listAdapter.add(s);
+						}
+						listAdapter.notifyDataSetChanged();
+					} else {
+						//err
+					}
+					
+				}
+				
+			});
+			
+			
+			
+			
+		}
+		*/
 	}
 
 
