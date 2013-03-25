@@ -21,6 +21,8 @@
         android:id="@+id/txtvw_RestaurantPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:phoneNumber="true"
+        android:autoLink="phone"
         android:text="phonenumber" />
     
     <TextView
