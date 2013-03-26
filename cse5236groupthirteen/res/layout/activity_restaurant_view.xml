@@ -9,13 +9,15 @@
         android:id="@+id/txtvw_RestaurantName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="name" />
+        android:text="name"
+        style="@android:style/TextAppearance.Large" />
     
     <TextView
         android:id="@+id/txtvw_RestaurantAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="address" />
+        android:text="address"
+        style="@android:style/TextAppearance.Medium" />
     
     <TextView
         android:id="@+id/txtvw_RestaurantPhoneNumber"
@@ -43,6 +45,7 @@
         android:id="@+id/btn_showRestaurantsMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:text="Show me the menu" />
 
         <ListView

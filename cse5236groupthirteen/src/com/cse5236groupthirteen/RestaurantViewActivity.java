@@ -3,6 +3,7 @@ package com.cse5236groupthirteen;
 import java.util.Date;
 import java.util.List;
 
+import com.cse5236groupthirteen.utilities.MenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
@@ -28,12 +29,6 @@ import android.hardware.SensorEventListener;
 
 import android.hardware.SensorManager;
 
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
-import android.hardware.SensorManager;
-
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,6 +46,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 	private ArrayAdapter<Submission> listAdapter;
 	private ListView reviewsListView;
 	private TextView restaurantAddressTextView;
+	private Button menuButton;
 	
 	// for shake detection
 	private SensorManager sensorManager;
@@ -70,6 +66,15 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
+		// set up buttons
+		menuButton = (Button)findViewById(R.id.btn_showRestaurantsMenu);
+		menuButton.setOnClickListener(this);
+		((Button)findViewById(R.id.InLine)).setOnClickListener(this);
+
+		restaurantAddressTextView = (TextView)findViewById(R.id.txtvw_RestaurantAddress);
+		restaurantAddressTextView.setOnClickListener(this);
+
+				
 		// load selected restaurant information
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
@@ -82,12 +87,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 			Log.e("Yum", errmsg);
 		}
 		
-		restaurantAddressTextView = (TextView)findViewById(R.id.txtvw_RestaurantAddress);
-		restaurantAddressTextView.setOnClickListener(this);
 		
-		// set up buttons
-		((Button)findViewById(R.id.btn_showRestaurantsMenu)).setOnClickListener(this);
-		((Button)findViewById(R.id.InLine)).setOnClickListener(this);
 		
 		// set up reviews box
 		listAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
@@ -100,7 +100,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 		sensorInitialized = false;
-		
 		
 	}
 	
@@ -147,9 +146,34 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 			txtView5.setText("Recently it has been (?)");
 			break;
 		}
-		
+		if (doesRestaurantHaveMenu(selectedRestaurant.getRestaurantId())) {
+			findViewById(R.id.btn_showRestaurantsMenu).setEnabled(true);
+		} else {
+			findViewById(R.id.btn_showRestaurantsMenu).setEnabled(false);
+		}
 	}
 	
+	private boolean doesRestaurantHaveMenu(String restaurantId) {
+		
+		ParseQuery query = new ParseQuery(ParseHelper.CLASS_MENUITEMS);
+		query.whereEqualTo(MenuItem.MI_RESTID, restaurantId);
+		try {
+			int count = query.count();
+			if (count > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (ParseException e) {
+			// error occurred
+			String errmsg = "There was an error loading data from Parse";
+			Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT).show();
+			Log.e("Yum", errmsg, e);
+			return false;
+		}
+		
+	}
+
 	private void loadRestaurant(String restaurantId) {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
@@ -243,7 +267,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		switch (v.getId()) {
 		
 		case R.id.txtvw_RestaurantAddress:
-			Toast.makeText(this, "Hi", Toast.LENGTH_SHORT).show();
 			launchGoogleMapsOnAddress();
 			break;		
 		case R.id.btn_showRestaurantsMenu:
@@ -273,12 +296,9 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		String strAddress = selectedRestaurant.getFullAddress();
 		Geocoder coder = new Geocoder(this);
 		List<android.location.Address> addresses;
-		GeoPoint p1;
 		try {
-
-			strAddress = strAddress.replace("Fake Province", "Ohio");
 			strAddress = strAddress.replace(' ', '+');
-		    addresses = coder.getFromLocationName(strAddress,5);
+		    addresses = coder.getFromLocationName(strAddress,1);
 		    if (addresses == null) {
 		    	Toast.makeText(this, "addresses null", Toast.LENGTH_LONG).show();
 		        return;
@@ -290,10 +310,9 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		    android.location.Address location = addresses.get(0);
 		    double latitude = location.getLatitude();
 		    double longitude = location.getLongitude();
-
-		    String geo = "geo:"+latitude+","+longitude+"?q="+latitude+","+longitude+"(Label+Name)";
-		    geo = "geo:"+latitude+","+longitude+"?q="+latitude+","+longitude;
-		    geo = "geo:"+ latitude + "," + longitude; 
+		    
+		    String lbl = selectedRestaurant.getName().replace(' ', '+');
+		    String geo = "geo:"+latitude+","+longitude+"?q="+latitude+","+longitude+"("+lbl+")";
 		    
 		    Intent intent = new Intent(Intent.ACTION_VIEW, 
 		    		Uri.parse(geo));
@@ -315,7 +334,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 	
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -350,7 +369,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
         	boolean yShake = (deltaY > 15);
         	boolean zShake = (deltaZ > 15);
         	String s = deltaX+"\t"+deltaY+"\t"+deltaZ;
-        	//Log.v("Yum", s);
         	
         	if (xShake || yShake || zShake) {
         		
@@ -362,52 +380,9 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 	}
 	
 	private void handleShake() {
-		Log.v("yum", "Shake");
 		loadReviews(selectedRestaurant.getRestaurantId());
-		/*
-		if (semaphoreCount == -1) {
-			// load summaries from parse
-			// update visible list
-			String msg1 = "loading reviews";
-			String msg2 = "loaded the reviews";
-			Toast.makeText(this, msg1, Toast.LENGTH_SHORT).show();
-			//loadReviews(selectedRestaurant.getRestaurantId());
-			Toast.makeText(this, msg2, Toast.LENGTH_SHORT).show();
-			
-			
-			
-			
-			ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
-			query.whereEqualTo(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
-			query.orderByDescending("createdAt");
-			query.setLimit(5);
-			query.findInBackground(new FindCallback() {
-
-				@Override
-				public void done(List<ParseObject> objects, ParseException e) {
-					if (e == null) {
-						String msg = "loaded the reviews";
-						Toast.makeText(RestaurantViewActivity.this, msg, Toast.LENGTH_SHORT).show();
-						listAdapter.notifyDataSetInvalidated();
-						listAdapter.clear();
-						for (ParseObject po: objects) {
-							Submission s = new Submission(po);
-							listAdapter.add(s);
-						}
-						listAdapter.notifyDataSetChanged();
-					} else {
-						//err
-					}
-					
-				}
-				
-			});
-			
-			
-			
-			
-		}
-		*/
+		String msg = "refreshing reviews";
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 
 
