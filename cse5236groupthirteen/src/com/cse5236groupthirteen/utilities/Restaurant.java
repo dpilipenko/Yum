@@ -50,7 +50,7 @@ public class Restaurant {
 		a.setStreetName(po.getString(R_ADDR_STREETNAME));
 		a.setCity(po.getString(R_ADDR_CITY));
 		a.setPostCode(po.getString(R_ADDR_POSTCODE));
-		
+		a.setProvince(po.getString(R_ADDR_PROVINCE));
 		
 		this.restaurantID = po.getString(R_UUID);
 		this.name = po.getString(R_NAME);
