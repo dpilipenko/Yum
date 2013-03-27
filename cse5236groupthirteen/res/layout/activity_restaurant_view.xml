@@ -3,19 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/redstripe_hunger_background"
     tools:context=".RestaurantViewActivity" >
 
     <TextView
         android:id="@+id/txtvw_RestaurantName"
+        style="@android:style/TextAppearance.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="name"
-        style="@android:style/TextAppearance.Large" />
+        android:textColor="@color/black" />
     
     <TextView
         android:id="@+id/txtvw_RestaurantAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+		android:autoLink="map"
         android:text="address"
         style="@android:style/TextAppearance.Medium" />
     

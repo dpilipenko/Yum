@@ -7,15 +7,12 @@ import com.cse5236groupthirteen.utilities.MenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
-import com.google.android.maps.GeoPoint;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import android.location.Geocoder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -265,10 +262,7 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 	public void onClick(View v) {
 		
 		switch (v.getId()) {
-		
-		case R.id.txtvw_RestaurantAddress:
-			launchGoogleMapsOnAddress();
-			break;		
+	
 		case R.id.btn_showRestaurantsMenu:
 			Intent intentMenu = new Intent(RestaurantViewActivity.this, MenuViewActivity.class);
 			intentMenu.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
@@ -292,40 +286,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		
 	}
 
-	private void launchGoogleMapsOnAddress() {
-		String strAddress = selectedRestaurant.getFullAddress();
-		Geocoder coder = new Geocoder(this);
-		List<android.location.Address> addresses;
-		try {
-			strAddress = strAddress.replace(' ', '+');
-		    addresses = coder.getFromLocationName(strAddress,1);
-		    if (addresses == null) {
-		    	Toast.makeText(this, "addresses null", Toast.LENGTH_LONG).show();
-		        return;
-		    }
-		    if (addresses.isEmpty()) {
-		    	Toast.makeText(this, "addresses empty", Toast.LENGTH_LONG).show();
-		    	return;
-		    }
-		    android.location.Address location = addresses.get(0);
-		    double latitude = location.getLatitude();
-		    double longitude = location.getLongitude();
-		    
-		    String lbl = selectedRestaurant.getName().replace(' ', '+');
-		    String geo = "geo:"+latitude+","+longitude+"?q="+latitude+","+longitude+"("+lbl+")";
-		    
-		    Intent intent = new Intent(Intent.ACTION_VIEW, 
-		    		Uri.parse(geo));
-		    startActivity(intent);
-		    
-		    return;
-		} catch (Exception e) {
-			Toast.makeText(this, "failed to find address", Toast.LENGTH_LONG).show();
-			e.printStackTrace();
-			return;
-		}
-		
-	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
