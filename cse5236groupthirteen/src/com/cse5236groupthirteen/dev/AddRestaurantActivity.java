@@ -22,10 +22,10 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		// create UI
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_restaurant);
+		setContentView(R.layout.dev_add_restaurant);
 		// grab UI references
-		Button btnAddRestaraunt = (Button)findViewById(R.id.btn_addRestaurant_Add);		
-		Button btnFillRestarauntInfo = (Button)findViewById(R.id.btn_addRestaurant_FillUI);
+		Button btnAddRestaraunt = (Button)findViewById(R.id.btn_addrestaurant_saverestauranttoparse);		
+		Button btnFillRestarauntInfo = (Button)findViewById(R.id.btn_addrestaurant_fillinui);
 		// setup OnClick listeners
 		btnAddRestaraunt.setOnClickListener(this);
 		btnFillRestarauntInfo.setOnClickListener(this);
@@ -39,14 +39,14 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		
 		switch(v.getId()) {
-		case R.id.btn_addRestaurant_Add:
+		case R.id.btn_addrestaurant_saverestauranttoparse:
 			Restaurant r = generateRestaurantFromUI();
 			ParseObject po = r.toParseObject();
 			po.saveInBackground();
 			clearUI();
 			
 		break;
-		case R.id.btn_addRestaurant_FillUI:
+		case R.id.btn_addrestaurant_fillinui:
 			populateUI();
 			break;
 		}
@@ -54,34 +54,34 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 	}
 	
 	private void clearUI() {
-		((EditText)findViewById(R.id.et_addRestaurant_restaurantName)).setText("");
-		((EditText)findViewById(R.id.et_addRestaurant_city)).setText("");
-		((EditText)findViewById(R.id.et_addRestaurant_postalcode)).setText("");
-		((EditText)findViewById(R.id.et_addRestaurant_province)).setText("");
-		((EditText)findViewById(R.id.et_addRestaurant_streetname)).setText("");
-		((EditText)findViewById(R.id.et_addRestaurant_streetnumber)).setText("");
-		((EditText)findViewById(R.id.et_addRestaurant_phonenumber)).setText("");
+		((EditText)findViewById(R.id.et_addrestaurant_name)).setText("");
+		((EditText)findViewById(R.id.et_addrestaurant_city)).setText("");
+		((EditText)findViewById(R.id.et_addrestaurant_postalcode)).setText("");
+		((EditText)findViewById(R.id.et_addrestaurant_province)).setText("");
+		((EditText)findViewById(R.id.et_addrestaurant_streetname)).setText("");
+		((EditText)findViewById(R.id.et_addrestaurant_streetnumber)).setText("");
+		((EditText)findViewById(R.id.et_addrestaurant_phonenumber)).setText("");
 	}
 	
 	private void populateUI() {
-		((EditText)findViewById(R.id.et_addRestaurant_restaurantName)).setText("Wendy's");
-		((EditText)findViewById(R.id.et_addRestaurant_city)).setText("Columbus");
-		((EditText)findViewById(R.id.et_addRestaurant_postalcode)).setText("43212");
-		((EditText)findViewById(R.id.et_addRestaurant_province)).setText("Ohio");
-		((EditText)findViewById(R.id.et_addRestaurant_streetname)).setText("Olentangy River Rd");
-		((EditText)findViewById(R.id.et_addRestaurant_streetnumber)).setText("1483");
-		((EditText)findViewById(R.id.et_addRestaurant_phonenumber)).setText("+16144211277");
+		((EditText)findViewById(R.id.et_addrestaurant_name)).setText("Wendy's");
+		((EditText)findViewById(R.id.et_addrestaurant_city)).setText("Columbus");
+		((EditText)findViewById(R.id.et_addrestaurant_postalcode)).setText("43212");
+		((EditText)findViewById(R.id.et_addrestaurant_province)).setText("Ohio");
+		((EditText)findViewById(R.id.et_addrestaurant_streetname)).setText("Olentangy River Rd");
+		((EditText)findViewById(R.id.et_addrestaurant_streetnumber)).setText("1483");
+		((EditText)findViewById(R.id.et_addrestaurant_phonenumber)).setText("16144211277");
 	}
 	
 	private Restaurant generateRestaurantFromUI() {
 		
-		String resName = ((EditText)findViewById(R.id.et_addRestaurant_restaurantName)).getText().toString();
-		String city = ((EditText)findViewById(R.id.et_addRestaurant_city)).getText().toString();
-		String postcode = ((EditText)findViewById(R.id.et_addRestaurant_postalcode)).getText().toString();
-		String province = ((EditText)findViewById(R.id.et_addRestaurant_province)).getText().toString();
-		String streetName = ((EditText)findViewById(R.id.et_addRestaurant_streetname)).getText().toString();
-		String streetNumber = ((EditText)findViewById(R.id.et_addRestaurant_streetnumber)).getText().toString();
-		String phoneNumber = ((EditText)findViewById(R.id.et_addRestaurant_phonenumber)).getText().toString();
+		String resName = ((EditText)findViewById(R.id.et_addrestaurant_name)).getText().toString();
+		String city = ((EditText)findViewById(R.id.et_addrestaurant_city)).getText().toString();
+		String postcode = ((EditText)findViewById(R.id.et_addrestaurant_postalcode)).getText().toString();
+		String province = ((EditText)findViewById(R.id.et_addrestaurant_province)).getText().toString();
+		String streetName = ((EditText)findViewById(R.id.et_addrestaurant_streetname)).getText().toString();
+		String streetNumber = ((EditText)findViewById(R.id.et_addrestaurant_streetnumber)).getText().toString();
+		String phoneNumber = "+"+((EditText)findViewById(R.id.et_addrestaurant_phonenumber)).getText().toString();
 		
 		Address a = new Address(streetNumber, streetName, city, postcode, province);
 		

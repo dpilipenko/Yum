@@ -32,7 +32,7 @@ public class UpdateRestaurantGeoLocationsActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_update_restaurant_geo_locations);
+		setContentView(R.layout.dev_update_restaurantgeolocations);
 		Parse.initialize(this, ParseHelper.APPLICATION_ID,
 				ParseHelper.CLIENT_KEY);
 

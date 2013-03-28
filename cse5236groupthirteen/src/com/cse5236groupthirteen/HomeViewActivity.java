@@ -2,7 +2,6 @@ package com.cse5236groupthirteen;
 
 import java.util.List;
 
-import com.cse5236groupthirteen.dev.DevActivity;
 import com.cse5236groupthirteen.utilities.LocalRestaurant;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
@@ -17,8 +16,6 @@ import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,9 +23,10 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-public class HomeViewActivity extends YumActivity {
+public class HomeViewActivity extends YumViewActivity {
 
 	private ListView listView;
+	
 	private ArrayAdapter<Restaurant> listAdapter;
 	
 	
@@ -38,7 +36,7 @@ public class HomeViewActivity extends YumActivity {
 		setContentView(R.layout.activity_home_view);
 		
 		// grab UI elements
-		listView = (ListView) findViewById(R.id.lstvw_homeView);
+		listView = (ListView) findViewById(R.id.lstvw_homeView_restaurants);
 		
 		// setup ListView stuff
 		listAdapter = new ArrayAdapter<Restaurant>(this, android.R.layout.simple_list_item_1);
@@ -63,18 +61,6 @@ public class HomeViewActivity extends YumActivity {
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		
-		MenuItem menuDevPage = menu.add("Dev Page");
-		Intent intentDevPage = new Intent(this, DevActivity.class);
-		menuDevPage.setIntent(intentDevPage);
-		
-		return true;
-	}
-	
-	
-	@Override
 	protected void onResume() {
 		super.onResume();
 		loadDataFromParse();
@@ -83,7 +69,7 @@ public class HomeViewActivity extends YumActivity {
 	private void loadDataFromParse() {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
-		query.whereExists("objectId"); // all Parse objects contain this key, so it should return all stored Restaurants
+		query.whereExists(Restaurant.R_UUID);
 		query.whereNear(Restaurant.R_GEOLOC, YumHelper.getLastBestLocationForParse(this));
 		query.findInBackground(new FindCallback() {
 

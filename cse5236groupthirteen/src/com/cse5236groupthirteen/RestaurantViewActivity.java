@@ -7,24 +7,17 @@ import com.cse5236groupthirteen.utilities.MenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
+import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
-import android.content.Context;
 import android.content.Intent;
 
 import android.text.Html;
 
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-
-import android.hardware.SensorManager;
-
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -35,33 +28,32 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RestaurantViewActivity extends YumActivity implements OnClickListener, SensorEventListener, OnItemClickListener {
+public class RestaurantViewActivity extends YumViewActivity implements OnClickListener, OnItemClickListener {
 
+	private TextView txtvw_restaurantName;
+	private TextView txtvw_restaurantAddress;
+	private TextView txtvw_restaurantPhone;
+	private TextView txtvw_restaurantWebsite;
+	private TextView txtvw_restaurantRating;
+	private Button btn_callMenuViewActivity;
+	private ListView lstvw_recentSubmissions;
+	private Button btn_callSubmissionViewActivity;
+	
 	private Restaurant selectedRestaurant;
+	
 	private ArrayAdapter<Submission> listAdapter;
-	private ListView reviewsListView;
-	private Button menuButton;
-	
-	// for shake detection
-	private SensorManager sensorManager;
-	private Sensor accelerometer;
-	private boolean sensorInitialized;
-	private float lastXAxis;
-	private float lastYAxis;
-	private float lastZAxis;
-
-
-	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant_view);
 		
 		// set up buttons
-		menuButton = (Button)findViewById(R.id.btn_showRestaurantsMenu);
-		menuButton.setOnClickListener(this);
-		((Button)findViewById(R.id.InLine)).setOnClickListener(this);
-
+		btn_callMenuViewActivity = (Button)findViewById(R.id.btn_restview_callmenuviewactivity);
+		btn_callMenuViewActivity.setOnClickListener(this);
+		
+		btn_callSubmissionViewActivity = (Button)findViewById(R.id.btn_restview_callsubmissionviewactivity);
+		btn_callSubmissionViewActivity.setOnClickListener(this);
 				
 		// load selected restaurant information
 		Bundle b = getIntent().getExtras();
@@ -70,74 +62,67 @@ public class RestaurantViewActivity extends YumActivity implements OnClickListen
 			loadRestaurant(selectedRestaurantId);
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
-			Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT)
-					.show();
-			Log.e("Yum", errmsg);
+			YumHelper.handleError(this, errmsg);
 		}
-		
-		
 		
 		// set up reviews box
 		listAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
-		reviewsListView = (ListView)findViewById(R.id.lstvw_submissionSummary);
-		reviewsListView.setAdapter(listAdapter);
-		reviewsListView.setOnItemClickListener(this);
-		
-		
-		
-		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-		sensorInitialized = false;
-		
+		lstvw_recentSubmissions = (ListView)findViewById(R.id.lstvw_restview_submissionsummary);
+		lstvw_recentSubmissions.setAdapter(listAdapter);
+		lstvw_recentSubmissions.setOnItemClickListener(this);
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-	    sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 		if (selectedRestaurant != null) {
-			loadReviews(selectedRestaurant.getRestaurantId());
+			loadSubmissions(selectedRestaurant.getRestaurantId());
 		}
-		
 	}
 	
 	@Override
-	protected void onPause() {
-		super.onPause();
-	    sensorManager.unregisterListener(this);
+	public void onShake() {
+		loadSubmissions(selectedRestaurant.getRestaurantId());
+		String msg = "Refreshing Reviews";
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 	
 	private void populateUI() {
 		
 		this.setTitle(selectedRestaurant.getName() + " Information");
 		
-		TextView txtView1 = (TextView) findViewById(R.id.txtvw_RestaurantName);
-		txtView1.setText(selectedRestaurant.getName());
-		TextView txtView2 = (TextView) findViewById(R.id.txtvw_RestaurantAddress);
-		txtView2.setText(selectedRestaurant.getFullAddress());
-		TextView txtView3 = (TextView) findViewById(R.id.txtvw_RestaurantPhoneNumber);
-		txtView3.setText(selectedRestaurant.getPhoneNumber());
-		TextView txtView4 = (TextView) findViewById(R.id.txtvw_RestaurantWebsite);
-		txtView4.setText(Html.fromHtml(selectedRestaurant.getWebsite()));
-		TextView txtView5 = (TextView) findViewById(R.id.txtvw_RestaurantRating);
+		txtvw_restaurantName = (TextView) findViewById(R.id.txtvw_restview_restaurantname);
+		txtvw_restaurantName.setText(selectedRestaurant.getName());
+		
+		txtvw_restaurantAddress = (TextView) findViewById(R.id.txtvw_restview_restaurantaddress);
+		txtvw_restaurantAddress.setText(selectedRestaurant.getFullAddress());
+		
+		txtvw_restaurantPhone = (TextView) findViewById(R.id.txtvw_restview_restaurantphonenumber);
+		txtvw_restaurantPhone.setText(selectedRestaurant.getPhoneNumber());
+		
+		txtvw_restaurantWebsite = (TextView) findViewById(R.id.txtvw_restview_restaurantwebsite);
+		txtvw_restaurantWebsite.setText(Html.fromHtml(selectedRestaurant.getWebsite()));
+		
+		txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
 		switch (calculateRestaurantRating()) {
 		case 1:
-			txtView5.setText("Recently it has been :)");
+			txtvw_restaurantRating.setText("Recently it has been :)");
 			break;
 		case 0:
-			txtView5.setText("Recently it has been :|");
+			txtvw_restaurantRating.setText("Recently it has been :|");
 			break;
 		case -1:
-			txtView5.setText("Recently it has been :(");
+			txtvw_restaurantRating.setText("Recently it has been :(");
 			break;
 		case -2:
-			txtView5.setText("Recently it has been (?)");
+			txtvw_restaurantRating.setText("Recently it has been (?)");
 			break;
 		}
+		
 		if (doesRestaurantHaveMenu(selectedRestaurant.getRestaurantId())) {
-			findViewById(R.id.btn_showRestaurantsMenu).setEnabled(true);
+			btn_callMenuViewActivity.setEnabled(true);
 		} else {
-			findViewById(R.id.btn_showRestaurantsMenu).setEnabled(false);
+			btn_callMenuViewActivity.setEnabled(false);
 		}
 	}
 	
@@ -155,8 +140,7 @@ public class RestaurantViewActivity extends YumActivity implements OnClickListen
 		} catch (ParseException e) {
 			// error occurred
 			String errmsg = "There was an error loading data from Parse";
-			Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT).show();
-			Log.e("Yum", errmsg, e);
+			YumHelper.handleException(this, e, errmsg);
 			return false;
 		}
 		
@@ -175,18 +159,15 @@ public class RestaurantViewActivity extends YumActivity implements OnClickListen
 						// id is unique and there should only be one result
 						ParseObject po = objects.get(0);
 						selectedRestaurant = new Restaurant(po);
-						loadReviews(selectedRestaurant.getRestaurantId());
+						loadSubmissions(selectedRestaurant.getRestaurantId());
 						populateUI();
 					} else {
 						String errmsg = "Parse returned multiple objects";
-						Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT).show();
-						Log.e("Yum", errmsg, e);
+						YumHelper.handleException(getParent(), e, errmsg);
 					}
 				} else {
-					// error occurred
 					String errmsg = "There was an error loading data from Parse";
-					Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT).show();
-					Log.e("Yum", errmsg, e);
+					YumHelper.handleException(getParent(), e, errmsg);
 				}
 				
 			}
@@ -195,10 +176,10 @@ public class RestaurantViewActivity extends YumActivity implements OnClickListen
 		
 	}
 
-	private void loadReviews(String restaurantId) {
+	private void loadSubmissions(String restaurantId) {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
-		query.whereEqualTo(Restaurant.R_UUID, restaurantId);
+		query.whereEqualTo(Submission.S_RESTID, restaurantId);
 		query.orderByDescending("createdAt");
 		query.setLimit(5);
 		
@@ -214,8 +195,7 @@ public class RestaurantViewActivity extends YumActivity implements OnClickListen
 		} catch (ParseException e1) {
 			// error occurred
 			String errmsg = "There was an error loading data from Parse";
-			Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT).show();
-			Log.e("Yum", errmsg, e1);
+			YumHelper.handleException(getParent(), e1, errmsg);
 		}
 		
 	}
@@ -239,6 +219,7 @@ public class RestaurantViewActivity extends YumActivity implements OnClickListen
 		// -1 to -1/3 is sad
 		// -1/3 to 1/3 is okay
 		// 1/3 to 1 is happy
+		
 		if (average >= 0.333) {
 			return 1;
 		} else if (average <= -0.333) {
@@ -254,20 +235,20 @@ public class RestaurantViewActivity extends YumActivity implements OnClickListen
 		
 		switch (v.getId()) {
 	
-		case R.id.btn_showRestaurantsMenu:
+		case R.id.btn_restview_callmenuviewactivity:
 			Intent intentMenu = new Intent(RestaurantViewActivity.this, MenuViewActivity.class);
 			intentMenu.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
 			intentMenu.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
 			startActivity(intentMenu);
 			break;
-		case R.id.lstvw_submissionSummary:
+		case R.id.lstvw_restview_submissionsummary:
 			Intent intentHistory = new Intent(RestaurantViewActivity.this, HistoryViewActivity.class);
 			intentHistory.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
 			intentHistory.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
 			startActivity(intentHistory);
 			break;
-		case R.id.InLine:
-			Intent intentSubmission = new Intent(RestaurantViewActivity.this, SubmissionActivity.class);
+		case R.id.btn_restview_callsubmissionviewactivity:
+			Intent intentSubmission = new Intent(RestaurantViewActivity.this, SubmissionViewActivity.class);
 			intentSubmission.putExtra(Restaurant.R_UUID, selectedRestaurant.getRestaurantId());
 			intentSubmission.putExtra(Restaurant.R_NAME, selectedRestaurant.getName());
 			intentSubmission.putExtra("StartTime", new Date());
@@ -280,60 +261,9 @@ public class RestaurantViewActivity extends YumActivity implements OnClickListen
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		onClick(findViewById(R.id.lstvw_submissionSummary));	
+		onClick(findViewById(R.id.lstvw_restview_submissionsummary));	
 	}
 	
-	@Override
-	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		
-		
-	}
-
-	@Override
-	public void onSensorChanged(SensorEvent event) {
-		
-        float xAxis = event.values[0];
-        float yAxis = event.values[1];
-        float zAxis = event.values[2];
-		
-        if (!sensorInitialized) {
-        	lastXAxis = xAxis;
-        	lastYAxis = yAxis;
-        	lastZAxis = zAxis;
-        	sensorInitialized = true;
-        } else {
-        	final float Noise = 2.0f; 
-        	float deltaX = Math.abs(lastXAxis - xAxis);
-        	float deltaY = Math.abs(lastYAxis - yAxis);
-        	float deltaZ = Math.abs(lastZAxis - zAxis);
-        	if (deltaX < Noise)
-        		deltaX = 0.0f;
-        	if (deltaY < Noise)
-        		deltaY = 0.0f;
-        	if (deltaZ < Noise)
-        		deltaZ = 0.0f;
-        	lastXAxis = xAxis;
-        	lastYAxis = yAxis;
-        	lastZAxis = zAxis;
-        	
-        	boolean xShake = (deltaX > 15);
-        	boolean yShake = (deltaY > 15);
-        	boolean zShake = (deltaZ > 15);
-        	
-        	if (xShake || yShake || zShake) {
-        		
-        		handleShake();
-        		
-        	}
-        }
-		
-	}
 	
-	private void handleShake() {
-		loadReviews(selectedRestaurant.getRestaurantId());
-		String msg = "refreshing reviews";
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-	}
-
 
 }

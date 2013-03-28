@@ -18,12 +18,25 @@ import android.content.Context;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.parse.ParseGeoPoint;
 
 public class YumHelper {
 
+	public static void handleError(Context context, String errmsg) {
+		Toast.makeText(context, errmsg, Toast.LENGTH_LONG).show();
+		Log.e("Yum Exception!", errmsg);
+	}
+	
+	public static void handleException(Context context, Exception e, String errmsg) {
+		Toast.makeText(context, "(e) "+errmsg, Toast.LENGTH_LONG).show();
+		Log.e("Yum Exception!", errmsg);
+		Log.e("Yum Exception!", e.toString());
+	}
+	
 	public static Location getLastBestLocation(Context context) {
 		LocationManager lm = (LocationManager) context
 				.getSystemService(Context.LOCATION_SERVICE);

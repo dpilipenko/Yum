@@ -2,65 +2,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/redstripe_hunger_background"
+    android:orientation="vertical"
     tools:context=".RestaurantViewActivity" >
 
     <TextView
-        android:id="@+id/txtvw_RestaurantName"
+        android:id="@+id/txtvw_restview_restaurantname"
         style="@android:style/TextAppearance.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="name"
         android:textColor="@color/black" />
-    
+
     <TextView
-        android:id="@+id/txtvw_RestaurantAddress"
+        android:id="@+id/txtvw_restview_restaurantaddress"
+        style="@android:style/TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-		android:autoLink="map"
-        android:text="address"
-        style="@android:style/TextAppearance.Medium" />
-    
+        android:autoLink="map"
+        android:text="address" />
+
     <TextView
-        android:id="@+id/txtvw_RestaurantPhoneNumber"
+        android:id="@+id/txtvw_restview_restaurantphonenumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:phoneNumber="true"
         android:autoLink="phone"
+        android:phoneNumber="true"
         android:text="phonenumber" />
-    
+
     <TextView
-        android:id="@+id/txtvw_RestaurantWebsite"
+        android:id="@+id/txtvw_restview_restaurantwebsite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:linksClickable="true"
         android:autoLink="web"
+        android:linksClickable="true"
         android:text="website" />
-    
+
     <TextView
-        android:id="@+id/txtvw_RestaurantRating"
+        android:id="@+id/txtvw_restview_restaurantrating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="rating" />
 
     <Button
-        android:id="@+id/btn_showRestaurantsMenu"
+        android:id="@+id/btn_restview_callmenuviewactivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
         android:text="Show me the menu" />
 
-        <ListView
-            android:id="@+id/lstvw_submissionSummary"
-            android:layout_width="match_parent"
-            android:layout_height="200dip" 
-            android:background="@drawable/splashimage"
-            android:cacheColorHint="#00000000"
-            android:listSelector="#00000000"/>
-    
+    <ListView
+        android:id="@+id/lstvw_restview_submissionsummary"
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:background="@drawable/splashimage"
+        android:cacheColorHint="#00000000"
+        android:listSelector="#00000000" />
+
     <Button
-        android:id="@+id/InLine"
+        android:id="@+id/btn_restview_callsubmissionviewactivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="I&apos;m in Line!" />

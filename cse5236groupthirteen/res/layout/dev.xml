@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context=".DevActivity" >
+
+    <Button
+        android:id="@+id/btn_callAddRestaurantActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Add a Restaurant" />
+    <Button
+        android:id="@+id/btn_callAddMenuActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Add a Menu" 
+        />
+    <Button
+        android:id="@+id/btn_callAddSubmissionActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Add a Submission"
+        />
+    <Button
+        android:id="@+id/btn_callPrintRestaurantsActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Print Restaurants" />
+    <Button 
+        android:id="@+id/btn_callPrintMenuItemsActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Print MenuItems"
+        />
+    <Button
+        android:id="@+id/btn_callPrintSubmissionsActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Print Submissions"
+        />
+    <Button
+        android:id="@+id/btn_callUpdateGeoLocationsActivity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Update GeoLocations"
+        />
+    <Button
+        android:id="@+id/btn_gotoHomeView"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Go To HomeView" />
+    
+
+</LinearLayout>

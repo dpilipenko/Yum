@@ -37,7 +37,7 @@ public class AddMenuActivity extends Activity implements OnClickListener, OnItem
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_menu);
+		setContentView(R.layout.dev_add_menu);
 		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 				
@@ -46,7 +46,7 @@ public class AddMenuActivity extends Activity implements OnClickListener, OnItem
 		addButton = (Button) findViewById(R.id.btn_addMenu_submit);
 		
 		// setup spinner specifics
-		listAdapter = new ArrayAdapter<Restaurant>(this, android.R.layout.simple_list_item_1);
+		listAdapter = new ArrayAdapter<Restaurant>(this, android.R.layout.simple_spinner_item);
 		spinner.setAdapter(listAdapter);
 		
 		// set up listeners

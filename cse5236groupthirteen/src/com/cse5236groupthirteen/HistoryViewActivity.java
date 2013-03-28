@@ -6,19 +6,20 @@ import java.util.List;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
+import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class HistoryViewActivity extends YumActivity {
+public class HistoryViewActivity extends YumViewActivity {
 
 	private ListView listview;
+	
 	private ArrayAdapter<Submission> listviewAdapter;
 
 	private String selectedRestaurantId;
@@ -33,16 +34,13 @@ public class HistoryViewActivity extends YumActivity {
 		listview = (ListView) findViewById(R.id.lstvw_histView_submissionsList);
 		listview.setAdapter(listviewAdapter);
 
-		
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
 			selectedRestaurantId = b.getString(Restaurant.R_UUID);
 			selectedRestaurantName = b.getString(Restaurant.R_NAME);
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
-			Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT)
-					.show();
-			Log.e("Yum", errmsg);
+			YumHelper.handleError(this, errmsg);
 		}
 
 		this.setTitle(selectedRestaurantName);
@@ -51,6 +49,13 @@ public class HistoryViewActivity extends YumActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		updateSubmissionsList();
+	}
+	
+	
+	@Override
+	public void onShake() {
+		Toast.makeText(this, "Updating Submissions", Toast.LENGTH_SHORT).show();
 		updateSubmissionsList();
 	}
 
@@ -64,7 +69,8 @@ public class HistoryViewActivity extends YumActivity {
 		try {
 			submissions = query.find();
 		} catch (ParseException e) {
-			e.printStackTrace();
+			String errmsg = "Parse had a problem updating submissions";
+			YumHelper.handleException(this, e, errmsg);
 			return;
 		}
 		

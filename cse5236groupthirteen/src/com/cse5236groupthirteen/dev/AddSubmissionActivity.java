@@ -8,6 +8,7 @@ import com.cse5236groupthirteen.R;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
+import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -40,13 +41,13 @@ public class AddSubmissionActivity extends Activity implements OnClickListener, 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_submission);
+		setContentView(R.layout.dev_add_submission);
 		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
 		// grab ui elements
 		restaurantSpinner = (Spinner)findViewById(R.id.spnr_addsubmission_restaurants);
-		submitButton = (Button)findViewById(R.id.btn_addSubmission_submit);
+		submitButton = (Button)findViewById(R.id.btn_addsubmission_savesubmissiontoparse);
 		
 
 		// setup spinner specifics
@@ -139,10 +140,22 @@ public class AddSubmissionActivity extends Activity implements OnClickListener, 
 		Restaurant a = (Restaurant)(restaurantSpinner.getItemAtPosition(this.selectedRestaurantPosition));
 		
 		EditText etRating = (EditText)findViewById(R.id.et_addsubmission_rating);
-		EditText etWaitHours = (EditText)findViewById(R.id.et_addSubmission_waittime_hours);
-		EditText etWaitMinutes = (EditText)findViewById(R.id.et_addSubmission_waittime_minutes);
-		EditText etWaitSeconds = (EditText)findViewById(R.id.et_addSubmission_waittime_seconds);
-		EditText etComments = (EditText)findViewById(R.id.et_addSubmission_waittime_comments);
+		EditText etWaitHours = (EditText)findViewById(R.id.et_addsubmission_waittimehours);
+		EditText etWaitMinutes = (EditText)findViewById(R.id.et_addsubmission_waittimeminutes);
+		EditText etWaitSeconds = (EditText)findViewById(R.id.et_addsubmission_waittimeseconds);
+		EditText etComments = (EditText)findViewById(R.id.et_addsubmission_waittimecomments);
+		
+		String strRating = etRating.getText().toString();
+		String strWaitHours = etWaitHours.getText().toString();
+		String strWaitMinutes = etWaitMinutes.getText().toString();
+		String strWaitSeconds = etWaitSeconds.getText().toString();
+		
+		if (strWaitHours.isEmpty())
+			strWaitHours = "0";
+		if (strWaitMinutes.isEmpty())
+			strWaitMinutes = "0";
+		if (strWaitSeconds.isEmpty())
+			strWaitMinutes = "0";
 		
 		
 		NumberFormat formatter = NumberFormat.getInstance(Locale.US);
@@ -151,12 +164,13 @@ public class AddSubmissionActivity extends Activity implements OnClickListener, 
 		Number rawMinutes;
 		Number rawSeconds;
 		try {
-			rawRating = formatter.parse(etRating.getText().toString().trim());
-			rawHours = formatter.parse(etWaitHours.getText().toString().trim());
-			rawMinutes = formatter.parse(etWaitMinutes.getText().toString().trim());
-			rawSeconds = formatter.parse(etWaitSeconds.getText().toString().trim());
+			rawRating = formatter.parse(strRating.trim());
+			rawHours = formatter.parse(strWaitHours.trim());
+			rawMinutes = formatter.parse(strWaitMinutes.trim());
+			rawSeconds = formatter.parse(strWaitSeconds.trim());
 		} catch (java.text.ParseException e) {
-			e.printStackTrace();
+			String errmsg = "There was a problem parsing wait time";
+			YumHelper.handleError(this, errmsg);
 			return null;
 		}
 		int parsedRating = rawRating.intValue();
@@ -176,10 +190,10 @@ public class AddSubmissionActivity extends Activity implements OnClickListener, 
 	
 	private void clearUI() {
 		((EditText)findViewById(R.id.et_addsubmission_rating)).setText("");
-		((EditText)findViewById(R.id.et_addSubmission_waittime_hours)).setText("0");
-		((EditText)findViewById(R.id.et_addSubmission_waittime_minutes)).setText("0");
-		((EditText)findViewById(R.id.et_addSubmission_waittime_seconds)).setText("0");
-		((EditText)findViewById(R.id.et_addSubmission_waittime_comments)).setText("");
+		((EditText)findViewById(R.id.et_addsubmission_waittimehours)).setText("");
+		((EditText)findViewById(R.id.et_addsubmission_waittimeminutes)).setText("");
+		((EditText)findViewById(R.id.et_addsubmission_waittimeseconds)).setText("");
+		((EditText)findViewById(R.id.et_addsubmission_waittimecomments)).setText("");
 	}
 
 

@@ -7,9 +7,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context=".MenuViewActivity" >
+    tools:context=".PrintMenuActivity" >
 
+    <!-- Select Restaraunt -->
+    <Spinner
+        android:id="@+id/spnr_menuview_restaurant"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+         />
+    
     <!-- MenuItems List -->
+
     <ListView
         android:id="@+id/lstvw_menuView_menuitemlist"
         android:layout_width="match_parent"

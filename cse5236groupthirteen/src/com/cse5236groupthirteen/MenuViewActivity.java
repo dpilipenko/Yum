@@ -6,19 +6,20 @@ import java.util.List;
 import com.cse5236groupthirteen.utilities.MenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
+import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MenuViewActivity extends YumActivity {
+public class MenuViewActivity extends YumViewActivity {
 
 	private ListView listview;
+	
 	private ArrayAdapter<MenuItem> listviewAdapter;
 	
 	private String selectedRestaurantId;
@@ -44,8 +45,7 @@ public class MenuViewActivity extends YumActivity {
 			selectedRestaurantName = b.getString(Restaurant.R_NAME);
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
-			Toast.makeText(getApplicationContext(), errmsg , Toast.LENGTH_SHORT).show();
-			Log.e("Yum", errmsg);
+			YumHelper.handleError(this, errmsg);
 		}
 		
 		this.setTitle(selectedRestaurantName + " Menu"); 
@@ -57,22 +57,28 @@ public class MenuViewActivity extends YumActivity {
 		super.onResume();
 		updateMenuList();
 	}
+	
+	
+	@Override
+	public void onShake() {
+		Toast.makeText(this, "Updating Menu", Toast.LENGTH_SHORT).show();
+		updateMenuList();
+	}
+
 
 	private void updateMenuList() {
 		
 		// create query
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_MENUITEMS);
-		String b = MenuItem.MI_RESTID;
-		String c = selectedRestaurantId;
-		query.whereEqualTo(b, c);
+		query.whereEqualTo(MenuItem.MI_RESTID, selectedRestaurantId);
 		
 		// query parse
 		List<ParseObject> menuItems = new ArrayList<ParseObject>();
 		try {
 			menuItems = query.find();
 		} catch (ParseException e) {
-			// error with parse occurred
-			e.printStackTrace();
+			String errmsg = "Error fetching MenuItems from Parse";
+			YumHelper.handleException(this, e, errmsg);
 			return;
 		}
 		
@@ -82,6 +88,7 @@ public class MenuViewActivity extends YumActivity {
 			
 		} else {
 			// we got hits! :)
+			listviewAdapter.clear();
 			for(ParseObject po: menuItems) {
 				MenuItem m = new MenuItem(po);
 				listviewAdapter.add(m);

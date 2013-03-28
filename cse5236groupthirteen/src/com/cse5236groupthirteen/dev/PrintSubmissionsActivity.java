@@ -7,6 +7,7 @@ import com.cse5236groupthirteen.R;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
+import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -36,7 +37,7 @@ public class PrintSubmissionsActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_print_submissions);
+		setContentView(R.layout.dev_print_submissions);
 		// this is necessary to call in order to use Parse, Parse recommends
 		// keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID,
@@ -48,7 +49,7 @@ public class PrintSubmissionsActivity extends Activity implements
 
 		// setup spinner specifics
 		spinnerAdapter = new ArrayAdapter<Restaurant>(this,
-				android.R.layout.simple_list_item_1);
+				android.R.layout.simple_spinner_item);
 		spinner.setAdapter(spinnerAdapter);
 
 		// setup list view specifics
@@ -88,9 +89,7 @@ public class PrintSubmissionsActivity extends Activity implements
 				} else {
 					// error occurred
 					String errmsg = "There was an error loading data from Parse";
-					Toast.makeText(getApplicationContext(), errmsg,
-							Toast.LENGTH_SHORT).show();
-					Log.e("Yum", errmsg, e);
+					YumHelper.handleError(getParent(), errmsg);
 				}
 
 			}
@@ -112,8 +111,8 @@ public class PrintSubmissionsActivity extends Activity implements
 		try {
 			submissions = query.find();
 		} catch (ParseException e) {
-			// error with parse occurred
-			e.printStackTrace();
+			String errmsg = "Failed on fetching submissions";
+			YumHelper.handleException(this, e, errmsg);
 			return;
 		}
 

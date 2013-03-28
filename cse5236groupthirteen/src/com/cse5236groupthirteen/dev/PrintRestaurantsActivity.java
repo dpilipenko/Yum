@@ -29,32 +29,33 @@ import android.content.Context;
 
 public class PrintRestaurantsActivity extends Activity {
 
-	private TextView txtLastSelection;
+	private TextView txtvw_lastSelection;
+	private ListView lstvw_restaurants;
 	private ArrayAdapter<String> listAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// create UI
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_print_restaurants);
+		setContentView(R.layout.dev_print_restaurants);
 		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 
 		// grab UI references
-		ListView listView = (ListView) findViewById(R.id.lstvw_allRestaurantsNames);
-		txtLastSelection = (TextView) findViewById(R.id.text_printRestaurants_lastSelection);
+		lstvw_restaurants = (ListView) findViewById(R.id.lstvw_printrestaurants_allrestaurantnames);
+		txtvw_lastSelection = (TextView) findViewById(R.id.txtvw_printrestaurants_lastselectionlabel);
 
 		// populate the list
 		listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, getDataFromDefaults());
-		listView.setAdapter(listAdapter);
+		lstvw_restaurants.setAdapter(listAdapter);
 		
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		lstvw_restaurants.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				String selection = listAdapter.getItem(position);
-				txtLastSelection.setText(selection);
+				txtvw_lastSelection.setText(selection);
 			}
 
 		});

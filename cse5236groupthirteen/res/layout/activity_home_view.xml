@@ -9,7 +9,7 @@
     tools:context=".HomeViewActivity" >
     
     <ListView
-        	android:id="@+id/lstvw_homeView"
+        	android:id="@+id/lstvw_homeView_restaurants"
         	android:layout_width="fill_parent"
         	android:layout_height="fill_parent"
         	android:background="@color/white"

@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SubmissionViewActivity" >
+    
+    <!-- Rating Chooser -->
+    <ImageView
+        android:id="@+id/imgvw_submission_rating"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/rating_happy"
+        android:contentDescription="Rating" />
+
+    <!-- Got in Line button -->
+    <ToggleButton
+        android:id="@+id/GotFood"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:textOn="I got my food!"
+        android:textOff="I got my food!" />
+    <!-- Comment box -->
+    
+        <EditText
+        android:id="@+id/CustomerReview"
+        android:layout_width="fill_parent"
+        android:layout_height="150dip"
+        android:hint="Insert quick comment on your visit...\n(optional)"
+        android:inputType="textImeMultiLine"
+        
+        />
+    
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/SubmitReview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Submit" />
+    
+
+</LinearLayout>

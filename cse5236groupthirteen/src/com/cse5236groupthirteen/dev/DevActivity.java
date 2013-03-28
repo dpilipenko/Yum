@@ -16,7 +16,7 @@ public class DevActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_dev);
+		setContentView(R.layout.dev);
 		
 		Button btnAddRestaurant = (Button)findViewById(R.id.btn_callAddRestaurantActivity);
 		Button btnAddMenu = (Button)findViewById(R.id.btn_callAddMenuActivity);

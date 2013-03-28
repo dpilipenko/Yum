@@ -7,6 +7,7 @@ import com.cse5236groupthirteen.R;
 import com.cse5236groupthirteen.utilities.MenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
+import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -35,7 +36,7 @@ public class PrintMenuActivity extends Activity implements OnItemSelectedListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_print_menu);
+		setContentView(R.layout.dev_print_menu);
 		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
@@ -44,7 +45,7 @@ public class PrintMenuActivity extends Activity implements OnItemSelectedListene
 		listview = (ListView)findViewById(R.id.lstvw_menuView_menuitemlist);
 		
 		// setup spinner specifics
-		spinnerAdapter = new ArrayAdapter<Restaurant>(this, android.R.layout.simple_list_item_1);
+		spinnerAdapter = new ArrayAdapter<Restaurant>(this, android.R.layout.simple_spinner_item);
 		spinner.setAdapter(spinnerAdapter);
 		
 		// setup list view specifics 
@@ -64,7 +65,7 @@ public class PrintMenuActivity extends Activity implements OnItemSelectedListene
 	private void loadDataFromParse() {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
-		query.whereExists("objectId"); // all Parse objects contain this key, so
+		query.whereExists(Restaurant.R_UUID); // all Parse objects contain this key, so
 										// it should return all stored
 										// Restaurants
 		query.findInBackground(new FindCallback() {
@@ -83,9 +84,7 @@ public class PrintMenuActivity extends Activity implements OnItemSelectedListene
 				} else {
 					// error occurred
 					String errmsg = "There was an error loading data from Parse";
-					Toast.makeText(getApplicationContext(), errmsg,
-							Toast.LENGTH_SHORT).show();
-					Log.e("Yum", errmsg, e);
+					YumHelper.handleError(getParent(), errmsg);
 				}
 
 			}
@@ -101,17 +100,15 @@ public class PrintMenuActivity extends Activity implements OnItemSelectedListene
 		
 		// create query
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_MENUITEMS);
-		String b = MenuItem.MI_RESTID;
-		String c = a.getRestaurantId();
-		query.whereEqualTo(b, c);
+		query.whereEqualTo(MenuItem.MI_RESTID, a.getRestaurantId());
 		
 		// query parse
 		List<ParseObject> menuItems = new ArrayList<ParseObject>();
 		try {
 			menuItems = query.find();
 		} catch (ParseException e) {
-			// error with parse occurred
-			e.printStackTrace();
+			String errmsg = "Failed on fetching MenuItem";
+			YumHelper.handleException(this, e, errmsg);
 			return;
 		}
 		

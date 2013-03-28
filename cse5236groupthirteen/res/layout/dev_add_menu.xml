@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context=".AddMenuActivity" >
+
+    <!-- Select Restaraunt -->
+    <Spinner
+        android:id="@+id/spnr_addmenu_restaurants"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+         />
+    
+    <!-- Menu Item Name -->
+    <EditText
+        android:id="@+id/et_addmenu_itemname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Item Name" 
+        />
+    
+    <!-- Menu Item Description -->
+    <EditText
+        android:id="@+id/et_addmenu_itemdescr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Item Description" 
+        />
+    
+    <!-- Menu Item Price -->
+    <EditText
+        android:id="@+id/et_addmenu_itemprice"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Item Price ( X.XX )"
+        android:inputType="number"
+        />
+    
+    <!-- Add Button -->
+    <Button
+        android:id="@+id/btn_addMenu_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Menu Item" 
+        />
+
+</LinearLayout>
