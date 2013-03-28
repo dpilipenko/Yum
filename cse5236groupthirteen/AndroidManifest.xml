@@ -30,8 +30,8 @@
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.RestaurantViewActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_restaurant_view" >
+            android:label="@string/title_activity_restaurant_view"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.AddRestaurantActivity"
@@ -81,6 +81,10 @@
         <activity
             android:name="com.cse5236groupthirteen.dev.AccelormeterActivity"
             android:label="@string/title_activity_accelormeter" >
+        </activity>
+        <activity
+            android:name="com.cse5236groupthirteen.dev.UpdateRestaurantGeoLocationsActivity"
+            android:label="@string/title_activity_update_restaurant_geo_locations" >
         </activity>
     </application>
 

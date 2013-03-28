@@ -42,7 +42,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 	private Restaurant selectedRestaurant;
 	private ArrayAdapter<Submission> listAdapter;
 	private ListView reviewsListView;
-	private TextView restaurantAddressTextView;
 	private Button menuButton;
 	
 	// for shake detection
@@ -67,9 +66,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 		menuButton = (Button)findViewById(R.id.btn_showRestaurantsMenu);
 		menuButton.setOnClickListener(this);
 		((Button)findViewById(R.id.InLine)).setOnClickListener(this);
-
-		restaurantAddressTextView = (TextView)findViewById(R.id.txtvw_RestaurantAddress);
-		restaurantAddressTextView.setOnClickListener(this);
 
 				
 		// load selected restaurant information
@@ -328,7 +324,6 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
         	boolean xShake = (deltaX > 15);
         	boolean yShake = (deltaY > 15);
         	boolean zShake = (deltaZ > 15);
-        	String s = deltaX+"\t"+deltaY+"\t"+deltaZ;
         	
         	if (xShake || yShake || zShake) {
         		

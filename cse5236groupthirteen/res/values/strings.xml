@@ -20,5 +20,6 @@
     <string name="title_activity_print_submissions">PrintSubmissions</string>
     <string name="title_activity_submission_view">Submission View</string>
     <string name="title_activity_accelormeter">AccelormeterActivity</string>
+    <string name="title_activity_update_restaurant_geo_locations">UpdateRestaurantGeoLocationsActivity</string>
 
 </resources>

@@ -5,12 +5,16 @@ import java.util.List;
 
 import com.cse5236groupthirteen.R;
 import com.cse5236groupthirteen.utilities.ParseHelper;
+import com.cse5236groupthirteen.utilities.Restaurant;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.app.Activity;
+import android.content.Context;
 
 public class PrintRestaurantsActivity extends Activity {
 
@@ -95,17 +100,53 @@ public class PrintRestaurantsActivity extends Activity {
 					listAdapter.clear();
 					for(ParseObject po: objects) {
 						
-						listAdapter.add(po.getString("name"));
+						ParseGeoPoint pogp = po.getParseGeoPoint(Restaurant.R_GEOLOC);
+						ParseGeoPoint mygp = getMyParseGeoPoint();
+						double dst = pogp.distanceInKilometersTo(mygp);
+						
+						String name = po.getString("name");
+						String dstStr = String.format("%.3f", dst);
+						String msg = name + " " + dstStr +"km away";
+						listAdapter.add(msg);
 					}
 					if (objects.size() == 0) {
 						listAdapter.add("No Restaurants Found");
 					}
+					listAdapter.notifyDataSetChanged();
 				}
 				
+			}
+
+			private ParseGeoPoint getMyParseGeoPoint() {
+				Location l = getLastBestLocation();
+				return new ParseGeoPoint(l.getLatitude(), l.getLongitude());
 			}
 			
 		});
 		
+
+	}
+	
+	private Location getLastBestLocation() {
+		LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+	    Location locationGPS = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	    Location locationNet = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+	    long GPSLocationTime = 0;
+	    if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+	    long NetLocationTime = 0;
+
+	    if (null != locationNet) {
+	        NetLocationTime = locationNet.getTime();
+	    }
+
+	    if ( 0 < GPSLocationTime - NetLocationTime ) {
+	        return locationGPS;
+	    }
+	    else{
+	        return locationNet;
+	    }
 
 	}
 	

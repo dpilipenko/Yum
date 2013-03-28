@@ -1,14 +1,17 @@
 package com.cse5236groupthirteen.utilities;
 
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 public class Restaurant {
-		
+
+	private Address address; // cannot be NULL or Empty
 	private String restaurantID; // cannot be NULL or Empty
 	private String name; // cannot be NULL or Empty
-	private Address address; // cannot be NULL or Empty
 	private String phoneNumber; // cannot be NULL, if Empty assume no phone number
 	private String website; // cannot be NULL, if Empty assume no website
+	private double geo_latitude;
+	private double geo_longitude;
 	
 	
 	public final static String R_UUID = "restaurant_id";
@@ -20,6 +23,7 @@ public class Restaurant {
 	public final static String R_ADDR_STREETNAME = "address_streetname";
 	public final static String R_PHONENUMBER = "phonenumber";
 	public final static String R_WEBSITE = "website";
+	public final static String R_GEOLOC = "geo_location";
 	
 	/**
 	 * Constructs a new Restaurant object populated with fake data
@@ -30,6 +34,20 @@ public class Restaurant {
 	
 	/**
 	 * Constructs a new Restaurant object with inputed information
+	 */
+	public Restaurant(String name, Address address, String phoneNumber, String website,
+			double latitude, double longitude) {
+		setDefaults();
+		setName(name);
+		setAddress(address);
+		setPhoneNumber(phoneNumber);
+		setWebsite(website);
+		setLatitude(latitude);
+		setLongitude(longitude);
+	}
+	
+	/**
+	 * Constructs a new Restaurant object with inputed information and default location
 	 */
 	public Restaurant(String name, Address address, String phoneNumber, String website) {
 		setDefaults();
@@ -58,6 +76,12 @@ public class Restaurant {
 		this.phoneNumber = po.getString(R_PHONENUMBER);
 		this.website = po.getString(R_WEBSITE);
 		
+		ParseGeoPoint gp = po.getParseGeoPoint(R_GEOLOC);
+		if (gp != null) {
+			this.geo_latitude = po.getParseGeoPoint(R_GEOLOC).getLatitude();
+			this.geo_longitude = po.getParseGeoPoint(R_GEOLOC).getLongitude();
+		}
+		
 	}
 	
 	private void setDefaults() {
@@ -66,6 +90,8 @@ public class Restaurant {
 		this.address = new Address();
 		this.phoneNumber = "+12143965554";
 		this.website = "http://google.com";
+		this.geo_latitude = 0.0;
+		this.geo_longitude = 0.0;
 	}
 	
 	/**
@@ -148,6 +174,39 @@ public class Restaurant {
 		}
 	}
 	
+	public double getLatitude() {
+		return geo_latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		if (isProperLatitude(latitude)) {
+			this.geo_latitude = latitude;
+		}
+	}
+	
+	private boolean isProperLatitude(double latitude) {
+		boolean upperBound = (latitude < 90.0);
+		boolean lowerBound = (latitude > -90.0);
+		return (upperBound && lowerBound);
+	}
+
+	public double getLongitude() {
+		return geo_longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		if (isProperLongitude(longitude)) {
+			this.geo_longitude = longitude;
+		}
+	}
+	
+
+	private boolean isProperLongitude(double longitude) {
+		boolean upperBound = (longitude < 180.0);
+		boolean lowerBound = (longitude > -180.0);
+		return (upperBound && lowerBound);
+	}
+
 	/**
 	 * To be a valid restaurant name, (for now) it must exist
 	 * @param restaurantName The restaurant name that will be checked
@@ -216,10 +275,18 @@ public class Restaurant {
 		toReturn.put(R_ADDR_STREETNAME, address.getStreetName());
 		toReturn.put(R_PHONENUMBER, this.getPhoneNumber());
 		toReturn.put(R_WEBSITE, this.getWebsite());
+		toReturn.put(R_GEOLOC, this.getParseGeoPoint());
 		return toReturn;
 		
 	}
 
+	protected ParseGeoPoint getParseGeoPoint() {
+		ParseGeoPoint p = new ParseGeoPoint();
+		p.setLatitude(getLatitude());
+		p.setLongitude(getLongitude());
+		return p;
+	}
+	
 	/**
 	 * This is what gets displayed by the ListView with ArrayAdapter<Restaurant>
 	 */
@@ -227,6 +294,14 @@ public class Restaurant {
 	public String toString() {
 		return "" + this.getName();
 	}
+
+	public void setGeoPoint(ParseGeoPoint gp) {
+		
+		setLatitude(gp.getLatitude());
+		setLongitude(gp.getLongitude());
+		
+	}
+
 	
 	
 

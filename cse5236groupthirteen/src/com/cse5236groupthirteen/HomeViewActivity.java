@@ -3,16 +3,20 @@ package com.cse5236groupthirteen;
 import java.util.List;
 
 import com.cse5236groupthirteen.dev.DevActivity;
+import com.cse5236groupthirteen.utilities.LocalRestaurant;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
+import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -87,15 +91,19 @@ public class HomeViewActivity extends Activity {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
 		query.whereExists("objectId"); // all Parse objects contain this key, so it should return all stored Restaurants
+		query.whereNear(Restaurant.R_GEOLOC, YumHelper.getLastBestLocationForParse(this));
 		query.findInBackground(new FindCallback() {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				if (e == null) {
+					
+					Context c = getApplicationContext();
+					ParseGeoPoint myLocation = YumHelper.getLastBestLocationForParse(c);
 					// query successful
 					listAdapter.clear();
 					for (ParseObject po: objects) {
-						Restaurant r = new Restaurant(po);
+						Restaurant r = new LocalRestaurant(po, myLocation);
 						listAdapter.add(r);
 					}
 					listAdapter.notifyDataSetChanged();
@@ -108,12 +116,13 @@ public class HomeViewActivity extends Activity {
 				}
 				
 			}
+
+			
 			
 		});
 		
 		
 	}
-	
 	
 
 }
