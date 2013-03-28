@@ -101,23 +101,22 @@ public final class R {
         public static final int txtvw_dev_updategeolocations_log=0x7f090036;
     }
     public static final class layout {
-        public static final int activity_accelormeter=0x7f030000;
-        public static final int activity_add_menu=0x7f030001;
-        public static final int activity_add_restaurant=0x7f030002;
-        public static final int activity_add_submission=0x7f030003;
-        public static final int activity_dev=0x7f030004;
-        public static final int activity_history_view=0x7f030005;
-        public static final int activity_home_view=0x7f030006;
-        public static final int activity_main=0x7f030007;
-        public static final int activity_menu_view=0x7f030008;
-        public static final int activity_print_menu=0x7f030009;
-        public static final int activity_print_restaurants=0x7f03000a;
-        public static final int activity_print_submissions=0x7f03000b;
-        public static final int activity_restaurant_view=0x7f03000c;
-        public static final int activity_submission=0x7f03000d;
-        public static final int activity_update_restaurant_geo_locations=0x7f03000e;
-        public static final int row_restaurants_names=0x7f03000f;
-        public static final int splash_screen=0x7f030010;
+        public static final int activity_add_menu=0x7f030000;
+        public static final int activity_add_restaurant=0x7f030001;
+        public static final int activity_add_submission=0x7f030002;
+        public static final int activity_dev=0x7f030003;
+        public static final int activity_history_view=0x7f030004;
+        public static final int activity_home_view=0x7f030005;
+        public static final int activity_main=0x7f030006;
+        public static final int activity_menu_view=0x7f030007;
+        public static final int activity_print_menu=0x7f030008;
+        public static final int activity_print_restaurants=0x7f030009;
+        public static final int activity_print_submissions=0x7f03000a;
+        public static final int activity_restaurant_view=0x7f03000b;
+        public static final int activity_submission=0x7f03000c;
+        public static final int activity_update_restaurant_geo_locations=0x7f03000d;
+        public static final int row_restaurants_names=0x7f03000e;
+        public static final int splash_screen=0x7f03000f;
     }
     public static final class menu {
         public static final int accelormeter=0x7f080000;

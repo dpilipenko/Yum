@@ -2,6 +2,7 @@ package com.cse5236groupthirteen.dev;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.cse5236groupthirteen.R;
 import com.cse5236groupthirteen.utilities.ParseHelper;
@@ -22,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
@@ -75,7 +77,6 @@ public class PrintRestaurantsActivity extends Activity {
 		
 	}
 
-
 	private ArrayList<String> getDataFromDefaults() {
 		
 		ArrayList<String> al = new ArrayList<String>();
@@ -105,6 +106,7 @@ public class PrintRestaurantsActivity extends Activity {
 						double dst = pogp.distanceInKilometersTo(mygp);
 						
 						String name = po.getString("name");
+
 						String dstStr = String.format("%.3f", dst);
 						String msg = name + " " + dstStr +"km away";
 						listAdapter.add(msg);

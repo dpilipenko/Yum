@@ -1,16 +1,13 @@
 package com.cse5236groupthirteen;
 
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
 import java.util.Date;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
@@ -19,11 +16,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
-public class SubmissionActivity extends Activity implements OnClickListener {
+public class SubmissionActivity extends YumActivity implements OnClickListener {
 	private EditText Customer_Review;
 	private Button Got_Food;
 	private Date EndTime;
@@ -37,20 +32,19 @@ public class SubmissionActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		//create UI
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_submission);
-		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
-		
 		
 		Customer_Review = (EditText)findViewById(R.id.CustomerReview);
+		
 		Got_Food = (Button)findViewById(R.id.GotFood);
 		Got_Food.setOnClickListener(this);
+		
 		Button btnAdd= (Button)findViewById(R.id.SubmitReview);
 		btnAdd.setOnClickListener(this);
+		
 		ratingImage = (ImageView)findViewById(R.id.imgvw_submission_rating);
 		ratingImage.setOnClickListener(this);
-		///
 		
 		Bundle b = getIntent().getExtras();
 		if (b != null) {

@@ -20,81 +20,89 @@ import android.location.Location;
 import android.location.LocationManager;
 
 import com.google.android.maps.GeoPoint;
-import com.parse.Parse;
 import com.parse.ParseGeoPoint;
 
 public class YumHelper {
-	
-	public static ParseGeoPoint getLastBestLocationForParse(Context context) {
-		
-		
-		LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-	    Location locationGPS = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    Location locationNet = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-	    long GPSLocationTime = 0;
-	    if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+	public static Location getLastBestLocation(Context context) {
+		LocationManager lm = (LocationManager) context
+				.getSystemService(Context.LOCATION_SERVICE);
+		Location locationGPS = lm
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		Location locationNet = lm
+				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-	    long NetLocationTime = 0;
+		long GPSLocationTime = 0;
+		if (null != locationGPS) {
+			GPSLocationTime = locationGPS.getTime();
+		}
 
-	    if (null != locationNet) {
-	        NetLocationTime = locationNet.getTime();
-	    }
+		long NetLocationTime = 0;
 
-	    Location myLocation = new Location(locationNet);
-	    if ( 0 < GPSLocationTime - NetLocationTime ) {
-	        myLocation = locationGPS;
-	    }
-	    else{
-	        myLocation = locationNet;
-	    }
-		double lat = myLocation.getLatitude();
-		double lon = myLocation.getLongitude();
-		
-		return new ParseGeoPoint(lat, lon);
+		if (null != locationNet) {
+			NetLocationTime = locationNet.getTime();
+		}
+
+		Location myLocation = new Location(locationNet);
+		if (0 < GPSLocationTime - NetLocationTime) {
+			myLocation = locationGPS;
+		} else {
+			myLocation = locationNet;
+		}
+		return myLocation;
 	}
 	
-	public static ParseGeoPoint getParseGeoPointFromFullAddress(Context context, String address) {
-		
+	public static ParseGeoPoint getLastBestLocationForParse(Context context) {
+
+		Location myLocation = getLastBestLocation(context);
+		double lat = myLocation.getLatitude();
+		double lon = myLocation.getLongitude();
+
+		return new ParseGeoPoint(lat, lon);
+	}
+
+	public static ParseGeoPoint getParseGeoPointFromRestaurantFullAddress(
+			Context context, String address) {
+
 		String strAddress = address;
 		Geocoder coder = new Geocoder(context);
 		List<android.location.Address> addresses;
 		try {
 
 			strAddress = strAddress.replace(' ', '+');
-		    addresses = coder.getFromLocationName(strAddress,1);
-		    if (addresses == null) {
-		        return null;
-		    }
-		    if (addresses.isEmpty()) {
-		    	return null;
-		    }
-		    android.location.Address location = addresses.get(0);
-		    double latitude = location.getLatitude();
-		    double longitude = location.getLongitude();
-		    
-		    return new ParseGeoPoint(latitude,longitude);
+			addresses = coder.getFromLocationName(strAddress, 1);
+			if (addresses == null) {
+				return null;
+			}
+			if (addresses.isEmpty()) {
+				return null;
+			}
+			android.location.Address location = addresses.get(0);
+			double latitude = location.getLatitude();
+			double longitude = location.getLongitude();
+
+			return new ParseGeoPoint(latitude, longitude);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		
-		
-		
+
 	}
-	
+
 	public static ParseGeoPoint getParseGeoPointFromAddress(String address) {
 		JSONObject o = getLocationInfo(address);
 		GeoPoint g = getGeoPoint(o);
-		double lat = g.getLatitudeE6()/1.0E6;
-		double lon = g.getLongitudeE6()/1.0E6;
-		return new ParseGeoPoint(lat,lon);
+		double lat = g.getLatitudeE6() / 1.0E6;
+		double lon = g.getLongitudeE6() / 1.0E6;
+		return new ParseGeoPoint(lat, lon);
 	}
-	
+
 	private static JSONObject getLocationInfo(String address) {
 		String strAddress = address.replace(' ', '+');
-		HttpGet httpGet = new HttpGet("http://maps.google.com/maps/api/geocode/json?address=" +strAddress+"&ka&sensor=false");
-		HttpClient client = new DefaultHttpClient ();
+		HttpGet httpGet = new HttpGet(
+				"http://maps.google.com/maps/api/geocode/json?address="
+						+ strAddress + "&ka&sensor=false");
+		HttpClient client = new DefaultHttpClient();
 		HttpResponse response;
 		StringBuilder stringBuilder = new StringBuilder();
 
@@ -110,34 +118,32 @@ public class YumHelper {
 		} catch (IOException e) {
 		}
 
-		JSONObject  JsonObject = new JSONObject();
+		JSONObject JsonObject = new JSONObject();
 		try {
 			JsonObject = new JSONObject(stringBuilder.toString());
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return JsonObject;
 	}
-	
-	private static GeoPoint getGeoPoint (JSONObject JsonObject) {
 
-		Double lon = new Double(0);
-		Double lat = new Double (0);
+	private static GeoPoint getGeoPoint(JSONObject JsonObject) {
+
+		Double lon = Double.valueOf(0);
+		Double lat = Double.valueOf(0);
 
 		try {
 
-			lon = ((JSONArray) JsonObject.get ("results")). getJSONObject (0)
-				. getJSONObject ("geometry"). getJSONObject ("location")
-				. getDouble ("lng");
+			lon = ((JSONArray) JsonObject.get("results")).getJSONObject(0)
+					.getJSONObject("geometry").getJSONObject("location")
+					.getDouble("lng");
 
-			lat = ((JSONArray) JsonObject.get ("results")). getJSONObject (0)
-				. getJSONObject ("geometry"). getJSONObject ("location")
-				. getDouble ("lat");
+			lat = ((JSONArray) JsonObject.get("results")).getJSONObject(0)
+					.getJSONObject("geometry").getJSONObject("location")
+					.getDouble("lat");
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

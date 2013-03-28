@@ -8,13 +8,11 @@ import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -37,7 +35,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RestaurantViewActivity extends Activity implements OnClickListener, SensorEventListener, OnItemClickListener {
+public class RestaurantViewActivity extends YumActivity implements OnClickListener, SensorEventListener, OnItemClickListener {
 
 	private Restaurant selectedRestaurant;
 	private ArrayAdapter<Submission> listAdapter;
@@ -56,11 +54,8 @@ public class RestaurantViewActivity extends Activity implements OnClickListener,
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		//Don't touch these two lines!!!
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant_view);
-		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
-		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
 		// set up buttons
 		menuButton = (Button)findViewById(R.id.btn_showRestaurantsMenu);

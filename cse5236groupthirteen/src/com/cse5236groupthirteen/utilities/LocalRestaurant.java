@@ -1,8 +1,10 @@
 package com.cse5236groupthirteen.utilities;
 
+import android.annotation.SuppressLint;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
+@SuppressLint("DefaultLocale")
 public class LocalRestaurant extends Restaurant {
 
 	private ParseGeoPoint p;

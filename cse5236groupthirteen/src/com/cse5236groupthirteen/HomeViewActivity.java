@@ -8,14 +8,12 @@ import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -28,7 +26,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-public class HomeViewActivity extends Activity {
+public class HomeViewActivity extends YumActivity {
 
 	private ListView listView;
 	private ArrayAdapter<Restaurant> listAdapter;
@@ -36,13 +34,8 @@ public class HomeViewActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
-		// necessary Android code
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_view);
-		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
-		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
-		
 		
 		// grab UI elements
 		listView = (ListView) findViewById(R.id.lstvw_homeView);
@@ -114,15 +107,8 @@ public class HomeViewActivity extends Activity {
 					Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT).show();
 					Log.e("Yum", errmsg, e);
 				}
-				
 			}
-
-			
-			
 		});
-		
-		
 	}
 	
-
 }

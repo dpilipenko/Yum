@@ -6,19 +6,17 @@ import java.util.List;
 import com.cse5236groupthirteen.utilities.MenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MenuViewActivity extends Activity {
+public class MenuViewActivity extends YumActivity {
 
 	private ListView listview;
 	private ArrayAdapter<MenuItem> listviewAdapter;
@@ -27,14 +25,10 @@ public class MenuViewActivity extends Activity {
 	private String selectedRestaurantName;
 	
 	
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu_view);
-		// this is necessary to call in order to use Parse, Parse recommends keeping in onCreate
-		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
 		// grab ui elements
 		listview = (ListView)findViewById(R.id.lstvw_menuView_menuitemlist);

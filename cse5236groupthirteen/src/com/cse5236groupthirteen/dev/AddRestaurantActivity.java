@@ -1,8 +1,5 @@
 package com.cse5236groupthirteen.dev;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.cse5236groupthirteen.R;
 import com.cse5236groupthirteen.utilities.Address;
 import com.cse5236groupthirteen.utilities.ParseHelper;
@@ -12,7 +9,6 @@ import com.parse.Parse;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -89,7 +85,8 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 		
 		Address a = new Address(streetNumber, streetName, city, postcode, province);
 		
-		ParseGeoPoint gp = YumHelper.getParseGeoPointFromFullAddress(this, a.getFullAddress());
+		String addr = a.getFullAddress();
+		ParseGeoPoint gp = YumHelper.getParseGeoPointFromRestaurantFullAddress(this, addr);
 		double lat = gp.getLatitude();
 		double lon = gp.getLongitude();
 		
