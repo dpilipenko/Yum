@@ -77,12 +77,14 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		super.onResume();
 		if (selectedRestaurant != null) {
 			loadSubmissions(selectedRestaurant.getRestaurantId());
+			populateUI();
 		}
 	}
 	
 	@Override
 	public void onShake() {
 		loadSubmissions(selectedRestaurant.getRestaurantId());
+		populateUI();
 		String msg = "Refreshing Reviews";
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}

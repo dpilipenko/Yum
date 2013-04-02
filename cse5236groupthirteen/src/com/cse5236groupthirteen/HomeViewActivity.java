@@ -65,6 +65,14 @@ public class HomeViewActivity extends YumViewActivity {
 		super.onResume();
 		loadDataFromParse();
 	}
+	
+	
+	@Override
+	public void onShake() {
+		String text = "Refreshing Restaurants";
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+		loadDataFromParse();
+	}
 
 	private void loadDataFromParse() {
 		
