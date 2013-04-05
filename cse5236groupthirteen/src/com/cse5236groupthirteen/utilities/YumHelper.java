@@ -45,6 +45,41 @@ public class YumHelper {
 		Location locationNet = lm
 				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
+		boolean haveGPS = (locationGPS != null);
+		boolean haveNet = (locationNet != null);
+		
+		if (!haveGPS && !haveNet) {
+			
+			// uh oh... no location
+			
+		} else if (haveGPS && !haveNet) {
+			
+			return locationGPS;
+			
+		} else if (!haveGPS && haveNet) {
+			
+			return locationNet;
+			
+		} else if (haveGPS && haveNet) {
+			
+			long GPSLocationTime = locationGPS.getTime();
+			long NetLocationTime = locationNet.getTime();
+			
+			if (GPSLocationTime - NetLocationTime > 0) {
+				
+				return locationGPS;
+				
+			} else {
+				
+				return locationNet;
+				
+			}
+			
+		} else {
+			// no other possible combination of haveGPS and haveNet
+		}
+		
+		
 		long GPSLocationTime = 0;
 		if (null != locationGPS) {
 			GPSLocationTime = locationGPS.getTime();

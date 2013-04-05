@@ -78,7 +78,8 @@ public class HomeViewActivity extends YumViewActivity {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
 		query.whereExists(Restaurant.R_UUID);
-		query.whereNear(Restaurant.R_GEOLOC, YumHelper.getLastBestLocationForParse(this));
+		ParseGeoPoint gp = YumHelper.getLastBestLocationForParse(this);
+		query.whereNear(Restaurant.R_GEOLOC, gp);
 		query.findInBackground(new FindCallback() {
 
 			@Override
