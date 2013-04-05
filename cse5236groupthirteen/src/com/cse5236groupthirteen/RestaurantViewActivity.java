@@ -26,7 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class RestaurantViewActivity extends YumViewActivity implements OnClickListener, OnItemClickListener {
 
@@ -42,6 +41,8 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	private Restaurant selectedRestaurant;
 	
 	private ArrayAdapter<Submission> listAdapter;
+	
+	
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +85,6 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	@Override
 	public void onShake() {
 		loadSubmissions(selectedRestaurant.getRestaurantId());
-		populateUI();
-		String msg = "Refreshing Reviews";
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 	
 	private void populateUI() {
@@ -105,21 +103,7 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		txtvw_restaurantWebsite = (TextView) findViewById(R.id.txtvw_restview_restaurantwebsite);
 		txtvw_restaurantWebsite.setText(Html.fromHtml(selectedRestaurant.getWebsite()));
 		
-		txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
-		switch (calculateRestaurantRating()) {
-		case 1:
-			txtvw_restaurantRating.setText("Recently it has been :)");
-			break;
-		case 0:
-			txtvw_restaurantRating.setText("Recently it has been :|");
-			break;
-		case -1:
-			txtvw_restaurantRating.setText("Recently it has been :(");
-			break;
-		case -2:
-			txtvw_restaurantRating.setText("Recently it has been (?)");
-			break;
-		}
+		
 		
 		if (doesRestaurantHaveMenu(selectedRestaurant.getRestaurantId())) {
 			btn_callMenuViewActivity.setEnabled(true);
@@ -152,10 +136,12 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
 		query.whereEqualTo(Restaurant.R_UUID, restaurantId);
+		showProgress();
 		query.findInBackground(new FindCallback() {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
+				dismissProgress();
 				if (e == null) {
 					if (objects.size() == 1) {
 						// id is unique and there should only be one result
@@ -185,19 +171,43 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		query.orderByDescending("createdAt");
 		query.setLimit(5);
 		
-		try {
-			List<ParseObject> objects = query.find();
-			listAdapter.clear();
-			for (ParseObject po: objects) {
-				Submission s = new Submission(po);
-				listAdapter.add(s);
-			}
-			listAdapter.notifyDataSetChanged();
+		showProgress();
+		
+		query.findInBackground(new FindCallback() {
 			
-		} catch (ParseException e1) {
-			// error occurred
-			String errmsg = "There was an error loading data from Parse";
-			YumHelper.handleException(getParent(), e1, errmsg);
+			public void done(List<ParseObject> objects, ParseException e) {
+				dismissProgress();
+				if (e == null) {
+					
+					listAdapter.clear();
+					for(ParseObject po: objects) {
+						Submission s = new Submission(po);
+						listAdapter.add(s);
+					}
+					listAdapter.notifyDataSetChanged();
+					
+				} else {
+					String errmsg = "There was an error loading data from Parse";
+					YumHelper.handleException(getParent(), e, errmsg);
+				}
+			}
+			
+		});
+		
+		txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
+		switch (calculateRestaurantRating()) {
+		case 1:
+			txtvw_restaurantRating.setText("Recently it has been :)");
+			break;
+		case 0:
+			txtvw_restaurantRating.setText("Recently it has been :|");
+			break;
+		case -1:
+			txtvw_restaurantRating.setText("Recently it has been :(");
+			break;
+		case -2:
+			txtvw_restaurantRating.setText("Recently it has been (?)");
+			break;
 		}
 		
 	}

@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class SubmissionActivity extends YumActivity implements OnClickListener {
+public class SubmissionActivity extends YumViewActivity implements OnClickListener {
 	private EditText Customer_Review;
 	private Button Got_Food;
 	private Date EndTime;

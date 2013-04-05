@@ -1,10 +1,13 @@
 package com.cse5236groupthirteen;
 
+import java.util.Stack;
+
 import com.cse5236groupthirteen.dev.DevActivity;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.parse.Parse;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -17,6 +20,9 @@ import android.view.MenuItem;
 
 public class YumViewActivity extends Activity implements SensorEventListener {
 
+	// for loading bar
+	private Stack<ProgressDialog> progressbars;
+	
 	// for shake detection
 	private SensorManager sensorManager;
 	private Sensor accelerometer;
@@ -30,6 +36,9 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 		super.onCreate(savedInstanceState);
 		// for using Parse
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
+		
+		// for tracking loading bars
+		progressbars = new Stack<ProgressDialog>();
 		
 		// for detecting Shakes
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -108,6 +117,20 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 	
 	public void onShake() {
 		
+	}
+	
+
+	public void showProgress() {
+		ProgressDialog pd = ProgressDialog.show(this, "", "Loading...");
+		progressbars.add(pd);
+	}
+	
+	public void dismissProgress() {
+		if (progressbars.size() == 0) {
+			return;
+		}
+		ProgressDialog pd = progressbars.pop();
+		pd.dismiss();
 	}
 	
 }

@@ -71,19 +71,32 @@ public class HomeViewActivity extends YumViewActivity {
 	public void onShake() {
 		String text = "Refreshing Restaurants";
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+		listAdapter.clear();
 		loadDataFromParse();
 	}
 
+	public void showProgress() {
+		if (listAdapter.isEmpty()) {
+			super.showProgress();
+		}
+	}
+	
+	public void dismissProgress() {
+		super.dismissProgress();
+	}
+	
 	private void loadDataFromParse() {
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
 		query.whereExists(Restaurant.R_UUID);
 		ParseGeoPoint gp = YumHelper.getLastBestLocationForParse(this);
 		query.whereNear(Restaurant.R_GEOLOC, gp);
+		showProgress();
 		query.findInBackground(new FindCallback() {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
+				dismissProgress();
 				if (e == null) {
 					
 					Context c = getApplicationContext();

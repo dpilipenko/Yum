@@ -1,12 +1,12 @@
 package com.cse5236groupthirteen;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
 import com.cse5236groupthirteen.utilities.YumHelper;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -14,7 +14,6 @@ import com.parse.ParseQuery;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class HistoryViewActivity extends YumViewActivity {
 
@@ -55,7 +54,6 @@ public class HistoryViewActivity extends YumViewActivity {
 	
 	@Override
 	public void onShake() {
-		Toast.makeText(this, "Updating Submissions", Toast.LENGTH_SHORT).show();
 		updateSubmissionsList();
 	}
 
@@ -65,27 +63,35 @@ public class HistoryViewActivity extends YumViewActivity {
 		query.whereEqualTo(Submission.S_RESTID, selectedRestaurantId);
 		query.orderByDescending("createdAt");
 		
-		List<ParseObject> submissions = new ArrayList<ParseObject>();
-		try {
-			submissions = query.find();
-		} catch (ParseException e) {
-			String errmsg = "Parse had a problem updating submissions";
-			YumHelper.handleException(this, e, errmsg);
-			return;
-		}
-		
-		// check amount of returned hits
-		if (submissions.size() == 0) {
-			// no hits :(
+		showProgress();
+		query.findInBackground(new FindCallback() {
 			
-		} else {
-			// we got hits! :)
-			for(ParseObject po: submissions) {
-				Submission s = new Submission(po);
-				listviewAdapter.add(s);
+			public void done(List<ParseObject> objects, ParseException e) {
+				dismissProgress();
+				if (e == null) {
+					listviewAdapter.clear();
+					
+					if (objects.isEmpty()) {
+						// no hits :(
+						
+					} else {
+						// we got hits! :)
+						for (ParseObject po: objects) {
+							Submission s = new Submission(po);
+							listviewAdapter.add(s);
+						}
+						listviewAdapter.notifyDataSetChanged();
+					}
+					
+					
+				} else {
+					String errmsg = "There was an error loading data from Parse";
+					YumHelper.handleException(getParent(), e, errmsg);
+				}
 			}
-			listviewAdapter.notifyDataSetChanged();
-		}
+			
+		});
+		
 		
 	}
 
