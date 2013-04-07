@@ -8,7 +8,7 @@
         android:layout_width="300dip"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/food_background"
+        android:background="@drawable/backrepeat"
         android:orientation="vertical"
         tools:context=".RestaurantViewActivity" >
 
@@ -23,7 +23,7 @@
                 style="@android:style/TextAppearance.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="name"
+                android:text=""
                 android:textColor="@color/black" />
 
             <TextView
@@ -32,15 +32,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="map"
-                android:text="address" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtvw_restview_restaurantphonenumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="phone"
-                android:phoneNumber="true"
-                android:text="phonenumber" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtvw_restview_restaurantwebsite"
@@ -48,13 +47,13 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
-                android:text="website" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtvw_restview_restaurantrating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="rating" />
+                android:text="" />
         </LinearLayout>
 
         <Button
@@ -62,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="Show me the menu" />
+            android:text="@string/text_res_menubutton" />
 
         <ListView
             android:id="@+id/lstvw_restview_submissionsummary"
@@ -75,7 +74,7 @@
             android:id="@+id/btn_restview_callsubmissionviewactivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="I&apos;m in Line!" />
+            android:text="@string/text_res_subbutton" />
     </LinearLayout>
 
 </RelativeLayout>

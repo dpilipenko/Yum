@@ -8,7 +8,7 @@
         android:layout_width="300dip"
     	android:layout_height="match_parent"
     	android:layout_centerHorizontal="true"
-    	android:background="@drawable/food_background"
+    	android:background="@drawable/backrepeat"
     	android:orientation="vertical"
     	tools:context=".SubmissionViewActivity" >
     
@@ -19,7 +19,7 @@
         android:layout_height="150dip"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/rating_happy"
-        android:contentDescription="Rating" />
+        android:contentDescription="@string/text_sub_rating" />
 
     <!-- Got in Line button -->
     <ToggleButton
@@ -35,7 +35,7 @@
         android:id="@+id/CustomerReview"
         android:layout_width="fill_parent"
         android:layout_height="150dip"
-        android:hint="Insert quick comment on your visit...\n(optional)"
+        android:hint="@string/text_sub_commenthint"
         android:inputType="textImeMultiLine"
         
         />
@@ -46,7 +46,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Submit" />
+        android:text="@string/text_sub_submitbtn" />
     
 
 </LinearLayout>
