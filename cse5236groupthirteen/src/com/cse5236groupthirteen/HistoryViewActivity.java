@@ -6,6 +6,7 @@ import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
 import com.cse5236groupthirteen.utilities.YumHelper;
+import com.cse5236groupthirteen.utilities.YumViewActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;

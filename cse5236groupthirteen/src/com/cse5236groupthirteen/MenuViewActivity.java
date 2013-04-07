@@ -1,12 +1,12 @@
 package com.cse5236groupthirteen;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.cse5236groupthirteen.utilities.MenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
+import com.cse5236groupthirteen.utilities.YumViewActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -96,30 +96,6 @@ public class MenuViewActivity extends YumViewActivity {
 			}
 
 		});
-
-		// query parse
-		List<ParseObject> menuItems = new ArrayList<ParseObject>();
-		try {
-			menuItems = query.find();
-		} catch (ParseException e) {
-			String errmsg = "Error fetching MenuItems from Parse";
-			YumHelper.handleException(this, e, errmsg);
-			return;
-		}
-
-		// check amount of returned hits
-		if (menuItems.size() == 0) {
-			// no hits :(
-
-		} else {
-			// we got hits! :)
-			listviewAdapter.clear();
-			for (ParseObject po : menuItems) {
-				MenuItem m = new MenuItem(po);
-				listviewAdapter.add(m);
-			}
-			listviewAdapter.notifyDataSetChanged();
-		}
 
 	}
 

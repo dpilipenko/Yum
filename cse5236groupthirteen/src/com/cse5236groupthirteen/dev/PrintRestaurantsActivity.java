@@ -2,7 +2,6 @@ package com.cse5236groupthirteen.dev;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import com.cse5236groupthirteen.R;
 import com.cse5236groupthirteen.utilities.ParseHelper;
@@ -96,6 +95,7 @@ public class PrintRestaurantsActivity extends Activity {
 
 		query.findInBackground(new FindCallback() {
 
+			@SuppressLint("DefaultLocale")
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				if (e == null) {

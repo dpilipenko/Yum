@@ -6,6 +6,7 @@ import com.cse5236groupthirteen.utilities.LocalRestaurant;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
+import com.cse5236groupthirteen.utilities.YumViewActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -13,6 +14,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -26,13 +29,14 @@ import android.widget.Toast;
 public class HomeViewActivity extends YumViewActivity {
 
 	private ListView listView;
-	
 	private ArrayAdapter<Restaurant> listAdapter;
 	
+	protected Dialog splashDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		showSplashScreen();
 		setContentView(R.layout.activity_home_view);
 		
 		// grab UI elements
@@ -60,6 +64,29 @@ public class HomeViewActivity extends YumViewActivity {
 		
 	}
 	
+	protected void showSplashScreen() {
+		splashDialog = new Dialog(this, R.style.SplashScreen);
+		splashDialog.setContentView(R.layout.splash_screen);
+		splashDialog.setCancelable(false);
+		splashDialog.show();
+		
+		final Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				removeSplashScreen();
+			}
+		}, 3000);
+		
+	}
+	
+	protected void removeSplashScreen () {
+		if (splashDialog != null) {
+			splashDialog.dismiss();
+			splashDialog = null;
+		}
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -76,13 +103,16 @@ public class HomeViewActivity extends YumViewActivity {
 	}
 
 	public void showProgress() {
+		/*
 		if (listAdapter.isEmpty()) {
 			super.showProgress();
 		}
+		*/
 	}
 	
 	public void dismissProgress() {
-		super.dismissProgress();
+		removeSplashScreen();
+		//super.dismissProgress();
 	}
 	
 	private void loadDataFromParse() {

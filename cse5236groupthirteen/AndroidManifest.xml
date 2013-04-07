@@ -17,103 +17,76 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity 
-            android:name="com.cse5236groupthirteen.SplashScreenActivity"
-            android:screenOrientation="portrait"
-            >
-            <intent-filter>
-                <action
-                    android:name="android.intent.action.MAIN"
-                    />
-                <category
-                    android:name="android.intent.category.LAUNCHER"
-                    />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.cse5236groupthirteen.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            >
-        </activity>
         <activity
             android:name="com.cse5236groupthirteen.RestaurantViewActivity"
             android:label="@string/title_activity_restaurant_view"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.AddRestaurantActivity"
             android:label="@string/title_activity_add_restaurant"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.DevActivity"
             android:label="@string/title_activity_dev"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.SubmissionViewActivity"
             android:label="@string/title_activity_submission_view"
-            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"
-            >
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.PrintRestaurantsActivity"
             android:label="@string/title_activity_print_restaurants"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.HomeViewActivity"
-            android:label="@string/title_activity_home_view"
-            android:screenOrientation="portrait"
-            >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.HistoryViewActivity"
             android:label="@string/title_activity_history_view"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.MenuViewActivity"
             android:label="@string/title_activity_menu_view"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.AddMenuActivity"
             android:label="@string/title_activity_add_menu"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.PrintMenuActivity"
             android:label="@string/title_activity_print_menu"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.AddSubmissionActivity"
             android:label="@string/title_activity_add_submission"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.PrintSubmissionsActivity"
             android:label="@string/title_activity_print_submissions"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.cse5236groupthirteen.dev.UpdateRestaurantGeoLocationsActivity"
             android:label="@string/title_activity_update_restaurant_geo_locations"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
