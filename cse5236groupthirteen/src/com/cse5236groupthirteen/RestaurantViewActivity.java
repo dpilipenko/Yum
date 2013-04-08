@@ -187,6 +187,22 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 					}
 					listAdapter.notifyDataSetChanged();
 					
+					txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
+					switch (calculateRestaurantRating()) {
+					case 1:
+						txtvw_restaurantRating.setText("Recently it has been :)");
+						break;
+					case 0:
+						txtvw_restaurantRating.setText("Recently it has been :|");
+						break;
+					case -1:
+						txtvw_restaurantRating.setText("Recently it has been :(");
+						break;
+					case -2:
+						txtvw_restaurantRating.setText("Recently it has been (?)");
+						break;
+					}
+					
 				} else {
 					String errmsg = "There was an error loading data from Parse";
 					YumHelper.handleException(getParent(), e, errmsg);
@@ -194,22 +210,6 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 			}
 			
 		});
-		
-		txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
-		switch (calculateRestaurantRating()) {
-		case 1:
-			txtvw_restaurantRating.setText("Recently it has been :)");
-			break;
-		case 0:
-			txtvw_restaurantRating.setText("Recently it has been :|");
-			break;
-		case -1:
-			txtvw_restaurantRating.setText("Recently it has been :(");
-			break;
-		case -2:
-			txtvw_restaurantRating.setText("Recently it has been (?)");
-			break;
-		}
 		
 	}
 	
