@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".AddUserActivity" >
+
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Create New User:"/>
+    <EditText 
+        android:id="@+id/et_addUser_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Your new Username"/>
+    <EditText 
+        android:id="@+id/et_addUser_pass"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Your new Password"
+        android:inputType="textPassword"
+        />
+    <EditText
+        android:id="@+id/et_addUser_passAgain"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Your new Password again"
+        android:inputType="textPassword" 
+        />
+    <CheckBox 
+        android:id="@+id/chkbx_addUser_isAdminCheckbox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="is Admin?"
+        />
+    <Button 
+        android:id="@+id/btn_addUser_createButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Create User"
+        />
+
+</LinearLayout>

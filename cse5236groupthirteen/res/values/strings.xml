@@ -18,16 +18,13 @@
     <string name="title_activity_print_submissions">PrintSubmissions</string>
     <string name="title_activity_submission_view">Submission View</string>
     <string name="title_activity_update_restaurant_geo_locations">UpdateRestaurantGeoLocationsActivity</string>
-
-    
-    
-    
     <string name="text_res_menubutton">Show me the menu</string>
     <string name="text_res_subbutton">I\'m in Line!</string>
-    
     <string name="text_sub_rating">Rating</string>
     <string name="text_sub_commenthint">Insert quick comment on your visit…\n(optional)</string>
     <string name="text_sub_submitbtn">Submit</string>
-    
-    
+    <string name="title_activity_add_user">AddUserActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_login">LoginActivity</string>
+
 </resources>

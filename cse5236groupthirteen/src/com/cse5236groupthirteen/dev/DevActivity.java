@@ -2,6 +2,9 @@ package com.cse5236groupthirteen.dev;
 
 import com.cse5236groupthirteen.HomeViewActivity;
 import com.cse5236groupthirteen.R;
+import com.cse5236groupthirteen.utilities.Restaurant;
+import com.cse5236groupthirteen.utilities.User;
+import com.cse5236groupthirteen.utilities.YumHelper;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,6 +21,18 @@ public class DevActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dev);
 		
+		// load selected restaurant information
+		boolean isAdmin = false;
+		Bundle b = getIntent().getExtras();
+		if (b != null) {
+			isAdmin = b.getBoolean(User.US_ISADMIN);
+		} else {
+			String errmsg = "There was an error Loginnig in. Sorry";
+			YumHelper.handleError(this, errmsg);
+		}
+			
+		
+		Button btnAddUser = (Button)findViewById(R.id.btn_callAddUserActivity);
 		Button btnAddRestaurant = (Button)findViewById(R.id.btn_callAddRestaurantActivity);
 		Button btnAddMenu = (Button)findViewById(R.id.btn_callAddMenuActivity);
 		Button btnAddSubmission = (Button)findViewById(R.id.btn_callAddSubmissionActivity);
@@ -26,6 +41,12 @@ public class DevActivity extends Activity implements OnClickListener {
 		Button btnPrintSubmissions = (Button)findViewById(R.id.btn_callPrintSubmissionsActivity);
 		Button btnUpdateRestaurantActivites = (Button)findViewById(R.id.btn_callUpdateGeoLocationsActivity);
 		Button btnGotoHome = (Button)findViewById(R.id.btn_gotoHomeView);
+		
+		if (!isAdmin) {
+			btnAddUser.setVisibility(View.GONE);
+		} else { 
+			btnAddUser.setOnClickListener(this);
+		}
 		
 		btnAddRestaurant.setOnClickListener(this);
 		btnAddMenu.setOnClickListener(this);
@@ -44,6 +65,9 @@ public class DevActivity extends Activity implements OnClickListener {
 		
 		switch (view.getId()) {
 		
+		case R.id.btn_callAddUserActivity:
+			this.startActivity(new Intent(this, AddUserActivity.class));
+			break;
 		case R.id.btn_callAddRestaurantActivity:
 			this.startActivity(new Intent(this, AddRestaurantActivity.class));
 			break;

@@ -14,7 +14,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -69,14 +68,6 @@ public class HomeViewActivity extends YumViewActivity {
 		splashDialog.setContentView(R.layout.splash_screen);
 		splashDialog.setCancelable(false);
 		splashDialog.show();
-		
-		final Handler handler = new Handler();
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				removeSplashScreen();
-			}
-		}, 3000);
 		
 	}
 	

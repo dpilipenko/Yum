@@ -3,6 +3,7 @@ package com.cse5236groupthirteen.utilities;
 import java.util.Stack;
 
 import com.cse5236groupthirteen.dev.DevActivity;
+import com.cse5236groupthirteen.dev.LoginActivity;
 import com.parse.Parse;
 
 import android.app.Activity;
@@ -50,7 +51,7 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 		super.onCreateOptionsMenu(menu);
 		
 		MenuItem menuDevPage = menu.add("Dev Page");
-		Intent intentDevPage = new Intent(this, DevActivity.class);
+		Intent intentDevPage = new Intent(this, LoginActivity.class);
 		menuDevPage.setIntent(intentDevPage);
 		
 		return true;

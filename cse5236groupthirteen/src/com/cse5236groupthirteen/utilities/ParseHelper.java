@@ -13,6 +13,7 @@ public class ParseHelper {
 	public final static String CLASS_RESTAURANTS = "Restaurants";
 	public final static String CLASS_MENUITEMS = "MenuItems";
 	public final static String CLASS_SUBMISSIONS = "Submissions";
+	public final static String CLASS_USERS = "Users";
 	
 	
 }
