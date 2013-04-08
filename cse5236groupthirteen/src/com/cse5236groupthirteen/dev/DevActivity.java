@@ -2,7 +2,6 @@ package com.cse5236groupthirteen.dev;
 
 import com.cse5236groupthirteen.HomeViewActivity;
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.User;
 import com.cse5236groupthirteen.utilities.YumHelper;
 
