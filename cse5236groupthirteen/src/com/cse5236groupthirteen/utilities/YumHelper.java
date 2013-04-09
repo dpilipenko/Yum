@@ -49,8 +49,11 @@ public class YumHelper {
 		boolean haveNet = (locationNet != null);
 		
 		if (!haveGPS && !haveNet) {
-			
+			Location l = new Location("yum fake location");
+			l.setLatitude(45.0);
+			l.setLongitude(45.0);
 			// uh oh... no location
+			return new Location(l);
 			
 		} else if (haveGPS && !haveNet) {
 			
