@@ -2,11 +2,10 @@ package com.cse5236groupthirteen;
 
 import java.util.List;
 
-import com.cse5236groupthirteen.utilities.LocalRestaurant;
+import com.cse5236groupthirteen.utilities.RestaurantWithLocation;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
-import com.cse5236groupthirteen.utilities.YumViewActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -125,7 +124,7 @@ public class HomeViewActivity extends YumViewActivity {
 					// query successful
 					listAdapter.clear();
 					for (ParseObject po: objects) {
-						Restaurant r = new LocalRestaurant(po, myLocation);
+						Restaurant r = new RestaurantWithLocation(po, myLocation);
 						listAdapter.add(r);
 					}
 					listAdapter.notifyDataSetChanged();

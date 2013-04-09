@@ -11,23 +11,17 @@ public class Submission {
 	public final static int RATING_NORMAL = 0;
 	public final static int RATING_SAD = -1;
 	
-	/*
-	 * These strings are used for converting to/from ParseObjects
-	 */
 	public final static String S_UUID = "submission_id";
 	public final static String S_RESTID = "restaurant_id";
 	public final static String S_RATING = "rating";
 	public final static String S_WAITTIME = "waittime";
 	public final static String S_COMMENT = "comment";
 	
-	///////////////////////////////////////////////////////////////
-	
-	private String submissionId; // cannot be NULL or empty
-	private String restaurantId; // cannot be NULL or empty
-	private int rating; // must be Submission.RATING_*
+	private String submissionId;
+	private String restaurantId;
+	private int rating;
 	private long waittime;
-	private String comment; // cannot be NULL, if Empty assume no comments
-	
+	private String comment;
 	private Date dateCreated;
 		
 	
@@ -43,11 +37,6 @@ public class Submission {
 		this.waittime = po.getLong(S_WAITTIME);
 		this.comment = po.getString(S_COMMENT);
 		this.dateCreated = po.getCreatedAt();
-		//
-		/*
-		this.startTime = po.getDate(s_startTime);
-		this.endTime = po.getDate(s_endTime);
-		*/
 		
 	}
 	
@@ -126,8 +115,7 @@ public class Submission {
 		}
 		
 		try {
-			@SuppressWarnings("unused")
-			UUID a = UUID.fromString(id);
+			UUID.fromString(id);
 			return true;
 		} catch (IllegalArgumentException e) {
 			return false;

@@ -85,9 +85,6 @@ public class DevActivity extends Activity implements OnClickListener {
 		case R.id.btn_callPrintSubmissionsActivity:
 			this.startActivity(new Intent(this, PrintSubmissionsActivity.class));
 			break;
-		case R.id.btn_callUpdateGeoLocationsActivity:
-			this.startActivity(new Intent(this, UpdateRestaurantGeoLocationsActivity.class));
-			break;
 		case R.id.btn_gotoHomeView:
 			this.startActivity(new Intent(this, HomeViewActivity.class));
 			break;

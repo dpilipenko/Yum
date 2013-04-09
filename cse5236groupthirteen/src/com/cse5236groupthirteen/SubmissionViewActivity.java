@@ -3,7 +3,6 @@ package com.cse5236groupthirteen;
 import com.cse5236groupthirteen.R;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
-import com.cse5236groupthirteen.utilities.YumViewActivity;
 
 import java.util.Date;
 import com.parse.ParseException;
