@@ -67,12 +67,12 @@ public class MenuViewActivity extends YumViewActivity {
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_MENUITEMS);
 		query.whereEqualTo(MenuItem.MI_RESTID, selectedRestaurantId);
 
-		showProgress();
+		showLoadingDialog();
 
 		query.findInBackground(new FindCallback() {
 
 			public void done(List<ParseObject> objects, ParseException e) {
-				dismissProgress();
+				dismissLoadingDialog();
 				if (e == null) {
 					listviewAdapter.clear();
 

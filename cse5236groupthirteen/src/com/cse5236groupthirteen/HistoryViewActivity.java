@@ -63,11 +63,11 @@ public class HistoryViewActivity extends YumViewActivity {
 		query.whereEqualTo(Submission.S_RESTID, selectedRestaurantId);
 		query.orderByDescending("createdAt");
 		
-		showProgress();
+		showLoadingDialog();
 		query.findInBackground(new FindCallback() {
 			
 			public void done(List<ParseObject> objects, ParseException e) {
-				dismissProgress();
+				dismissLoadingDialog();
 				if (e == null) {
 					listviewAdapter.clear();
 					

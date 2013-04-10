@@ -136,12 +136,12 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
 		query.whereEqualTo(Restaurant.R_UUID, restaurantId);
-		showProgress();
+		showLoadingDialog();
 		query.findInBackground(new FindCallback() {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
-				dismissProgress();
+				dismissLoadingDialog();
 				if (e == null) {
 					if (objects.size() == 1) {
 						// id is unique and there should only be one result
@@ -171,12 +171,12 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		query.orderByDescending("createdAt");
 		query.setLimit(5);
 		
-		showProgress();
+		showLoadingDialog();
 		
 		query.findInBackground(new FindCallback() {
 			
 			public void done(List<ParseObject> objects, ParseException e) {
-				dismissProgress();
+				dismissLoadingDialog();
 				if (e == null) {
 					
 					listAdapter.clear();

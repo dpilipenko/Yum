@@ -2,7 +2,7 @@ package com.cse5236groupthirteen;
 
 import java.util.List;
 
-import com.cse5236groupthirteen.utilities.RestaurantWithLocation;
+import com.cse5236groupthirteen.utilities.RestaurantWithMyLocation;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
@@ -14,7 +14,6 @@ import com.parse.ParseQuery;
 
 import android.os.Bundle;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -26,117 +25,129 @@ import android.widget.Toast;
 
 public class HomeViewActivity extends YumViewActivity {
 
+	private boolean querying;
 	private ListView listView;
 	private ArrayAdapter<Restaurant> listAdapter;
-	
 	protected Dialog splashDialog;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		showSplashScreen();
 		setContentView(R.layout.activity_home_view);
-		
-		// grab UI elements
+
+		showSplashScreen();
+
+		// set global variables
+		querying = false;
 		listView = (ListView) findViewById(R.id.lstvw_homeView_restaurants);
+		listAdapter = new ArrayAdapter<Restaurant>(this,
+				android.R.layout.simple_list_item_1);
 		
-		// setup ListView stuff
-		listAdapter = new ArrayAdapter<Restaurant>(this, android.R.layout.simple_list_item_1);
 		listView.setAdapter(listAdapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
+
 				Restaurant r = listAdapter.getItem(position);
+
+				Intent intent = new Intent(HomeViewActivity.this,
+						RestaurantViewActivity.class);
 				
-				Intent intent = new Intent(HomeViewActivity.this, RestaurantViewActivity.class);
+				// pass over restaurant information so it doesn't need to be parsed again
 				intent.putExtra(Restaurant.R_UUID, r.getRestaurantId());
 				intent.putExtra(Restaurant.R_NAME, r.getName());
-				startActivity(intent);
 				
+				startActivity(intent);
+
 			}
 
 		});
-		
+
 	}
-	
-	protected void showSplashScreen() {
+
+	private void showSplashScreen() {
 		splashDialog = new Dialog(this, R.style.SplashScreen);
 		splashDialog.setContentView(R.layout.splash_screen);
 		splashDialog.setCancelable(false);
 		splashDialog.show();
-		
+
 	}
-	
-	protected void removeSplashScreen () {
+
+	private void removeSplashScreen() {
 		if (splashDialog != null) {
 			splashDialog.dismiss();
 			splashDialog = null;
 		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		loadDataFromParse();
 	}
-	
-	
+
 	@Override
 	public void onShake() {
-		String text = "Refreshing Restaurants";
-		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-		listAdapter.clear();
-		loadDataFromParse();
+		if (!querying) {
+			listAdapter.clear();
+			loadDataFromParse();
+		}
+
 	}
 
-	public void showProgress() {
-		/*
-		if (listAdapter.isEmpty()) {
-			super.showProgress();
+	protected void showLoadingDialog() {
+		if (splashDialog == null) {
+			super.showLoadingDialog();
 		}
-		*/
+		
 	}
-	
-	public void dismissProgress() {
+
+	protected void dismissLoadingDialog() {
+		super.dismissLoadingDialog();
 		removeSplashScreen();
-		//super.dismissProgress();
 	}
+
+	private void loadDataFromParse() {	
+		querying = true;
+		showLoadingDialog();
+		
 	
-	private void loadDataFromParse() {
+		final ParseGeoPoint myLocation = YumHelper.getLastBestLocationForParse(this);
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
 		query.whereExists(Restaurant.R_UUID);
-		ParseGeoPoint gp = YumHelper.getLastBestLocationForParse(this);
-		query.whereNear(Restaurant.R_GEOLOC, gp);
-		showProgress();
+		query.whereNear(Restaurant.R_GEOLOC, myLocation);
 		query.findInBackground(new FindCallback() {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
-				dismissProgress();
+				
+				querying = false;
+				dismissLoadingDialog();
+				
 				if (e == null) {
 					
-					Context c = getApplicationContext();
-					ParseGeoPoint myLocation = YumHelper.getLastBestLocationForParse(c);
 					// query successful
 					listAdapter.clear();
-					for (ParseObject po: objects) {
-						Restaurant r = new RestaurantWithLocation(po, myLocation);
+					for (ParseObject po : objects) {
+						Restaurant r = new RestaurantWithMyLocation(po, myLocation);
 						listAdapter.add(r);
 					}
 					listAdapter.notifyDataSetChanged();
-					
+
 				} else {
+					
 					// error occurred
 					String errmsg = "There was an error loading data from Parse";
-					Toast.makeText(getApplicationContext(), errmsg, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), errmsg,
+							Toast.LENGTH_SHORT).show();
 					Log.e("Yum", errmsg, e);
 				}
+				
 			}
 		});
 	}
-	
+
 }

@@ -14,7 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
@@ -26,6 +28,21 @@ import com.parse.ParseGeoPoint;
 
 public class YumHelper {
 
+	public static void displayAlert(Context context, String message) {
+		
+		AlertDialog.Builder alert = new AlertDialog.Builder(context);
+
+		alert.setTitle("Yumm! Alert:");
+		alert.setMessage(message);
+
+		alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				
+			}
+		});
+		alert.show();
+	}
+	
 	public static void handleError(Context context, String errmsg) {
 		Toast.makeText(context, errmsg, Toast.LENGTH_LONG).show();
 		Log.e("Yum Exception!", errmsg);
@@ -49,6 +66,8 @@ public class YumHelper {
 		boolean haveNet = (locationNet != null);
 		
 		if (!haveGPS && !haveNet) {
+			String msg = "Could not find a location. Using random location now.";
+			displayAlert(context, msg);
 			Location l = new Location("yum fake location");
 			l.setLatitude(45.0);
 			l.setLongitude(45.0);

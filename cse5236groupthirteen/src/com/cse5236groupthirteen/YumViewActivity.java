@@ -71,8 +71,7 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
-		
+		// do nothing
 	}
 
 	@Override
@@ -115,17 +114,17 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 		
 	}
 	
-	public void onShake() {
-		
+	protected void onShake() {
+		// do nothing for now
 	}
 	
 
-	public void showProgress() {
+	protected void showLoadingDialog() {
 		ProgressDialog pd = ProgressDialog.show(this, "", "Loading...");
 		progressbars.add(pd);
 	}
 	
-	public void dismissProgress() {
+	protected void dismissLoadingDialog() {
 		if (progressbars.size() == 0) {
 			return;
 		}
