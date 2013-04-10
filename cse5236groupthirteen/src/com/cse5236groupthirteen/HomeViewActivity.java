@@ -14,6 +14,7 @@ import com.parse.ParseQuery;
 
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -35,12 +36,19 @@ public class HomeViewActivity extends YumViewActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_home_view);
 
 		showSplashScreen();
+		setContentView(R.layout.activity_home_view);
 		
-		testNetworkConnection();
-		testLocationServices();
+	    final Handler handler = new Handler();
+	    handler.postDelayed(new Runnable() {
+	      @Override
+	      public void run() {
+	    	  testLocationServices();
+	    	  testNetworkConnection();
+	      }
+	    }, 0);
+
 
 		querying = false;
 		listView = (ListView) findViewById(R.id.lstvw_homeView_restaurants);
