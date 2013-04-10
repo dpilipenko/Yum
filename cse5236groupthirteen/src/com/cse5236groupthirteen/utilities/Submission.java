@@ -165,7 +165,7 @@ public class Submission {
 		return toReturn;
 	}
 	
-	private String getHowLongAgoCreatedAsAString() {
+	public String getHowLongAgoCreatedAsAString() {
 		// TODO come up with better method name
 		if (dateCreated == null) {
 			return "";

@@ -1,9 +1,12 @@
 package com.cse5236groupthirteen;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.cse5236groupthirteen.utilities.CustomAdapter;
 import com.cse5236groupthirteen.utilities.MenuItem;
+import com.cse5236groupthirteen.utilities.MessageDetail;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
@@ -26,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RestaurantViewActivity extends YumViewActivity implements OnClickListener, OnItemClickListener {
 
@@ -40,16 +44,13 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	
 	private Restaurant selectedRestaurant;
 	
-	private ArrayAdapter<Submission> listAdapter;
-	
-	private boolean querying;
+	private CustomAdapter listAdapter;
+	private ArrayList<MessageDetail> SubList;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant_view);
-		
-		querying = false;
 		
 		// set up buttons
 		btn_callMenuViewActivity = (Button)findViewById(R.id.btn_restview_callmenuviewactivity);
@@ -57,7 +58,14 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		
 		btn_callSubmissionViewActivity = (Button)findViewById(R.id.btn_restview_callsubmissionviewactivity);
 		btn_callSubmissionViewActivity.setOnClickListener(this);
-				
+		
+		// set up reviews box
+				//listAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
+				SubList = new ArrayList<MessageDetail>();
+				listAdapter = new CustomAdapter(this,SubList);
+				lstvw_recentSubmissions = (ListView)findViewById(R.id.lstvw_restview_submissionsummary);
+				lstvw_recentSubmissions.setAdapter(new CustomAdapter(this, SubList));
+				lstvw_recentSubmissions.setOnItemClickListener(this);
 		// load selected restaurant information
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
@@ -68,28 +76,22 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 			YumHelper.handleError(this, errmsg);
 		}
 		
-		// set up reviews box
-		listAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
-		lstvw_recentSubmissions = (ListView)findViewById(R.id.lstvw_restview_submissionsummary);
-		lstvw_recentSubmissions.setAdapter(listAdapter);
-		lstvw_recentSubmissions.setOnItemClickListener(this);
+		
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (selectedRestaurant != null) {
+		if (selectedRestaurant != null && SubList.size() == 0) {
 			loadSubmissions(selectedRestaurant.getRestaurantId());
-			populateUI();
 		}
 	}
 	
 	@Override
 	public void onShake() {
-		if (!querying) {
-			loadSubmissions(selectedRestaurant.getRestaurantId());
-		}
-		
+		loadSubmissions(selectedRestaurant.getRestaurantId());
+		String msg = "Refreshing Reviews";
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 	
 	private void populateUI() {
@@ -108,7 +110,21 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		txtvw_restaurantWebsite = (TextView) findViewById(R.id.txtvw_restview_restaurantwebsite);
 		txtvw_restaurantWebsite.setText(Html.fromHtml(selectedRestaurant.getWebsite()));
 		
-		
+		txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
+		switch (calculateRestaurantRating()) {
+		case 1:
+			txtvw_restaurantRating.setText("Recently it has been :)");
+			break;
+		case 0:
+			txtvw_restaurantRating.setText("Recently it has been :|");
+			break;
+		case -1:
+			txtvw_restaurantRating.setText("Recently it has been :(");
+			break;
+		case -2:
+			txtvw_restaurantRating.setText("Recently it has been (?)");
+			break;
+		}
 		
 		if (doesRestaurantHaveMenu(selectedRestaurant.getRestaurantId())) {
 			btn_callMenuViewActivity.setEnabled(true);
@@ -138,16 +154,13 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	}
 
 	private void loadRestaurant(String restaurantId) {
-		querying = true;
+		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
 		query.whereEqualTo(Restaurant.R_UUID, restaurantId);
-		showLoadingDialog();
 		query.findInBackground(new FindCallback() {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
-				querying = false;
-				dismissLoadingDialog();
 				if (e == null) {
 					if (objects.size() == 1) {
 						// id is unique and there should only be one result
@@ -162,7 +175,6 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 				} else {
 					String errmsg = "There was an error loading data from Parse";
 					YumHelper.handleException(getParent(), e, errmsg);
-					YumHelper.displayAlert(RestaurantViewActivity.this, errmsg);
 				}
 				
 			}
@@ -172,51 +184,40 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	}
 
 	private void loadSubmissions(String restaurantId) {
-		querying = true;
+		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
 		query.whereEqualTo(Submission.S_RESTID, restaurantId);
 		query.orderByDescending("createdAt");
 		query.setLimit(5);
 		
-		showLoadingDialog();
+		List<ParseObject> submissions = new ArrayList<ParseObject>();
+		SubList = new ArrayList<MessageDetail>();
+		try {
+			submissions = query.find();
+		} catch (ParseException e) {
+			String errmsg = "Parse had a problem updating submissions";
+			YumHelper.handleException(this, e, errmsg);
+			return;
+		}
 		
-		query.findInBackground(new FindCallback() {
+		// check amount of returned hits
+		if (submissions.size() == 0) {
+			// no hits :(
 			
-			public void done(List<ParseObject> objects, ParseException e) {
-				querying = false;
-				dismissLoadingDialog();
-				if (e == null) {
-					
-					listAdapter.clear();
-					for(ParseObject po: objects) {
-						Submission s = new Submission(po);
-						listAdapter.add(s);
-					}
-					listAdapter.notifyDataSetChanged();
-					
-					txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
-					switch (calculateRestaurantRating()) {
-					case 1:
-						txtvw_restaurantRating.setText("Recently it has been :)");
-						break;
-					case 0:
-						txtvw_restaurantRating.setText("Recently it has been :|");
-						break;
-					case -1:
-						txtvw_restaurantRating.setText("Recently it has been :(");
-						break;
-					case -2:
-						txtvw_restaurantRating.setText("Recently it has been (?)");
-						break;
-					}
-					
-				} else {
-					String errmsg = "There was an error loading data from Parse";
-					YumHelper.handleException(getParent(), e, errmsg);
-				}
+		} else {
+			// we got hits! :)
+			for(ParseObject po: submissions) {
+			    Submission s = new Submission(po);
+			    MessageDetail m = new MessageDetail();
+			    m.setIcon(s.getRating());
+			    m.setComm(s.getComment());
+			    m.setWaitingTime(String.valueOf(s.getWaitTime()));
+			    m.setTime(s.getHowLongAgoCreatedAsAString());
+			    SubList.add(m);	
 			}
-			
-		});
+			////////SubList.notifyDataSetChanged();
+			lstvw_recentSubmissions.setAdapter(new CustomAdapter(this, SubList));
+		}
 		
 	}
 	
@@ -225,13 +226,13 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		// for now we will find the mean average of the ratings that are shown in the summary box
 		
 		double average = 0.0;
-		int count = listAdapter.getCount();
+		int count = SubList.size();
 		if (count == 0) {
 			return -2;
 		}
 		
 		for (int i = 0; i < count; i++) {
-			average += listAdapter.getItem(i).getRating();
+			average += SubList.get(i).getIcon();
 		}
 		average /= count;
 		

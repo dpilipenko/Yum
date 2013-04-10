@@ -1,7 +1,10 @@
 package com.cse5236groupthirteen;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.cse5236groupthirteen.utilities.CustomAdapter;
+import com.cse5236groupthirteen.utilities.MessageDetail;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.cse5236groupthirteen.utilities.Restaurant;
 import com.cse5236groupthirteen.utilities.Submission;
@@ -19,8 +22,8 @@ public class HistoryViewActivity extends YumViewActivity {
 
 	private ListView listview;
 	
-	private ArrayAdapter<Submission> listviewAdapter;
-
+	private CustomAdapter listviewAdapter;
+    private ArrayList<MessageDetail> SubList;
 	private String selectedRestaurantId;
 	private String selectedRestaurantName;
 
@@ -29,9 +32,10 @@ public class HistoryViewActivity extends YumViewActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history_view);
 
-		listviewAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
+		//listviewAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
+		SubList = new ArrayList<MessageDetail>();
 		listview = (ListView) findViewById(R.id.lstvw_histView_submissionsList);
-		listview.setAdapter(listviewAdapter);
+		listview.setAdapter(new CustomAdapter(this,SubList));
 
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
@@ -48,7 +52,8 @@ public class HistoryViewActivity extends YumViewActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		updateSubmissionsList();
+		if(SubList != null){
+		updateSubmissionsList();}
 	}
 	
 	
@@ -64,33 +69,35 @@ public class HistoryViewActivity extends YumViewActivity {
 		query.orderByDescending("createdAt");
 		
 		showLoadingDialog();
-		query.findInBackground(new FindCallback() {
+		List<ParseObject> submissions = new ArrayList<ParseObject>();
+		try {
+			submissions = query.find();
+		} catch (ParseException e) {
+			String errmsg = "Parse had a problem updating submissions";
+			YumHelper.handleException(this, e, errmsg);
+			return;
+		}
+		
+		// check amount of returned hits
+		if (submissions.size() == 0) {
+			// no hits :(
 			
-			public void done(List<ParseObject> objects, ParseException e) {
-				dismissLoadingDialog();
-				if (e == null) {
-					listviewAdapter.clear();
-					
-					if (objects.isEmpty()) {
-						// no hits :(
-						
-					} else {
-						// we got hits! :)
-						for (ParseObject po: objects) {
-							Submission s = new Submission(po);
-							listviewAdapter.add(s);
-						}
-						listviewAdapter.notifyDataSetChanged();
-					}
-					
-					
-				} else {
-					String errmsg = "There was an error loading data from Parse";
-					YumHelper.handleException(getParent(), e, errmsg);
-				}
+		} else {
+			// we got hits! :)
+			for(ParseObject po: submissions) {
+			    Submission s = new Submission(po);
+			    MessageDetail m = new MessageDetail();
+			    m.setIcon(s.getRating());
+			    m.setComm(s.getComment());
+			    m.setWaitingTime(String.valueOf(s.getWaitTime()));
+			    m.setTime(s.getHowLongAgoCreatedAsAString());
+			    SubList.add(m);	
 			}
-			
-		});
+			////////SubList.notifyDataSetChanged();
+			listview.setAdapter(new CustomAdapter(this,SubList));
+			dismissLoadingDialog();
+		}
+
 		
 		
 	}

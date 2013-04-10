@@ -20,6 +20,8 @@
         android:id="@+id/lstvw_histView_submissionsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"
+        android:listSelector="@drawable/list_selector"
         />
 
 </LinearLayout>
