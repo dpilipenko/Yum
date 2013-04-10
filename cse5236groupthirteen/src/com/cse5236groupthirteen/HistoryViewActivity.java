@@ -22,17 +22,18 @@ public class HistoryViewActivity extends YumViewActivity {
 
 	private ListView listview;
 	
-	private CustomAdapter listviewAdapter;
     private ArrayList<MessageDetail> SubList;
 	private String selectedRestaurantId;
 	private String selectedRestaurantName;
 
+	private boolean querying;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history_view);
 
-		//listviewAdapter = new ArrayAdapter<Submission>(this, android.R.layout.simple_list_item_1);
+		querying = false;
 		SubList = new ArrayList<MessageDetail>();
 		listview = (ListView) findViewById(R.id.lstvw_histView_submissionsList);
 		listview.setAdapter(new CustomAdapter(this,SubList));
@@ -53,50 +54,64 @@ public class HistoryViewActivity extends YumViewActivity {
 	protected void onResume() {
 		super.onResume();
 		if(SubList != null){
-		updateSubmissionsList();}
+			updateSubmissionsList();
+		}
 	}
 	
 	
 	@Override
 	public void onShake() {
-		updateSubmissionsList();
+		if (!querying) {
+			updateSubmissionsList();
+		}
 	}
 
 	private void updateSubmissionsList() {
+		
+		querying = true;
 		
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
 		query.whereEqualTo(Submission.S_RESTID, selectedRestaurantId);
 		query.orderByDescending("createdAt");
 		
 		showLoadingDialog();
-		List<ParseObject> submissions = new ArrayList<ParseObject>();
-		try {
-			submissions = query.find();
-		} catch (ParseException e) {
-			String errmsg = "Parse had a problem updating submissions";
-			YumHelper.handleException(this, e, errmsg);
-			return;
-		}
 		
-		// check amount of returned hits
-		if (submissions.size() == 0) {
-			// no hits :(
+		query.findInBackground(new FindCallback() {
 			
-		} else {
-			// we got hits! :)
-			for(ParseObject po: submissions) {
-			    Submission s = new Submission(po);
-			    MessageDetail m = new MessageDetail();
-			    m.setIcon(s.getRating());
-			    m.setComm(s.getComment());
-			    m.setWaitingTime(String.valueOf(s.getWaitTime()));
-			    m.setTime(s.getHowLongAgoCreatedAsAString());
-			    SubList.add(m);	
+			@Override
+			public void done(List<ParseObject> objects, ParseException e) {
+				querying = false;
+				dismissLoadingDialog();
+				if (e == null) {
+					
+					// check amount of returned hits
+					if (objects.size() == 0) {
+						// no hits :(
+						
+					} else {
+						// we got hits! :)
+						SubList.clear();
+						for (ParseObject po : objects) {
+							Submission s = new Submission(po);
+							MessageDetail m = new MessageDetail();
+							m.setIcon(s.getRating());
+							m.setComm(s.getComment());
+							m.setWaitingTime(String.valueOf(s.getWaitTime()));
+							m.setTime(s.getHowLongAgoCreatedAsAString());
+							SubList.add(m);
+						}
+						listview.setAdapter(new CustomAdapter(HistoryViewActivity.this,SubList));
+						dismissLoadingDialog();
+					}
+					
+				} else {
+					String errmsg = "There was an error loading submissions from Parse";
+					YumHelper.handleException(getParent(), e, errmsg);
+				}
+				
 			}
-			////////SubList.notifyDataSetChanged();
-			listview.setAdapter(new CustomAdapter(this,SubList));
-			dismissLoadingDialog();
-		}
+			
+		});
 
 		
 		
