@@ -42,12 +42,14 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	
 	private ArrayAdapter<Submission> listAdapter;
 	
-	
+	private boolean querying;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant_view);
+		
+		querying = false;
 		
 		// set up buttons
 		btn_callMenuViewActivity = (Button)findViewById(R.id.btn_restview_callmenuviewactivity);
@@ -84,7 +86,10 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	
 	@Override
 	public void onShake() {
-		loadSubmissions(selectedRestaurant.getRestaurantId());
+		if (!querying) {
+			loadSubmissions(selectedRestaurant.getRestaurantId());
+		}
+		
 	}
 	
 	private void populateUI() {
@@ -133,7 +138,7 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	}
 
 	private void loadRestaurant(String restaurantId) {
-		
+		querying = true;
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
 		query.whereEqualTo(Restaurant.R_UUID, restaurantId);
 		showLoadingDialog();
@@ -141,6 +146,7 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
+				querying = false;
 				dismissLoadingDialog();
 				if (e == null) {
 					if (objects.size() == 1) {
@@ -156,6 +162,7 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 				} else {
 					String errmsg = "There was an error loading data from Parse";
 					YumHelper.handleException(getParent(), e, errmsg);
+					YumHelper.displayAlert(RestaurantViewActivity.this, errmsg);
 				}
 				
 			}
@@ -165,7 +172,7 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	}
 
 	private void loadSubmissions(String restaurantId) {
-		
+		querying = true;
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_SUBMISSIONS);
 		query.whereEqualTo(Submission.S_RESTID, restaurantId);
 		query.orderByDescending("createdAt");
@@ -176,6 +183,7 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		query.findInBackground(new FindCallback() {
 			
 			public void done(List<ParseObject> objects, ParseException e) {
+				querying = false;
 				dismissLoadingDialog();
 				if (e == null) {
 					

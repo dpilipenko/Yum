@@ -12,8 +12,10 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -36,8 +38,10 @@ public class HomeViewActivity extends YumViewActivity {
 		setContentView(R.layout.activity_home_view);
 
 		showSplashScreen();
+		
+		testNetworkConnection();
+		testLocationServices();
 
-		// set global variables
 		querying = false;
 		listView = (ListView) findViewById(R.id.lstvw_homeView_restaurants);
 		listAdapter = new ArrayAdapter<Restaurant>(this,
@@ -65,6 +69,43 @@ public class HomeViewActivity extends YumViewActivity {
 
 		});
 
+	}
+
+	private void testLocationServices() {
+		boolean test = YumHelper.testLocationServices(this);
+		if (!test) {
+			String msg = "Sorry, could not access your location.";
+			YumHelper.displayAlert(this, msg);
+		}
+		
+	}
+
+	private void testNetworkConnection() {
+		
+		ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    android.net.NetworkInfo wifi = connec.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+	    android.net.NetworkInfo mobile = connec.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+	    boolean haveData = false;
+	    if (wifi.isConnected()) {
+	        haveData = true;
+	    } else if (mobile.isConnected()) {
+	        haveData = true;
+	    }
+	    
+	    if (!haveData) {
+	    	String msg = "Sorry, could not connect to internet";
+	    	YumHelper.displayAlert(this, msg);
+	    	return;
+	    }
+
+		boolean haveParseConnection = YumHelper.testParseConnection(this);
+		if (!haveParseConnection) {
+			String msg = "Sorry, could not connect with our data at this time. " +
+					"We apologize for the inconvinience.";
+			YumHelper.displayAlert(this, msg);
+			return;
+		}
 	}
 
 	private void showSplashScreen() {

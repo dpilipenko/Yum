@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/distance_radius" />
-
+<!-- 
     <resources android:layout_width="match_parent" >
 
    	 	<string-array android:name="distance_radius">
@@ -32,4 +32,6 @@
         	<item>100 Miles</item>
     	</string-array>
 </resources>
+ -->
+
 </RelativeLayout>

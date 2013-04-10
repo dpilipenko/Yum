@@ -24,19 +24,48 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
 
 public class YumHelper {
 
-	public static void displayAlert(Context context, String message) {
+	public static boolean testLocationServices(Context context) {
+		
+		LocationManager lm = (LocationManager) context
+				.getSystemService(Context.LOCATION_SERVICE);
+		Location locationGPS = lm
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		Location locationNet = lm
+				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+		boolean haveGPS = (locationGPS != null);
+		boolean haveNet = (locationNet != null);
+		
+		return (haveGPS || haveNet);
+	}
+	
+	public static boolean testParseConnection(Context context) {
+		ParseQuery q = new ParseQuery(ParseHelper.CLASS_USERS);
+		q.whereExists(User.US_UUID);
+		try {
+			q.count();
+			return true;
+		} catch (ParseException e) {
+			return false;
+		}
+	}
+	
+	public static void displayAlert(final Context context, String message) {
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
 		alert.setTitle("Yumm! Alert:");
 		alert.setMessage(message);
-
+		alert.setCancelable(false);
 		alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
+				
 				
 			}
 		});
