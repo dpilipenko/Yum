@@ -3,6 +3,7 @@ package com.cse5236groupthirteen;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import com.cse5236groupthirteen.utilities.CustomAdapter;
 import com.cse5236groupthirteen.utilities.MenuItem;
@@ -17,6 +18,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.content.Intent;
 
 import android.text.Html;
@@ -88,6 +90,16 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	
 	@Override
 	public void onShake() {
+		/*
+		final Handler handler = new Handler();
+	    handler.postDelayed(new Runnable() {
+	      @Override
+	      public void run() {
+	    	  loadSubmissions(selectedRestaurant.getRestaurantId());
+	      }
+	    }, 10);
+		
+		*/
 		if (!querying) {
 			loadSubmissions(selectedRestaurant.getRestaurantId());
 		}
@@ -109,21 +121,7 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 		txtvw_restaurantWebsite = (TextView) findViewById(R.id.txtvw_restview_restaurantwebsite);
 		txtvw_restaurantWebsite.setText(Html.fromHtml(selectedRestaurant.getWebsite()));
 		
-		txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
-		switch (calculateRestaurantRating()) {
-		case 1:
-			txtvw_restaurantRating.setText("Recently it has been :)");
-			break;
-		case 0:
-			txtvw_restaurantRating.setText("Recently it has been :|");
-			break;
-		case -1:
-			txtvw_restaurantRating.setText("Recently it has been :(");
-			break;
-		case -2:
-			txtvw_restaurantRating.setText("Recently it has been (?)");
-			break;
-		}
+		
 		
 		if (doesRestaurantHaveMenu(selectedRestaurant.getRestaurantId())) {
 			btn_callMenuViewActivity.setEnabled(true);
@@ -153,6 +151,7 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	}
 
 	private void loadRestaurant(String restaurantId) {
+		
 		querying = true;
 		showLoadingDialog();
 		
@@ -188,6 +187,13 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 	}
 
 	private void loadSubmissions(String restaurantId) {
+		
+		Random rand = new Random(new Date().getTime());
+		int a = rand.nextInt(100);
+		if (a > 40) {
+			return;
+		}
+		
 		querying = true;
 		showLoadingDialog();
 		
@@ -220,8 +226,26 @@ public class RestaurantViewActivity extends YumViewActivity implements OnClickLi
 						    m.setTime(s.getHowLongAgoCreatedAsAString());
 						    SubList.add(m);	
 						}
+						
+						
 						lstvw_recentSubmissions.setAdapter(new CustomAdapter(RestaurantViewActivity.this,
 								SubList));
+						
+						txtvw_restaurantRating = (TextView) findViewById(R.id.txtvw_restview_restaurantrating);
+						switch (calculateRestaurantRating()) {
+						case 1:
+							txtvw_restaurantRating.setText("Recently it has been :)");
+							break;
+						case 0:
+							txtvw_restaurantRating.setText("Recently it has been :|");
+							break;
+						case -1:
+							txtvw_restaurantRating.setText("Recently it has been :(");
+							break;
+						case -2:
+							txtvw_restaurantRating.setText("Recently it has been (?)");
+							break;
+						}
 					}
 					
 				} else {
