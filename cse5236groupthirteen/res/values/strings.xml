@@ -26,5 +26,12 @@
     <string name="title_activity_add_user">AddUserActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string-array name="distance_radius">
+        <item>All Restaurants</item>
+	   	<item>Within 5 Kilometers</item>
+       	<item>Within 10 Kilometers</item>
+       	<item>Within 20 Kilometers</item>
+       	<item>Within 50 Kilometers</item>
+   	</string-array>
 
 </resources>

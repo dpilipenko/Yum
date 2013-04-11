@@ -81,6 +81,7 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 		String province = ((EditText)findViewById(R.id.et_addrestaurant_province)).getText().toString();
 		String streetName = ((EditText)findViewById(R.id.et_addrestaurant_streetname)).getText().toString();
 		String streetNumber = ((EditText)findViewById(R.id.et_addrestaurant_streetnumber)).getText().toString();
+		String website = ((EditText)findViewById(R.id.et_website)).getText().toString();
 		String phoneNumber = "+"+((EditText)findViewById(R.id.et_addrestaurant_phonenumber)).getText().toString();
 		
 		Address a = new Address(streetNumber, streetName, city, postcode, province);
@@ -90,7 +91,7 @@ public class AddRestaurantActivity extends Activity implements OnClickListener {
 		double lat = gp.getLatitude();
 		double lon = gp.getLongitude();
 		
-		return new Restaurant(resName, a, phoneNumber, "", lat, lon);
+		return new Restaurant(resName, a, phoneNumber, website, lat, lon);
 		
 	}
 

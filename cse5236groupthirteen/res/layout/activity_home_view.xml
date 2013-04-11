@@ -13,25 +13,14 @@
         android:id="@+id/lstvw_homeView_restaurants"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/spinner1"
+        android:layout_below="@+id/search_distance"
         android:background="@drawable/backrepeat" />
 
     <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="300dip"
+        android:id="@+id/search_distance"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/distance_radius" />
-<!-- 
-    <resources android:layout_width="match_parent" >
+        android:layout_alignParentTop="true" />
 
-   	 	<string-array android:name="distance_radius">
-        	<item>10 Miles</item>
-        	<item>25 Miles</item>
-        	<item>50 Miles</item>
-        	<item>100 Miles</item>
-    	</string-array>
-</resources>
- -->
 
 </RelativeLayout>

@@ -21,17 +21,20 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-public class HomeViewActivity extends YumViewActivity {
+public class HomeViewActivity extends YumViewActivity implements OnItemSelectedListener{
 
 	private boolean querying;
 	private ListView listView;
 	private ArrayAdapter<Restaurant> listAdapter;
 	protected Dialog splashDialog;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,14 @@ public class HomeViewActivity extends YumViewActivity {
 
 
 		querying = false;
+
+		Spinner searchDistance = (Spinner) findViewById(R.id.search_distance);
+		searchDistance.setOnItemSelectedListener(this);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, 
+							R.array.distance_radius, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		searchDistance.setAdapter(adapter);
+		
 		listView = (ListView) findViewById(R.id.lstvw_homeView_restaurants);
 		listAdapter = new ArrayAdapter<Restaurant>(this,
 				android.R.layout.simple_list_item_1);
@@ -197,6 +208,81 @@ public class HomeViewActivity extends YumViewActivity {
 				
 			}
 		});
+	}
+	
+	private void loadDataFromParse(int radius) {	
+		querying = true;
+		showLoadingDialog();
+		
+	
+		final ParseGeoPoint myLocation = YumHelper.getLastBestLocationForParse(this);
+		
+		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
+		query.whereExists(Restaurant.R_UUID);
+		//query.whereNear(Restaurant.R_GEOLOC, myLocation);
+		query.whereWithinKilometers(Restaurant.R_GEOLOC, myLocation, radius);
+		query.findInBackground(new FindCallback() {
+
+			@Override
+			public void done(List<ParseObject> objects, ParseException e) {
+				
+				querying = false;
+				dismissLoadingDialog();
+				
+				if (e == null) {
+					
+					// query successful
+					listAdapter.clear();
+					for (ParseObject po : objects) {
+						Restaurant r = new RestaurantWithMyLocation(po, myLocation);
+						listAdapter.add(r);
+					}
+					listAdapter.notifyDataSetChanged();
+
+				} else {
+					
+					// error occurred
+					String errmsg = "There was an error loading data from Parse";
+					Toast.makeText(getApplicationContext(), errmsg,
+							Toast.LENGTH_SHORT).show();
+					Log.e("Yum", errmsg, e);
+				}
+				
+			}
+		});
+	}
+
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int pos,
+			long id) {
+		id = parent.getItemIdAtPosition(pos);
+		
+		int numer = (int)id;
+		
+		switch(numer) {
+		case 0: 
+			break;
+		case 1:
+			loadDataFromParse(5);
+			break;
+		case 2:
+			loadDataFromParse(10);
+			break;
+		case 3:
+			loadDataFromParse(20);
+			break;
+		case 4:
+			loadDataFromParse(50);
+			break;
+		}
+		
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		parent.getItemAtPosition(0);
+		
 	}
 
 }

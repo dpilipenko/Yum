@@ -58,6 +58,13 @@
         android:inputType="number" />
 
     <EditText
+        android:id="@+id/et_website"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="http://..."
+        android:inputType="text" />
+    
+    <EditText
         android:id="@+id/et_addrestaurant_phonenumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
