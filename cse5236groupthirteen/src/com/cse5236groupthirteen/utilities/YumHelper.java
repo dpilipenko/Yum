@@ -1,18 +1,6 @@
 package com.cse5236groupthirteen.utilities;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -23,13 +11,21 @@ import android.location.LocationManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.maps.GeoPoint;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
+/**
+ * This class provides with helpful static methods to use
+ *
+ */
 public class YumHelper {
 
+	/**
+	 * This method checks phone if it is able to get user's location
+	 * @param context
+	 * @return
+	 */
 	public static boolean testLocationServices(Context context) {
 		
 		LocationManager lm = (LocationManager) context
@@ -45,9 +41,14 @@ public class YumHelper {
 		return (haveGPS || haveNet);
 	}
 	
+	/**
+	 * This method checks phone if it is able to communicate with Parse, our back end
+	 * @param context
+	 * @return
+	 */
 	public static boolean testParseConnection(Context context) {
 		ParseQuery q = new ParseQuery(ParseHelper.CLASS_USERS);
-		q.whereExists(User.US_UUID);
+		q.whereExists(YumUser.US_UUID);
 		try {
 			q.count();
 			return true;
@@ -56,6 +57,11 @@ public class YumHelper {
 		}
 	}
 	
+	/**
+	 * This method shows an alert box with specified message
+	 * @param context
+	 * @param message
+	 */
 	public static void displayAlert(final Context context, String message) {
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(context);
@@ -72,18 +78,36 @@ public class YumHelper {
 		alert.show();
 	}
 	
+	/**
+	 * This method provides uniform logging functionality for given message
+	 * @param context
+	 * @param errmsg
+	 */
 	public static void handleError(Context context, String errmsg) {
 		Toast.makeText(context, errmsg, Toast.LENGTH_LONG).show();
 		Log.e("Yum Exception!", errmsg);
 	}
 	
+	/**
+	 * This method provides uniform exception handling functionality
+	 * @param context
+	 * @param e
+	 * @param errmsg
+	 */
 	public static void handleException(Context context, Exception e, String errmsg) {
 		Toast.makeText(context, "(e) "+errmsg, Toast.LENGTH_LONG).show();
 		Log.e("Yum Exception!", errmsg);
 		Log.e("Yum Exception!", e.toString());
 	}
 	
+	/**
+	 * This method returns the last,best known current location for user
+	 * @param context
+	 * @return
+	 */
 	public static Location getLastBestLocation(Context context) {
+		
+		// get location providers
 		LocationManager lm = (LocationManager) context
 				.getSystemService(Context.LOCATION_SERVICE);
 		Location locationGPS = lm
@@ -91,10 +115,11 @@ public class YumHelper {
 		Location locationNet = lm
 				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
+		// check which ones are available
 		boolean haveGPS = (locationGPS != null);
 		boolean haveNet = (locationNet != null);
 		
-		if (!haveGPS && !haveNet) {
+		if (!haveGPS && !haveNet) { // no providers available
 			String msg = "Could not find a location. Using random location now.";
 			displayAlert(context, msg);
 			Location l = new Location("yum fake location");
@@ -103,15 +128,15 @@ public class YumHelper {
 			// uh oh... no location
 			return new Location(l);
 			
-		} else if (haveGPS && !haveNet) {
+		} else if (haveGPS && !haveNet) { // only gps available
 			
 			return locationGPS;
 			
-		} else if (!haveGPS && haveNet) {
+		} else if (!haveGPS && haveNet) { // only cell location available
 			
 			return locationNet;
 			
-		} else if (haveGPS && haveNet) {
+		} else { // choose the most recent one
 			
 			long GPSLocationTime = locationGPS.getTime();
 			long NetLocationTime = locationNet.getTime();
@@ -125,32 +150,15 @@ public class YumHelper {
 				return locationNet;
 				
 			}
-			
-		} else {
-			// no other possible combination of haveGPS and haveNet
-		}
+		} 
 		
-		
-		long GPSLocationTime = 0;
-		if (null != locationGPS) {
-			GPSLocationTime = locationGPS.getTime();
-		}
-
-		long NetLocationTime = 0;
-
-		if (null != locationNet) {
-			NetLocationTime = locationNet.getTime();
-		}
-
-		Location myLocation = new Location(locationNet);
-		if (0 < GPSLocationTime - NetLocationTime) {
-			myLocation = locationGPS;
-		} else {
-			myLocation = locationNet;
-		}
-		return myLocation;
 	}
 	
+	/**
+	 * This method returns user's last,best location as a ParseGeoPoint
+	 * @param context
+	 * @return
+	 */
 	public static ParseGeoPoint getLastBestLocationForParse(Context context) {
 
 		Location myLocation = getLastBestLocation(context);
@@ -160,6 +168,12 @@ public class YumHelper {
 		return new ParseGeoPoint(lat, lon);
 	}
 
+	/**
+	 * This method returns a ParseGeoPoint from a given restaurant address
+	 * @param context
+	 * @param address
+	 * @return
+	 */
 	public static ParseGeoPoint getParseGeoPointFromRestaurantFullAddress(
 			Context context, String address) {
 
@@ -185,68 +199,6 @@ public class YumHelper {
 			e.printStackTrace();
 			return null;
 		}
-
-	}
-
-	public static ParseGeoPoint getParseGeoPointFromAddress(String address) {
-		JSONObject o = getLocationInfo(address);
-		GeoPoint g = getGeoPoint(o);
-		double lat = g.getLatitudeE6() / 1.0E6;
-		double lon = g.getLongitudeE6() / 1.0E6;
-		return new ParseGeoPoint(lat, lon);
-	}
-
-	private static JSONObject getLocationInfo(String address) {
-		String strAddress = address.replace(' ', '+');
-		HttpGet httpGet = new HttpGet(
-				"http://maps.google.com/maps/api/geocode/json?address="
-						+ strAddress + "&ka&sensor=false");
-		HttpClient client = new DefaultHttpClient();
-		HttpResponse response;
-		StringBuilder stringBuilder = new StringBuilder();
-
-		try {
-			response = client.execute(httpGet);
-			HttpEntity entity = response.getEntity();
-			InputStream stream = entity.getContent();
-			int b;
-			while ((b = stream.read()) != -1) {
-				stringBuilder.append((char) b);
-			}
-		} catch (ClientProtocolException e) {
-		} catch (IOException e) {
-		}
-
-		JSONObject JsonObject = new JSONObject();
-		try {
-			JsonObject = new JSONObject(stringBuilder.toString());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-		return JsonObject;
-	}
-
-	private static GeoPoint getGeoPoint(JSONObject JsonObject) {
-
-		Double lon = Double.valueOf(0);
-		Double lat = Double.valueOf(0);
-
-		try {
-
-			lon = ((JSONArray) JsonObject.get("results")).getJSONObject(0)
-					.getJSONObject("geometry").getJSONObject("location")
-					.getDouble("lng");
-
-			lat = ((JSONArray) JsonObject.get("results")).getJSONObject(0)
-					.getJSONObject("geometry").getJSONObject("location")
-					.getDouble("lat");
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-		return new GeoPoint((int) (lat * 1E6), (int) (lon * 1E6));
 
 	}
 

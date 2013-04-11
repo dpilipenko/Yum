@@ -2,9 +2,9 @@ package com.cse5236groupthirteen;
 
 import java.util.List;
 
-import com.cse5236groupthirteen.utilities.RestaurantWithMyLocation;
+import com.cse5236groupthirteen.utilities.YumRestaurantWithMyLocation;
 import com.cse5236groupthirteen.utilities.ParseHelper;
-import com.cse5236groupthirteen.utilities.Restaurant;
+import com.cse5236groupthirteen.utilities.YumRestaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -28,14 +28,22 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+/**
+ * This activity is responsible for listing all the restaurants to the user.
+ * We use geolocation to get the user's current location and then query Parse
+ * to return restaurants sorted by distance
+ *
+ */
 public class HomeViewActivity extends YumViewActivity implements OnItemSelectedListener{
 
-	private boolean querying;
-	private ListView listView;
-	private ArrayAdapter<Restaurant> listAdapter;
-	protected Dialog splashDialog;
+	// UI elements
+	private ListView mListView;
+	protected Dialog mSplashDialog;
 	
-
+	
+	private ArrayAdapter<YumRestaurant> mListAdapter;
+	private boolean mQuerying;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,6 +51,7 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 		showSplashScreen();
 		setContentView(R.layout.activity_home_view);
 		
+		// tests for location and network in a separate thread
 	    final Handler handler = new Handler();
 	    handler.postDelayed(new Runnable() {
 	      @Override
@@ -51,10 +60,11 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 	    	  testNetworkConnection();
 	      }
 	    }, 0);
+	    
+	    // set init var
+	    mQuerying = false;
 
-
-		querying = false;
-
+	    // set up spinner
 		Spinner searchDistance = (Spinner) findViewById(R.id.search_distance);
 		searchDistance.setOnItemSelectedListener(this);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, 
@@ -62,25 +72,23 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		searchDistance.setAdapter(adapter);
 		
-		listView = (ListView) findViewById(R.id.lstvw_homeView_restaurants);
-		listAdapter = new ArrayAdapter<Restaurant>(this,
-				android.R.layout.simple_list_item_1);
-		
-		listView.setAdapter(listAdapter);
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		// set up restaurant list
+		mListAdapter = new ArrayAdapter<YumRestaurant>(this, android.R.layout.simple_list_item_1);
+		mListView = (ListView) findViewById(R.id.lstvw_homeView_restaurants);
+		mListView.setAdapter(mListAdapter);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				Restaurant r = listAdapter.getItem(position);
+				YumRestaurant r = mListAdapter.getItem(position);
 
 				Intent intent = new Intent(HomeViewActivity.this,
 						RestaurantViewActivity.class);
-				
 				// pass over restaurant information so it doesn't need to be parsed again
-				intent.putExtra(Restaurant.R_UUID, r.getRestaurantId());
-				intent.putExtra(Restaurant.R_NAME, r.getName());
+				intent.putExtra(YumRestaurant.R_UUID, r.getRestaurantId());
+				intent.putExtra(YumRestaurant.R_NAME, r.getName());
 				
 				startActivity(intent);
 
@@ -89,7 +97,11 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 		});
 
 	}
-
+	
+	/**
+	 * This method tests the phones location services and displays an alert if it 
+	 * can't access the location
+	 */
 	private void testLocationServices() {
 		boolean test = YumHelper.testLocationServices(this);
 		if (!test) {
@@ -99,12 +111,17 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 		
 	}
 
+	/**
+	 * This method test the phones connection to the internet and to Parse, and
+	 * displays an alert if it can't access the location
+	 */
 	private void testNetworkConnection() {
 		
 		ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    android.net.NetworkInfo wifi = connec.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 	    android.net.NetworkInfo mobile = connec.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
+	    // check if have wifi or cell data
 	    boolean haveData = false;
 	    if (wifi.isConnected()) {
 	        haveData = true;
@@ -112,12 +129,14 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 	        haveData = true;
 	    }
 	    
+	    // alerts if no available data
 	    if (!haveData) {
 	    	String msg = "Sorry, could not connect to internet";
 	    	YumHelper.displayAlert(this, msg);
 	    	return;
 	    }
 
+	    // tests Parse connection
 		boolean haveParseConnection = YumHelper.testParseConnection(this);
 		if (!haveParseConnection) {
 			String msg = "Sorry, could not connect with our data at this time. " +
@@ -128,37 +147,37 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 	}
 
 	private void showSplashScreen() {
-		splashDialog = new Dialog(this, R.style.SplashScreen);
-		splashDialog.setContentView(R.layout.splash_screen);
-		splashDialog.setCancelable(false);
-		splashDialog.show();
+		mSplashDialog = new Dialog(this, R.style.SplashScreen);
+		mSplashDialog.setContentView(R.layout.splash_screen);
+		mSplashDialog.setCancelable(false);
+		mSplashDialog.show();
 
 	}
 
 	private void removeSplashScreen() {
-		if (splashDialog != null) {
-			splashDialog.dismiss();
-			splashDialog = null;
+		if (mSplashDialog != null) {
+			mSplashDialog.dismiss();
+			mSplashDialog = null;
 		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		loadDataFromParse();
+		loadRestaurants();
 	}
 
 	@Override
 	public void onShake() {
-		if (!querying) {
-			listAdapter.clear();
-			loadDataFromParse();
+		if (!mQuerying) {
+			mListAdapter.clear();
+			loadRestaurants();
 		}
 
 	}
 
 	protected void showLoadingDialog() {
-		if (splashDialog == null) {
+		if (mSplashDialog == null) {
 			super.showLoadingDialog();
 		}
 		
@@ -169,33 +188,38 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 		removeSplashScreen();
 	}
 
-	private void loadDataFromParse() {	
-		querying = true;
+	/**
+	 * This method loads restaurants from our back-end and populates the list 
+	 */
+	private void loadRestaurants() {	
+		mQuerying = true;
 		showLoadingDialog();
 		
-	
+		// gets users current location
 		final ParseGeoPoint myLocation = YumHelper.getLastBestLocationForParse(this);
 		
+		// query for 50 of the nearest restaurants 
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
-		query.whereExists(Restaurant.R_UUID);
-		query.whereNear(Restaurant.R_GEOLOC, myLocation);
+		query.whereExists(YumRestaurant.R_UUID);
+		query.whereNear(YumRestaurant.R_GEOLOC, myLocation);
+		query.setLimit(50);
 		query.findInBackground(new FindCallback() {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				
-				querying = false;
+				mQuerying = false;
 				dismissLoadingDialog();
 				
 				if (e == null) {
 					
 					// query successful
-					listAdapter.clear();
+					mListAdapter.clear();
 					for (ParseObject po : objects) {
-						Restaurant r = new RestaurantWithMyLocation(po, myLocation);
-						listAdapter.add(r);
+						YumRestaurant r = new YumRestaurantWithMyLocation(po, myLocation);
+						mListAdapter.add(r);
 					}
-					listAdapter.notifyDataSetChanged();
+					mListAdapter.notifyDataSetChanged();
 
 				} else {
 					
@@ -210,34 +234,38 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 		});
 	}
 	
-	private void loadDataFromParse(int radius) {	
-		querying = true;
+	/**
+	 * This method loads restaurants within a kilometer radius
+	 * @param radiusInKM
+	 */
+	private void loadRestaurants(int radiusInKM) {	
+		mQuerying = true;
 		showLoadingDialog();
 		
-	
 		final ParseGeoPoint myLocation = YumHelper.getLastBestLocationForParse(this);
 		
+		// query for 50 restaurants within __ kilometer radius
 		ParseQuery query = new ParseQuery(ParseHelper.CLASS_RESTAURANTS);
-		query.whereExists(Restaurant.R_UUID);
-		//query.whereNear(Restaurant.R_GEOLOC, myLocation);
-		query.whereWithinKilometers(Restaurant.R_GEOLOC, myLocation, radius);
+		query.whereExists(YumRestaurant.R_UUID);
+		query.setLimit(50);
+		query.whereWithinKilometers(YumRestaurant.R_GEOLOC, myLocation, radiusInKM);
 		query.findInBackground(new FindCallback() {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				
-				querying = false;
+				mQuerying = false;
 				dismissLoadingDialog();
 				
 				if (e == null) {
 					
 					// query successful
-					listAdapter.clear();
+					mListAdapter.clear();
 					for (ParseObject po : objects) {
-						Restaurant r = new RestaurantWithMyLocation(po, myLocation);
-						listAdapter.add(r);
+						YumRestaurant r = new YumRestaurantWithMyLocation(po, myLocation);
+						mListAdapter.add(r);
 					}
-					listAdapter.notifyDataSetChanged();
+					mListAdapter.notifyDataSetChanged();
 
 				} else {
 					
@@ -253,6 +281,9 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 	}
 
 
+	/**
+	 * This method should be called if the user changes the  radius they want
+	 */
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
@@ -261,19 +292,20 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 		int numer = (int)id;
 		
 		switch(numer) {
-		case 0: 
+		case 0: // load all
+			loadRestaurants();
 			break;
-		case 1:
-			loadDataFromParse(5);
+		case 1: // load 5 km radius
+			loadRestaurants(5);
 			break;
-		case 2:
-			loadDataFromParse(10);
+		case 2: // load 10 km radius
+			loadRestaurants(10);
 			break;
-		case 3:
-			loadDataFromParse(20);
+		case 3: // load 20 km radius
+			loadRestaurants(20);
 			break;
-		case 4:
-			loadDataFromParse(50);
+		case 4: // load 50 km radius
+			loadRestaurants(50);
 			break;
 		}
 		

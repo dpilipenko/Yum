@@ -23,12 +23,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.AddRestaurantActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.AddRestaurantActivity"
             android:label="@string/title_activity_add_restaurant"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.DevActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.DevActivity"
             android:label="@string/title_activity_dev"
             android:screenOrientation="portrait" >
         </activity>
@@ -39,7 +39,7 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.PrintRestaurantsActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.PrintRestaurantsActivity"
             android:label="@string/title_activity_print_restaurants"
             android:screenOrientation="portrait" >
         </activity>
@@ -64,36 +64,36 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.AddMenuActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.AddMenuActivity"
             android:label="@string/title_activity_add_menu"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.PrintMenuActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.PrintMenuActivity"
             android:label="@string/title_activity_print_menu"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.AddSubmissionActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.AddSubmissionActivity"
             android:label="@string/title_activity_add_submission"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.PrintSubmissionsActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.PrintSubmissionsActivity"
             android:label="@string/title_activity_print_submissions"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.UpdateRestaurantGeoLocationsActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.UpdateRestaurantGeoLocationsActivity"
             android:label="@string/title_activity_update_restaurant_geo_locations"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.AddUserActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.AddUserActivity"
             android:label="@string/title_activity_add_user" >
         </activity>
         <activity
-            android:name="com.cse5236groupthirteen.dev.LoginActivity"
+            android:name="com.cse5236groupthirteen.protectedactivities.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
     </application>

@@ -1,8 +1,8 @@
 package com.cse5236groupthirteen;
 
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.utilities.Restaurant;
-import com.cse5236groupthirteen.utilities.Submission;
+import com.cse5236groupthirteen.utilities.YumRestaurant;
+import com.cse5236groupthirteen.utilities.YumSubmission;
 
 import java.util.Date;
 import com.parse.ParseException;
@@ -11,7 +11,6 @@ import com.parse.ParseObject;
 import android.os.Bundle;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,118 +18,124 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+/**
+ * This activity is responsible for allowing user submissions.
+ * Expected use case is user reaching line in restaurant,
+ * tapping submit on previous screen, this screen shows up,
+ * and when they finish standing in line, they tap Done. 
+ * The time difference is the wait time.
+ *
+ */
 public class SubmissionViewActivity extends YumViewActivity implements OnClickListener {
+	
+	// UI elements
 	private EditText Customer_Review;
 	private Button Got_Food;
-	private Date EndTime;
-	private Date startTime;
-	private ImageView ratingImage;
-
-	private String selectedRestaurantId;
-	private String selectedRestaurantName;
-	private int currentRating;
-	private boolean gotfood;
+	private ImageView RatingImage;
+	
+	private Date mEndTime;
+	private Date mStartTime;
+	private String mSelectedRestaurantId;
+	private String mSelectedRestaurantName;
+	private int mCurrentRating;
+	private boolean mGotfood;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_submission_view);
 		
+		// comments text box
 		Customer_Review = (EditText)findViewById(R.id.CustomerReview);
 		
+		// "I Got my Food" button
 		Got_Food = (Button)findViewById(R.id.GotFood);
 		Got_Food.setOnClickListener(this);
 		
+		// "Submit" button
 		Button btnAdd= (Button)findViewById(R.id.SubmitReview);
 		btnAdd.setOnClickListener(this);
 		
-		ratingImage = (ImageView)findViewById(R.id.imgvw_submission_rating);
-		ratingImage.setOnClickListener(this);
+		// rating image
+		RatingImage = (ImageView)findViewById(R.id.imgvw_submission_rating);
+		RatingImage.setOnClickListener(this);
 		
+		// load any passed over information
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
-			selectedRestaurantId = b.getString(Restaurant.R_UUID);
-			selectedRestaurantName = b.getString(Restaurant.R_NAME);
-			startTime = (Date)b.get("StartTime");
+			mSelectedRestaurantId = b.getString(YumRestaurant.R_UUID);
+			mSelectedRestaurantName = b.getString(YumRestaurant.R_NAME);
+			mStartTime = (Date)b.get("StartTime");
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
 			Toast.makeText(getApplicationContext(), errmsg , Toast.LENGTH_SHORT).show();
 			Log.e("Yum", errmsg);
 		}
-		this.setTitle("Submit a review for " + selectedRestaurantName);
-		this.currentRating = 1;
-		this.gotfood = false;
+		
+		// set init values
+		this.setTitle("Submit a review for " + mSelectedRestaurantName);
+		this.mCurrentRating = 1;
+		this.mGotfood = false;
 	}
 
 	
 	
-	
-	private Submission generateFromSubView(){
+	/**
+	 * This method is responsible for generating a new Submission object from the
+	 * current state of UI
+	 * @return
+	 */
+	private YumSubmission generateSubmissionFromUI(){
 		String review = this.Customer_Review.getText().toString();
 		int rating = getRating();
-		long waitTime = (this.EndTime.getTime()-this.startTime.getTime())/1000;
+		long waitTime = (this.mEndTime.getTime()-this.mStartTime.getTime())/1000;
 	
-		return new Submission(rating,waitTime,review,selectedRestaurantId);
-		
-		
+		return new YumSubmission(rating,waitTime,review,mSelectedRestaurantId);
 			
 	}
+	
 	private int getRating(){
-		return currentRating;
+		return mCurrentRating;
 	}
 	
 	
-	
-		
-		
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to t
-		//he action bar if it is present.
-		getMenuInflater().inflate(R.menu.submission, menu);
-		return true;
-	}
-
 	@Override
 	public void onClick(View v) {
 		
 		switch (v.getId()) {
 		
-		case R.id.GotFood:
-			gotfood = !gotfood;
-			this.EndTime = new Date();
+		case R.id.GotFood: // "Got My Food" button
+			mGotfood = !mGotfood;
+			this.mEndTime = new Date();
 			break;	
-		case R.id.imgvw_submission_rating:
+			
+		case R.id.imgvw_submission_rating: // Rating smiley face
 			Drawable d = null;
-			switch (currentRating) {
+			switch (mCurrentRating) {
 			case 1:
-				currentRating = 0;
+				mCurrentRating = 0;
 				d = getResources().getDrawable(R.drawable.rating_neutral);
 				break;
 			case 0:
-				currentRating = -1;
+				mCurrentRating = -1;
 				d = getResources().getDrawable(R.drawable.rating_sad);
 				break;
 			case -1:
-				currentRating = 1;
+				mCurrentRating = 1;
 				d = getResources().getDrawable(R.drawable.rating_happy);
 				break;
 			}
 			if (d != null) {
-				ratingImage.setImageDrawable(d);
+				RatingImage.setImageDrawable(d);
 			}
 			break;
-		case R.id.SubmitReview:
-			//code for submit review button
-			if (Customer_Review == null){
-				Toast.makeText(SubmissionViewActivity.this, "Missing comments",Toast.LENGTH_SHORT).show();
-			}
-			else if (!gotfood){
+			
+		case R.id.SubmitReview: // submit review button
+			if (!mGotfood){
 				Toast.makeText(SubmissionViewActivity.this, "Please Click 'Got Food'",Toast.LENGTH_SHORT).show();
 			}
 			else {
-				Submission s=generateFromSubView();
+				YumSubmission s=generateSubmissionFromUI();
 				ParseObject po = s.toParseObject();
 				try {
 					po.save();

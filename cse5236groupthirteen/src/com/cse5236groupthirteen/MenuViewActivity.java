@@ -2,9 +2,9 @@ package com.cse5236groupthirteen;
 
 import java.util.List;
 
-import com.cse5236groupthirteen.utilities.MenuItem;
+import com.cse5236groupthirteen.utilities.YumMenuItem;
 import com.cse5236groupthirteen.utilities.ParseHelper;
-import com.cse5236groupthirteen.utilities.Restaurant;
+import com.cse5236groupthirteen.utilities.YumRestaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -15,39 +15,46 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+/**
+ * This activity is responsible for listing all the Menu items associated with a restaurant
+ */
 public class MenuViewActivity extends YumViewActivity {
 
-	private ListView listview;
+	// UI elements
+	private ListView mListview;
 
-	private ArrayAdapter<MenuItem> listviewAdapter;
+	private ArrayAdapter<YumMenuItem> mListviewAdapter;
+	private String mSelectedRestaurantId;
+	private String mSelectedRestaurantName;
+	private boolean mQuerying;
 
-	private String selectedRestaurantId;
-	private String selectedRestaurantName;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu_view);
-
+		
+		mQuerying = false;
+		
 		// grab ui elements
-		listview = (ListView) findViewById(R.id.lstvw_menuView_menuitemlist);
+		mListview = (ListView) findViewById(R.id.lstvw_menuView_menuitemlist);
 
 		// setup list view specifics
-		listviewAdapter = new ArrayAdapter<MenuItem>(this,
+		mListviewAdapter = new ArrayAdapter<YumMenuItem>(this,
 				android.R.layout.simple_list_item_1);
-		listview.setAdapter(listviewAdapter);
+		mListview.setAdapter(mListviewAdapter);
 
 		// load selected restaurant information
 		Bundle b = getIntent().getExtras();
 		if (b != null) {
-			selectedRestaurantId = b.getString(Restaurant.R_UUID);
-			selectedRestaurantName = b.getString(Restaurant.R_NAME);
+			mSelectedRestaurantId = b.getString(YumRestaurant.R_UUID);
+			mSelectedRestaurantName = b.getString(YumRestaurant.R_NAME);
 		} else {
 			String errmsg = "There was an error passing Restaurant information from HomeView";
 			YumHelper.handleError(this, errmsg);
 		}
 
-		this.setTitle(selectedRestaurantName + " Menu");
+		this.setTitle(mSelectedRestaurantName + " Menu");
 	}
 
 	@Override
@@ -58,23 +65,28 @@ public class MenuViewActivity extends YumViewActivity {
 
 	@Override
 	public void onShake() {
-		updateMenuList();
+		if (!mQuerying) {
+			updateMenuList();
+		}
+		
 	}
 
+	/**
+	 * This method loads menu items from back end and populates
+	 */
 	private void updateMenuList() {
-
-		// create query
-		ParseQuery query = new ParseQuery(ParseHelper.CLASS_MENUITEMS);
-		query.whereEqualTo(MenuItem.MI_RESTID, selectedRestaurantId);
-
+		mQuerying = true;
 		showLoadingDialog();
 
+		// query for all menu items for a given restaurant
+		ParseQuery query = new ParseQuery(ParseHelper.CLASS_MENUITEMS);
+		query.whereEqualTo(YumMenuItem.MI_RESTID, mSelectedRestaurantId);
 		query.findInBackground(new FindCallback() {
 
 			public void done(List<ParseObject> objects, ParseException e) {
 				dismissLoadingDialog();
 				if (e == null) {
-					listviewAdapter.clear();
+					mListviewAdapter.clear();
 
 					if (objects.isEmpty()) {
 						// no hits :(
@@ -82,10 +94,10 @@ public class MenuViewActivity extends YumViewActivity {
 					} else {
 						// we got hits! :)
 						for (ParseObject po : objects) {
-							MenuItem m = new MenuItem(po);
-							listviewAdapter.add(m);
+							YumMenuItem m = new YumMenuItem(po);
+							mListviewAdapter.add(m);
 						}
-						listviewAdapter.notifyDataSetChanged();
+						mListviewAdapter.notifyDataSetChanged();
 					}
 
 				} else {

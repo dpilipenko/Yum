@@ -2,8 +2,7 @@ package com.cse5236groupthirteen;
 
 import java.util.Stack;
 
-import com.cse5236groupthirteen.dev.DevActivity;
-import com.cse5236groupthirteen.dev.LoginActivity;
+import com.cse5236groupthirteen.protectedactivities.LoginActivity;
 import com.cse5236groupthirteen.utilities.ParseHelper;
 import com.parse.Parse;
 
@@ -19,18 +18,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * This class serves as a base class for our other Activities.
+ * This class is responsible for initialize Parse, sensing shaking motions, 
+ * as well as displaying the Loading screens
+ *
+ */
 public class YumViewActivity extends Activity implements SensorEventListener {
 
 	// for loading bar
-	private Stack<ProgressDialog> progressbars;
+	private Stack<ProgressDialog> mProgressBarsStack;
 	
 	// for shake detection
-	private SensorManager sensorManager;
-	private Sensor accelerometer;
-	private boolean sensorInitialized;
-	private float lastXAxis;
-	private float lastYAxis;
-	private float lastZAxis;
+	final private int mShakeThreshold = 15;
+	
+	private SensorManager mSensorManager;
+	private Sensor mAccelerometerSensor;
+	private boolean mSensorInitialized;
+	private float mLastXAxisReading;
+	private float mLastYAxisReading;
+	private float mLastZAxisReading;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +46,15 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 		Parse.initialize(this, ParseHelper.APPLICATION_ID, ParseHelper.CLIENT_KEY);
 		
 		// for tracking loading bars
-		progressbars = new Stack<ProgressDialog>();
+		mProgressBarsStack = new Stack<ProgressDialog>();
 		
 		// for detecting Shakes
-		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-		sensorInitialized = false;
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mAccelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+		mSensorInitialized = false;
 	}
 
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -61,13 +69,13 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-	    sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);	
+	    mSensorManager.registerListener(this, mAccelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);	
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
-	    sensorManager.unregisterListener(this);
+	    mSensorManager.unregisterListener(this);
 	}
 
 	@Override
@@ -82,29 +90,29 @@ public class YumViewActivity extends Activity implements SensorEventListener {
         float yAxis = event.values[1];
         float zAxis = event.values[2];
 		
-        if (!sensorInitialized) {
-        	lastXAxis = xAxis;
-        	lastYAxis = yAxis;
-        	lastZAxis = zAxis;
-        	sensorInitialized = true;
+        if (!mSensorInitialized) {
+        	mLastXAxisReading = xAxis;
+        	mLastYAxisReading = yAxis;
+        	mLastZAxisReading = zAxis;
+        	mSensorInitialized = true;
         } else {
         	final float Noise = 2.0f; 
-        	float deltaX = Math.abs(lastXAxis - xAxis);
-        	float deltaY = Math.abs(lastYAxis - yAxis);
-        	float deltaZ = Math.abs(lastZAxis - zAxis);
+        	float deltaX = Math.abs(mLastXAxisReading - xAxis);
+        	float deltaY = Math.abs(mLastYAxisReading - yAxis);
+        	float deltaZ = Math.abs(mLastZAxisReading - zAxis);
         	if (deltaX < Noise)
         		deltaX = 0.0f;
         	if (deltaY < Noise)
         		deltaY = 0.0f;
         	if (deltaZ < Noise)
         		deltaZ = 0.0f;
-        	lastXAxis = xAxis;
-        	lastYAxis = yAxis;
-        	lastZAxis = zAxis;
+        	mLastXAxisReading = xAxis;
+        	mLastYAxisReading = yAxis;
+        	mLastZAxisReading = zAxis;
         	
-        	boolean xShake = (deltaX > 15);
-        	boolean yShake = (deltaY > 15);
-        	boolean zShake = (deltaZ > 15);
+        	boolean xShake = (deltaX > mShakeThreshold);
+        	boolean yShake = (deltaY > mShakeThreshold);
+        	boolean zShake = (deltaZ > mShakeThreshold);
         	
         	if (xShake || yShake || zShake) {
         		
@@ -115,21 +123,25 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 		
 	}
 	
+	/**
+	 * This is a callback method we created.
+	 * This method will be called when the accelerometer reads
+	 * a reading greater than the shake threshold
+	 */
 	protected void onShake() {
 		// do nothing for now
 	}
 	
-
 	protected void showLoadingDialog() {
 		ProgressDialog pd = ProgressDialog.show(this, "", "Loading...");
-		progressbars.add(pd);
+		mProgressBarsStack.add(pd);
 	}
 	
 	protected void dismissLoadingDialog() {
-		if (progressbars.size() == 0) {
+		if (mProgressBarsStack.size() == 0) {
 			return;
 		}
-		ProgressDialog pd = progressbars.pop();
+		ProgressDialog pd = mProgressBarsStack.pop();
 		pd.dismiss();
 	}
 	
