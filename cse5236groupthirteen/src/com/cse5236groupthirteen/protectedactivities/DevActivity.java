@@ -2,7 +2,7 @@ package com.cse5236groupthirteen.protectedactivities;
 
 import com.cse5236groupthirteen.HomeViewActivity;
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.utilities.YumUser;
+import com.cse5236groupthirteen.models.YumUser;
 import com.cse5236groupthirteen.utilities.YumHelper;
 
 import android.os.Bundle;

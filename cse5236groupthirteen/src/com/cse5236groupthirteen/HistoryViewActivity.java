@@ -3,11 +3,11 @@ package com.cse5236groupthirteen;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cse5236groupthirteen.models.YumRestaurant;
+import com.cse5236groupthirteen.models.YumSubmission;
 import com.cse5236groupthirteen.utilities.CustomAdapter;
 import com.cse5236groupthirteen.utilities.MessageDetail;
 import com.cse5236groupthirteen.utilities.ParseHelper;
-import com.cse5236groupthirteen.utilities.YumRestaurant;
-import com.cse5236groupthirteen.utilities.YumSubmission;
 import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.ParseException;

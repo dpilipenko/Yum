@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.utilities.YumMenuItem;
+import com.cse5236groupthirteen.models.YumMenuItem;
+import com.cse5236groupthirteen.models.YumRestaurant;
 import com.cse5236groupthirteen.utilities.ParseHelper;
-import com.cse5236groupthirteen.utilities.YumRestaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;

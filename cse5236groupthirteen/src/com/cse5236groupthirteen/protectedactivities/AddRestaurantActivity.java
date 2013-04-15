@@ -1,9 +1,9 @@
 package com.cse5236groupthirteen.protectedactivities;
 
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.utilities.YumAddress;
+import com.cse5236groupthirteen.models.YumAddress;
+import com.cse5236groupthirteen.models.YumRestaurant;
 import com.cse5236groupthirteen.utilities.ParseHelper;
-import com.cse5236groupthirteen.utilities.YumRestaurant;
 import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.Parse;
 import com.parse.ParseGeoPoint;

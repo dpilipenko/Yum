@@ -3,8 +3,8 @@ package com.cse5236groupthirteen.protectedactivities;
 import java.util.List;
 
 import com.cse5236groupthirteen.R;
+import com.cse5236groupthirteen.models.YumUser;
 import com.cse5236groupthirteen.utilities.ParseHelper;
-import com.cse5236groupthirteen.utilities.YumUser;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Locale;
 
 import com.cse5236groupthirteen.R;
+import com.cse5236groupthirteen.models.YumRestaurant;
+import com.cse5236groupthirteen.models.YumSubmission;
 import com.cse5236groupthirteen.utilities.ParseHelper;
-import com.cse5236groupthirteen.utilities.YumRestaurant;
-import com.cse5236groupthirteen.utilities.YumSubmission;
 import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;

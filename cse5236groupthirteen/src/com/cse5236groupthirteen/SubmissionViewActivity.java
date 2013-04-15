@@ -1,8 +1,8 @@
 package com.cse5236groupthirteen;
 
 import com.cse5236groupthirteen.R;
-import com.cse5236groupthirteen.utilities.YumRestaurant;
-import com.cse5236groupthirteen.utilities.YumSubmission;
+import com.cse5236groupthirteen.models.YumRestaurant;
+import com.cse5236groupthirteen.models.YumSubmission;
 
 import java.util.Date;
 import com.parse.ParseException;

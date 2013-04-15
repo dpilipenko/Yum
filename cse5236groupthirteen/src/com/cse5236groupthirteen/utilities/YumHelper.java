@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cse5236groupthirteen.models.YumUser;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
