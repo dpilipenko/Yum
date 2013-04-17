@@ -60,12 +60,14 @@ public class MenuViewActivity extends YumViewActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		updateMenuList();
+		if (hasInternet()) {
+			updateMenuList();
+		}
 	}
 
 	@Override
 	public void onShake() {
-		if (!mQuerying) {
+		if (hasInternet() && !mQuerying) {
 			updateMenuList();
 		}
 		

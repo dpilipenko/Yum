@@ -88,14 +88,16 @@ public class RestaurantViewActivity extends YumViewActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if ((mSelectedRestaurant != null) && (!mSubmissionsList.isEmpty())) {
-			loadSubmissions(mSelectedRestaurant.getRestaurantId());
+		if (hasInternet()) {
+			if ((mSelectedRestaurant != null) && (!mSubmissionsList.isEmpty())) {
+				loadSubmissions(mSelectedRestaurant.getRestaurantId());
+			}
 		}
 	}
 
 	@Override
 	public void onShake() {
-		if (!mQuerying) {
+		if (hasInternet() && !mQuerying) {
 			loadSubmissions(mSelectedRestaurant.getRestaurantId());
 		}
 	}

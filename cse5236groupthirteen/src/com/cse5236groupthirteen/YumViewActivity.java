@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import com.cse5236groupthirteen.protectedactivities.LoginActivity;
 import com.cse5236groupthirteen.utilities.ParseHelper;
+import com.cse5236groupthirteen.utilities.YumHelper;
 import com.parse.Parse;
 
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,7 +71,11 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-	    mSensorManager.registerListener(this, mAccelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);	
+	    mSensorManager.registerListener(this, mAccelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+	    if (!hasInternet()) {
+	    	String msg = "Sorry, could not connect to internet";
+	    	YumHelper.displayAlert(this, msg);
+	    }
 	}
 	
 	@Override
@@ -143,6 +149,21 @@ public class YumViewActivity extends Activity implements SensorEventListener {
 		}
 		ProgressDialog pd = mProgressBarsStack.pop();
 		pd.dismiss();
+	}
+	
+	protected boolean hasInternet() {
+		ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    android.net.NetworkInfo wifi = connec.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+	    android.net.NetworkInfo mobile = connec.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+	    // check if have wifi or cell data
+	    boolean haveData = false;
+	    if (wifi.isConnected()) {
+	        haveData = true;
+	    } else if (mobile.isConnected()) {
+	        haveData = true;
+	    }
+	    return haveData;
 	}
 	
 }

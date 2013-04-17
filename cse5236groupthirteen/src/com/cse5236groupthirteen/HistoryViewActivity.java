@@ -59,7 +59,7 @@ public class HistoryViewActivity extends YumViewActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(mSubList != null){
+		if(hasInternet() && (mSubList != null)){
 			updateHistoryList();
 		}
 	}
@@ -67,7 +67,7 @@ public class HistoryViewActivity extends YumViewActivity {
 	
 	@Override
 	public void onShake() {
-		if (!mIsQuerying) {
+		if (hasInternet() && !mIsQuerying) {
 			updateHistoryList();
 		}
 	}

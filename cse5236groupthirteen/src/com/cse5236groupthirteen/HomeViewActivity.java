@@ -164,7 +164,9 @@ public class HomeViewActivity extends YumViewActivity implements OnItemSelectedL
 	@Override
 	protected void onResume() {
 		super.onResume();
-		loadRestaurants();
+		if (hasInternet()) {
+			loadRestaurants();
+		}
 	}
 
 	@Override
